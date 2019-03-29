@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import { Route } from 'vue-router';
+import { Route } from 'vue-router'
 
 export default class App extends Vue {
 

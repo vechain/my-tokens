@@ -34,7 +34,7 @@ export default class NavBar extends Vue {
     public current: any[] = []
 
     @Watch('$route')
-    routed() {
+    public routed() {
         this.current = [this.$route.meta.key]
     }
 }

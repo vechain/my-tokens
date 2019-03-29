@@ -6,13 +6,13 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
-declare type Wallet = {
-  name: String,
-  address: String
+declare interface Wallet {
+  name: string,
+  address: string
 }
 @Component
 export default class WalletCard extends Vue {
   @Prop({default: {}})
-  item!: Wallet
+  public item!: Wallet
 }
 </script>
