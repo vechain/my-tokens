@@ -9,14 +9,14 @@
                 <p>
                     <span>{{item}}</span>
                 </p>
-                <router-link @click="t" class="go-transfer" :to="{name: 'transfer'}">Transfer</router-link>
+                <router-link class="go-transfer" :to="{name: 'transfer'}">Transfer</router-link>
             </div>
         </div>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-declare type TokenItem = {
+declare interface TokenItem {
     name: string,
     url: string,
     address: string
@@ -25,11 +25,7 @@ declare type TokenItem = {
 @Component
 export default class TokenCard extends Vue {
     @Prop({ default: {} })
-    item!: TokenItem
-
-    t() {
-        console.log(123)
-    }
+    public item!: TokenItem
 }
 </script>
 
