@@ -5,6 +5,7 @@ import Store from './store'
 import './i18n'
 import './antd'
 import './components'
+import './filters'
 import 'ant-design-vue/dist/antd.css'
 Vue.config.productionTip = false
 
