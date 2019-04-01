@@ -2,10 +2,41 @@
     <div class="wallet">
         <div v-if="!loading">
             <div v-if="wallets.length" class="wallet-list">
-                <h2>Wallet</h2>
-                <a-button @click="importWallet">Import</a-button>
-                <a-button @click="observeWallet">Observe</a-button>
-                <div v-for="item in wallets" :key="item.address">{{item.name}}</div>
+                <a-row type="flex" justify="space-between" style="padding: 20px 80px 0">
+                    <a-col>
+                        <h2>Wallet</h2>
+                    </a-col>
+                    <a-col>
+                        <div>
+                            <a-button-group>
+                                <a-button @click="importWallet">Import</a-button>
+                                <a-button @click="observeWallet">Observe</a-button>
+                            </a-button-group>
+                        </div>
+                    </a-col>
+                </a-row>
+                <a-row type="flex" justify="start">
+                    <a-col
+                        :xs="24"
+                        v-for="item in wallets"
+                        :key="item.address"
+                        :sm="12"
+                        :md="12"
+                        :lg="8"
+                        :xl="6"
+                        :xxl="4"
+                    >
+                        <wallet-card style="margin: 30px auto 0;" :item="item">
+                            <template v-slot:actions>
+                                <router-link
+                                    :to="{name: 'wallet-detail', params: {id: item.id}}"
+                                    style="margin-right: 15px"
+                                >Detail</router-link>
+                                <router-link v-if="item.own" :to="{name: 'transfer'}">Transfer</router-link>
+                            </template>
+                        </wallet-card>
+                    </a-col>
+                </a-row>
             </div>
             <div v-else class="wallet-empty">
                 <h1>Wallets</h1>
@@ -94,6 +125,9 @@ export default class Wallets extends Vue {
 }
 </script>
 <style>
+.wallet {
+    padding: 20px 80px;
+}
 .wallet .wallet-empty {
     max-width: 500px;
     margin: auto;
