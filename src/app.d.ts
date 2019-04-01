@@ -3,10 +3,12 @@ declare namespace app {
   interface Wallet {
     name: string,
     address: string,
-    own: boolean
+    own: boolean,
+    id?: number
   }
 
   interface Token {
+    id?: number,
     name: string,
     symbol: string,
     icon: string,
