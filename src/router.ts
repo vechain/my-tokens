@@ -8,7 +8,7 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      redirect: {name: 'tokens'}
+      redirect: { name: 'tokens' }
     },
     // {
     //   path: '/about',
@@ -24,7 +24,8 @@ export default new Router({
       meta: {
         key: 'tokens'
       },
-      component: () => import(/* webpackChunkName: "about" */ './views/Tokens.vue'),
+      component: () =>
+        import(/* webpackChunkName: "about" */ './views/Tokens.vue')
     },
     {
       path: '/wallets',
@@ -32,7 +33,17 @@ export default new Router({
       meta: {
         key: 'wallets'
       },
-      component: () => import(/* webpackChunkName: "about" */ './views/Wallets.vue'),
+      component: () =>
+        import(/* webpackChunkName: "about" */ './views/Wallets.vue')
+    },
+    {
+      name: 'wallet-detail',
+      path: '/wallets/detail/:id',
+      meta: {
+        key: 'wallets'
+      },
+      component: () =>
+        import(/* webpackChunkName: "about" */ './views/WalletDetail.vue')
     },
     {
       path: '/transfer',
@@ -40,7 +51,8 @@ export default new Router({
       meta: {
         key: 'transfer'
       },
-      component: () => import(/* webpackChunkName: "about" */ './views/Transfer.vue'),
+      component: () =>
+        import(/* webpackChunkName: "about" */ './views/Transfer.vue')
     },
     {
       path: '/contacts',
@@ -48,7 +60,8 @@ export default new Router({
       meta: {
         key: 'contacts'
       },
-      component: () => import(/* webpackChunkName: "about" */ './views/Contacts.vue'),
+      component: () =>
+        import(/* webpackChunkName: "about" */ './views/Contacts.vue')
     }
-  ],
+  ]
 })
