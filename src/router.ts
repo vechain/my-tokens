@@ -25,7 +25,7 @@ export default new Router({
         key: 'tokens'
       },
       component: () =>
-        import(/* webpackChunkName: "about" */ './views/Tokens.vue')
+        import('./views/Tokens.vue')
     },
     {
       path: '/wallets',
@@ -34,16 +34,16 @@ export default new Router({
         key: 'wallets'
       },
       component: () =>
-        import(/* webpackChunkName: "about" */ './views/Wallets.vue')
+        import('./views/Wallets.vue')
     },
     {
       name: 'wallet-detail',
-      path: '/wallets/detail/:id',
+      path: '/wallet/detail/:id',
       meta: {
         key: 'wallets'
       },
       component: () =>
-        import(/* webpackChunkName: "about" */ './views/WalletDetail.vue')
+        import('./views/WalletDetail.vue')
     },
     {
       path: '/transfer',
@@ -52,7 +52,7 @@ export default new Router({
         key: 'transfer'
       },
       component: () =>
-        import(/* webpackChunkName: "about" */ './views/Transfer.vue')
+        import('./views/Transfer.vue')
     },
     {
       path: '/contacts',
@@ -61,7 +61,7 @@ export default new Router({
         key: 'contacts'
       },
       component: () =>
-        import(/* webpackChunkName: "about" */ './views/Contacts.vue')
+        import('./views/Contacts.vue')
     }
   ]
 })
