@@ -2,7 +2,7 @@
     <div class="wallet-item">
         <a-row type="flex" style="height: 100%" align="middle">
             <a-col :xs="8">
-                <img class="wallet-img" alt>
+                <img v-picasso="item.address" class="wallet-img" alt>
             </a-col>
             <a-col :xs="16" style="padding-left: 15px;">
                 <div style="text-align: left; font-size: 14px;">
