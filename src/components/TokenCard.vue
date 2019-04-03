@@ -2,30 +2,27 @@
     <div class="token-card">
         <div>
             <img
-                src="https://vechain.github.io/app-hub/imgs/com.vechain.inspector.png"
+                :src="item.img"
                 :alt="item.name"
             >
             <div class="token-name">
                 <p>
-                    <span>{{item}}</span>
+                    <span>{{item.name}}</span>
                 </p>
-                <router-link class="go-transfer" :to="{name: 'transfer'}">Transfer</router-link>
+                <router-link class="go-transfer" :to="{name: 'transfer', query: {
+                    symbol: item.symbol
+                }}">Transfer</router-link>
             </div>
         </div>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-declare interface TokenItem {
-    name: string,
-    url: string,
-    address: string
-}
 
 @Component
 export default class TokenCard extends Vue {
     @Prop({ default: {} })
-    public item!: TokenItem
+    public item!: app.Token
 }
 </script>
 
@@ -40,6 +37,8 @@ export default class TokenCard extends Vue {
     width: 155px;
     height: 180px;
     border-width: 0;
+    background-color: #fff;
+    border-radius: 4px;
 }
 .token-card > div {
   position: absolute;
@@ -49,7 +48,6 @@ export default class TokenCard extends Vue {
     top: 0;
     content: "";
     display: block;
-    border-radius: 4px;
     box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.35);
     transition: transform 0.2s;
 }
