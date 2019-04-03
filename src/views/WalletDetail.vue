@@ -1,5 +1,7 @@
 <template>
-    <div>detail</div>
+    <div class="wallet-detail">
+      
+    </div>
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
