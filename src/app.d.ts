@@ -13,6 +13,7 @@ declare namespace app {
     symbol: string,
     icon: string,
     desc: string,
-    address: string
+    address: string,
+    url?: string,
   }
 }
