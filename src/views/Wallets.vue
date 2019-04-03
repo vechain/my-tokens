@@ -29,10 +29,15 @@
                         <wallet-card style="margin: 30px auto 0;" :item="item">
                             <template v-slot:actions>
                                 <router-link
-                                    :to="{name: 'wallet-detail', params: {id: item.id}}"
+                                    :to="{name: 'wallet-detail', params: {id: item.address}}"
                                     style="margin-right: 15px"
                                 >Detail</router-link>
-                                <router-link v-if="item.own" :to="{name: 'transfer'}">Transfer</router-link>
+                                <router-link
+                                    v-if="item.own"
+                                    :to="{name: 'transfer', query: {
+                                    from: item.address, unit: 'vet'
+                                }}"
+                                >Transfer</router-link>
                             </template>
                         </wallet-card>
                     </a-col>
