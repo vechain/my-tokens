@@ -33,6 +33,7 @@ export default class App extends Vue {
 #app > .ant-layout {
     height: 100%;
     overflow: auto;
+    background-color: #fff;
 }
 #app > .ant-layout .ant-layout-content {
     min-height: calc(100% - 48px);
