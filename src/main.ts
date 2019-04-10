@@ -12,6 +12,7 @@ Vue.config.productionTip = false
 
 async function createApp() {
   await Store.initState()
+  Store.monitorBlock()
   new Vue({
     router,
     store: Store,

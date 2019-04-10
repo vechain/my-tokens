@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import DB from './database'
 import tokens from './tokens'
+import BigNumber from 'bignumber.js'
 
 Vue.use(Vuex)
 
@@ -10,15 +11,47 @@ declare namespace Store {
   interface State {
     wallets?: app.Wallet[]
     tokens?: app.Token[]
+    balances: {
+      [address: string]: {
+        [symbol: string]: number
+      }
+    } | null
+  }
+  interface TokenMethod {
+    symbol: string
+    decimals: number
+    balanceOf(addr: string): Promise<Connex.Thor.VMOutput>
   }
 }
 
 class Store extends Vuex.Store<Store.State> {
+  private balanceOfABI = {
+    constant: true,
+    inputs: [
+      {
+        name: '_owner',
+        type: 'address'
+      }
+    ],
+    name: 'balanceOf',
+    outputs: [
+      {
+        name: 'balance',
+        type: 'uint256'
+      }
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function'
+  }
+  private tokenMethods: Store.TokenMethod[] | null = null
+
   constructor() {
     super({
       state: {
         wallets: [],
-        tokens: []
+        tokens: [],
+        balances: null
       },
       mutations: {
         setWallets(state, payload) {
@@ -29,6 +62,19 @@ class Store extends Vuex.Store<Store.State> {
         },
         addWallet(state, payload) {
           state.wallets!.push(payload)
+        },
+        setBalance(state, payload) {
+          if (!state.balances) {
+            state.balances = {}
+          }
+          if (!state.balances[payload.address]) {
+            state.balances[payload.address] = {}
+          }
+          const temp = new BigNumber(payload.balance)
+          const balance = temp.isGreaterThan(0)
+            ? temp.div(new BigNumber('1e+' + payload.decimals)).toNumber()
+            : 0
+          state.balances[payload.address][payload.symbol] = balance
         }
         // updateWallet(state, payload) {
         //   const index = state.wallets!.findIndex((item) => {
@@ -53,17 +99,16 @@ class Store extends Vuex.Store<Store.State> {
         }
       },
       actions: {
-        // async walletOwnUpdate({ commit }, { addr, isOwn }) {
-        //   try {
-        //     await DB.wallets
-        //       .where('address')
-        //       .equals(addr)
-        //       .modify({ own: isOwn })
-        //     // tslint:disable-next-line:no-empty
-        //   } catch (error) {}
-
-        //   commit('updateWallet', { addr, isOwn })
-        // },
+        async walletOwnUpdate({ commit }, { addr, isOwn }) {
+          try {
+            await DB.wallets
+              .where('address')
+              .equals(addr)
+              .modify({ own: isOwn })
+            // tslint:disable-next-line:no-empty
+          } catch (error) {}
+          commit('updateWallet', { addr, isOwn })
+        },
         async importWallet({ commit }, addr) {
           let result = addr
           try {
@@ -98,42 +143,66 @@ class Store extends Vuex.Store<Store.State> {
         }
       }
     })
+    this.initTokenMethods()
   }
 
-  // public async monitorBlock() {
-  //   const balanceOfABI = {
-  //     constant: true,
-  //     inputs: [
-  //       {
-  //         name: '_owner',
-  //         type: 'address'
-  //       }
-  //     ],
-  //     name: 'balanceOf',
-  //     outputs: [
-  //       {
-  //         name: 'balance',
-  //         type: 'uint256'
-  //       }
-  //     ],
-  //     payable: false,
-  //     stateMutability: 'view',
-  //     type: 'function'
-  //   }
-  //   tokens.map(item => {
-  //     const balanceOfMethod = connex.thor.account(item.address).method(balanceOfABI)
-  //     return 
-  //   })
-    
-  // }
+  public async monitorBlock() {
+    const tick = connex.thor.ticker()
+    for (;;) {
+      await tick.next()
+      this.getTokenBalance()
+      this.getBalance()
+    }
+  }
 
   public async initState() {
     try {
       const wallets = await DB.wallets.toArray()
       this.commit('setWallets', wallets)
-      // tslint:disable-next-line:no-empty
     } catch (error) {}
     this.commit('setTokens', tokens)
+  }
+
+  private async getBalance() {
+    this.state.wallets!.forEach(async (item) => {
+      const info = await connex.thor.account(item.address).get()
+      this.commit('setBalance', {
+        address: item.address,
+        symbol: 'VET',
+        balance: info.balance,
+        decimals: 18
+      })
+    })
+  }
+
+  private getTokenBalance() {
+    this.tokenMethods!.forEach(async (item) => {
+      this.state.wallets!.forEach(async (wallet) => {
+        const result = await item.balanceOf(wallet.address)
+        this.commit('setBalance', {
+          address: wallet.address,
+          symbol: item.symbol,
+          balance: result.decoded!.balance,
+          decimals: item.decimals
+        })
+      })
+    })
+  }
+
+  private initTokenMethods() {
+    this.tokenMethods = tokens.map((item) => {
+      return {
+        balanceOf: (addr: string) => {
+          return connex.thor
+            .account(item.address)
+            .method(this.balanceOfABI)
+            .cache([addr])
+            .call(addr)
+        },
+        symbol: item.symbol,
+        decimals: item.decimals
+      }
+    })
   }
 }
 
