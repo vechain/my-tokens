@@ -22,7 +22,7 @@ import { Vue, Component } from 'vue-property-decorator'
 @Component
 export default class Tokens extends Vue {
     get tokenList() {
-        return (this.$store.getters.tokens as app.Token[]).map((item) => {
+        return (this.$store.state.tokens as app.Token[]).map((item) => {
             return {
                 ...item,
                 img: require(`../assets/${item.icon}`)

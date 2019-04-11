@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import DB from './database'
-// import { mainNetTokens } from './tokens'
 import BigNumber from 'bignumber.js'
 
 Vue.use(Vuex)
@@ -73,22 +72,15 @@ class Store extends Vuex.Store<Store.State> {
             state.balances = {}
           }
           if (!state.balances[payload.address]) {
-            state.balances[payload.address] = {}
+            Vue.set(state.balances, payload.address, {})
           }
           const temp = new BigNumber(payload.balance)
           const balance = temp.isGreaterThan(0)
             ? temp.div(new BigNumber('1e+' + payload.decimals)).toNumber()
             : 0
-          state.balances[payload.address][payload.symbol] = balance
+
+          Vue.set(state.balances![payload.address], payload.symbol, balance)
         }
-        // updateWallet(state, payload) {
-        //   const index = state.wallets!.findIndex((item) => {
-        //     return item.address === payload.address
-        //   })
-        //   if (index) {
-        //     Vue.set(state.wallets![index], 'own', payload.isOwn)
-        //   }
-        // }
       },
       getters: {
         wallets(state) {
@@ -101,19 +93,12 @@ class Store extends Vuex.Store<Store.State> {
         },
         tokens(state) {
           return state.tokens
+        },
+        balanceList(state) {
+          return state.balances
         }
       },
       actions: {
-        async walletOwnUpdate({ commit }, { addr, isOwn }) {
-          try {
-            await DB.wallets
-              .where('address')
-              .equals(addr)
-              .modify({ own: isOwn })
-            // tslint:disable-next-line:no-empty
-          } catch (error) {}
-          commit('updateWallet', { addr, isOwn })
-        },
         async importWallet({ commit }, addr) {
           let result = addr
           try {
@@ -135,8 +120,7 @@ class Store extends Vuex.Store<Store.State> {
             const count = await DB.wallets.count()
             const temp = {
               name: `wallet${count}`,
-              address: result,
-              own: true
+              address: result
             }
             await DB.wallets.add(temp)
             commit('addWallet', temp)
@@ -148,7 +132,6 @@ class Store extends Vuex.Store<Store.State> {
         }
       }
     })
-    this.initTokenMethods()
   }
 
   public async monitorBlock() {
@@ -174,8 +157,9 @@ class Store extends Vuex.Store<Store.State> {
     try {
       const wallets = await DB.wallets.toArray()
       this.commit('setWallets', wallets)
-    // tslint:disable-next-line:no-empty
+      // tslint:disable-next-line:no-empty
     } catch (error) {}
+    this.initTokenMethods()
   }
 
   private async getBalance() {
