@@ -1,4 +1,4 @@
-export default [
+export const mainNetTokens = [
   {
     name: 'Yeet Coin',
     symbol: 'YEET',
@@ -54,5 +54,15 @@ export default [
     address: '0x2182aa52adB1b27903d089e4432538A695effE3d',
     decimals: 18,
     icon: 'bag.png'
+  }
+]
+
+export const testNetTokens = [
+  {
+    name: 'VeThor',
+    symbol: 'VTHO',
+    address: '0x0000000000000000000000000000456e65726779',
+    decimals: 18,
+    icon: 'vtho.png'
   }
 ]

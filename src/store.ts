@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import DB from './database'
-import tokens from './tokens'
+// import { mainNetTokens } from './tokens'
 import BigNumber from 'bignumber.js'
 
 Vue.use(Vuex)
@@ -11,6 +11,7 @@ declare namespace Store {
   interface State {
     wallets?: app.Wallet[]
     tokens?: app.Token[]
+    netWork: 'main' | 'test' | null
     balances: {
       [address: string]: {
         [symbol: string]: number
@@ -49,6 +50,7 @@ class Store extends Vuex.Store<Store.State> {
   constructor() {
     super({
       state: {
+        netWork: null,
         wallets: [],
         tokens: [],
         balances: null
@@ -62,6 +64,9 @@ class Store extends Vuex.Store<Store.State> {
         },
         addWallet(state, payload) {
           state.wallets!.push(payload)
+        },
+        netWork(state, payload) {
+          state.netWork = payload
         },
         setBalance(state, payload) {
           if (!state.balances) {
@@ -156,11 +161,21 @@ class Store extends Vuex.Store<Store.State> {
   }
 
   public async initState() {
+    if (
+      connex.thor.genesis.id ===
+      '0x00000000851caf3cfdb6e899cf5958bfb1ac3413d346d43539627e6be7ec1b4a'
+    ) {
+      this.commit('netWork', 'main')
+      this.commit('setTokens', require('./tokens').mainNetTokens)
+    } else {
+      this.commit('netWork', 'test')
+      this.commit('setTokens', require('./tokens').testNetTokens)
+    }
     try {
       const wallets = await DB.wallets.toArray()
       this.commit('setWallets', wallets)
+    // tslint:disable-next-line:no-empty
     } catch (error) {}
-    this.commit('setTokens', tokens)
   }
 
   private async getBalance() {
@@ -190,7 +205,7 @@ class Store extends Vuex.Store<Store.State> {
   }
 
   private initTokenMethods() {
-    this.tokenMethods = tokens.map((item) => {
+    this.tokenMethods = this.state.tokens!.map((item) => {
       return {
         balanceOf: (addr: string) => {
           return connex.thor

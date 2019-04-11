@@ -15,5 +15,6 @@ declare namespace app {
     desc: string,
     address: string,
     url?: string,
+    decimals: number
   }
 }
