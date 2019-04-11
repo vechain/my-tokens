@@ -34,7 +34,14 @@ export default class WalletCard extends Vue {
 .wallet-item {
     width: 220px;
     height: 90px;
-    border: 1px solid #a5a5a5;
+    box-shadow: 0 0.25rem 1rem rgba(48, 55, 66, 0.15);
+    border: 1px solid rgba(48, 55, 66, 0.06);
+    border-radius: 3px;
+    transition: box-shadow 0.2s ease, border 0.2s ease;
+}
+.wallet-item:hover {
+    box-shadow: 0 0.25rem 1rem rgba(48, 55, 66, 0.25);
+    border: 1px solid rgba(48, 55, 66, 0.08);
 }
 .wallet-item .wallet-img {
     width: 50px;
