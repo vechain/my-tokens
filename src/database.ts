@@ -5,7 +5,7 @@ class TokenDB extends Dexie {
   constructor() {
     super('token_db')
     this.version(1).stores({
-      wallets: '++id, &address, name, own'
+      wallets: '++id, &address, name'
     })
   }
 }
