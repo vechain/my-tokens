@@ -44,6 +44,7 @@ export default class App extends Vue {
     border-bottom: 1px solid #e8e8e8;
     position: fixed;
     width: 100%;
+    z-index: 11111;
 }
 #app .nav.light {
     background-color: #fff;
