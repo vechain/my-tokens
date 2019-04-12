@@ -1,5 +1,19 @@
 export const mainNetTokens = [
   {
+    name: 'VeThor',
+    symbol: 'VTHO',
+    address: '0x0000000000000000000000000000456e65726779',
+    decimals: 18,
+    icon: 'vtho.png'
+  },
+  {
+    name: 'OceanEx Token',
+    symbol: 'OCE',
+    address: '0x0ce6661b4ba86a0ea7ca2bd86a0de87b0b860f14',
+    decimals: 18,
+    icon: 'oce.png'
+  },
+  {
     name: 'Yeet Coin',
     symbol: 'YEET',
     address: '0xae4c53b120cba91a44832f875107cbc8fbee185c',
@@ -12,20 +26,6 @@ export const mainNetTokens = [
     address: '0xa94a33f776073423e163088a5078feac31373990',
     decimals: 18,
     icon: 'tic.png'
-  },
-  {
-    name: 'OceanEx Token',
-    symbol: 'OCE',
-    address: '0x0ce6661b4ba86a0ea7ca2bd86a0de87b0b860f14',
-    decimals: 18,
-    icon: 'oce.png'
-  },
-  {
-    name: 'VeThor',
-    symbol: 'VTHO',
-    address: '0x0000000000000000000000000000456e65726779',
-    decimals: 18,
-    icon: 'vtho.png'
   },
   {
     name: 'Plair',
