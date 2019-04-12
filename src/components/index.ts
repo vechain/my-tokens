@@ -7,8 +7,6 @@ import QRCode from './QRCode.vue'
 
 Vue.component(NavBar.name, NavBar)
 Vue.component(TokenCard.name, TokenCard)
-// tslint:disable-next-line:no-console
-console.log(TokenBalanceCard.name)
 Vue.component(TokenBalanceCard.name, TokenBalanceCard)
 Vue.component(WalletCard.name, WalletCard)
 Vue.component(QRCode.name, QRCode)
