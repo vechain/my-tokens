@@ -64,6 +64,12 @@ class Store extends Vuex.Store<Store.State> {
         addWallet(state, payload) {
           state.wallets!.push(payload)
         },
+        updateWalletName(state, payload) {
+          const index = state.wallets!.findIndex((item) => {
+            return item.address === payload.address
+          })
+          Vue.set(state.wallets![index], 'name', payload.name)
+        },
         netWork(state, payload) {
           state.netWork = payload
         },
@@ -99,6 +105,18 @@ class Store extends Vuex.Store<Store.State> {
         }
       },
       actions: {
+        async updateWallet({ commit }, payload) {
+          try {
+            await DB.wallets
+              .where('address')
+              .equalsIgnoreCase(payload.address)
+              .modify({ name: payload.name })
+            commit('updateWalletName', payload)
+          } catch (error) {
+            // tslint:disable-next-line:no-console
+            console.error(error)
+          }
+        },
         async importWallet({ commit }, addr) {
           let result = addr
           try {
