@@ -93,7 +93,6 @@ class Store extends Vuex.Store<Store.State> {
           return state.wallets!.map((item) => {
             return {
               ...item
-              // own: connex.vendor.owned(item.address)
             }
           })
         },
