@@ -1,5 +1,5 @@
 <template>
-    <a-card class="token-balance-card">
+    <a-card v-on="$listeners" class="token-balance-card">
         <a-row type="flex">
             <a-col :xs="5">
                 <div class="img" :style="background"></div>
