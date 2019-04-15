@@ -8,7 +8,7 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      redirect: { name: 'tokens' }
+      redirect: { name: 'wallets' }
     },
     // {
     //   path: '/about',
@@ -18,15 +18,15 @@ export default new Router({
     //   // which is lazy-loaded when the route is visited.
     //   component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
     // },
-    {
-      path: '/tokens',
-      name: 'tokens',
-      meta: {
-        key: 'tokens'
-      },
-      component: () =>
-        import('./views/Tokens.vue')
-    },
+    // {
+    //   path: '/tokens',
+    //   name: 'tokens',
+    //   meta: {
+    //     key: 'tokens'
+    //   },
+    //   component: () =>
+    //     import('./views/Tokens.vue')
+    // },
     {
       path: '/wallets',
       name: 'wallets',
@@ -54,14 +54,14 @@ export default new Router({
       component: () =>
         import('./views/Transfer.vue')
     },
-    {
-      path: '/contacts',
-      name: 'contacts',
-      meta: {
-        key: 'contacts'
-      },
-      component: () =>
-        import('./views/Contacts.vue')
-    }
+    // {
+    //   path: '/contacts',
+    //   name: 'contacts',
+    //   meta: {
+    //     key: 'contacts'
+    //   },
+    //   component: () =>
+    //     import('./views/Contacts.vue')
+    // }
   ]
 })

@@ -9,18 +9,18 @@
             <a-row type="flex" justify="end">
                 <a-col>
                     <a-menu v-model="current" mode="horizontal">
-                        <a-menu-item key="tokens">
+                        <!-- <a-menu-item key="tokens">
                             <router-link :to="{name: 'tokens'}">Tokens</router-link>
-                        </a-menu-item>
+                        </a-menu-item> -->
                         <a-menu-item key="wallets">
                             <router-link :to="{name: 'wallets'}">Wallets</router-link>
                         </a-menu-item>
                         <a-menu-item key="transfer">
                             <router-link :to="{name: 'transfer'}">Transfer</router-link>
                         </a-menu-item>
-                        <a-menu-item key="contacts">
+                        <!-- <a-menu-item key="contacts">
                             <router-link :to="{name: 'contacts'}">Contacts</router-link>
-                        </a-menu-item>
+                        </a-menu-item> -->
                     </a-menu>
                 </a-col>
             </a-row>
