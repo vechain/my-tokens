@@ -1,7 +1,7 @@
 <template>
     <div class="wallet-detail">
         <a-row type="flex" justify="center">
-            <a-col>
+            <a-col :xs="24">
                 <a-row :gutter="{xs: 8, lg: 24}" type="flex" justify="space-around">
                     <a-col :xs="8" :lg="6">
                         <a-row>
@@ -38,7 +38,6 @@
                                     <QRCode
                                         style="margin: auto"
                                         :content="wallet.address"
-                                        :size="220"
                                     />
                                 </a-card>
                             </a-col>
@@ -63,7 +62,11 @@
                         <!-- <a-card class="token-balance-list"> -->
                         <a-row type="flex" :gutter="8">
                             <a-col :xs="24" :lg="12" v-for="item in tokenlist" :key="item.symbol">
-                                <TokenBalanceCard :item="item" style="margin-top: 10px"/>
+                                <TokenBalanceCard
+                                    @click="toTransfer(item)"
+                                    :item="item"
+                                    style="margin-top: 10px"
+                                />
                             </a-col>
                         </a-row>
                         <!-- </a-card> -->
@@ -77,7 +80,6 @@
 import { Vue, Component, Watch } from 'vue-property-decorator'
 @Component
 export default class WalletDetail extends Vue {
-    // public wallet: app.Wallet | null = null
     public qrcodeHtml?: string
     public name: string = ''
     public isEdit = false
@@ -91,7 +93,7 @@ export default class WalletDetail extends Vue {
         this.name = this.wallet.name
     }
 
-    get wallet() {
+    get wallet(): app.Wallet {
         return this.$store.getters.wallets.find((item: app.Wallet) => {
             return item.address === this.$route.params.id
         })
@@ -114,11 +116,19 @@ export default class WalletDetail extends Vue {
             return {}
         }
     }
-
+    public toTransfer(item: app.Token) {
+        this.$router.push({
+            name: 'transfer',
+            query: {
+                symbol: item.symbol,
+                from: this.wallet.address
+            }
+        })
+    }
     public async saveName() {
         this.isEdit = false
         await this.$store.dispatch('updateWallet', {
-            address: this.wallet!.address,
+            address: this.wallet.address,
             name: this.name
         })
     }
