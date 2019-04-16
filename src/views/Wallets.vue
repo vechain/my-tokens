@@ -63,14 +63,20 @@
             </div>
         </div>
         <a-modal title="Observe Wallet" v-model="visible" @ok="submitWallet" @cancel="resetModal">
-            <a-form>
+            <a-form :form="form">
                 <a-form-item>
                     <a-input
                         ref="address"
-                        required
+                        v-decorator="['observeAddress', {
+                            rules: [{
+                                required: true,
+                                message: 'Address is required '
+                            }, {
+                                pattern: '^0x[a-fA-F0-9]{40}$',
+                                message: 'Address format invalid'
+                            }]
+                        }]"
                         placeholder="Start with 0x"
-                        pattern="^0x[a-fA-F0-9]{40}$"
-                        v-model="observeAddress"
                     />
                 </a-form-item>
             </a-form>
@@ -83,9 +89,11 @@ import { Vue, Component } from 'vue-property-decorator'
 export default class Wallets extends Vue {
     public visible = false
     public observeAddress = ''
-    public form = this.$form.createForm(this)
-    // loading = this.wallets === null
-    // hasWallets = this.wallets && this.wallets.length
+    public form: any
+
+    beforeCreate() {
+        this.form = this.$form.createForm(this)
+    }
     public observeWallet() {
         this.visible = true
     }
@@ -94,31 +102,19 @@ export default class Wallets extends Vue {
         return this.wallets === null
     }
 
-    public checkForm() {
-        const ele = ((this.$refs.address as Vue).$el as HTMLInputElement)
-        const result = ele.checkValidity()
-        if (result) {
-            ele.parentElement!.classList.remove('has-error')
-        } else {
-            ele.parentElement!.classList.add('has-error')
-        }
-
-        return result
-    }
-
     public async submitWallet() {
-        if (!this.checkForm()) {
-            return
-        }
-        await this.$store.dispatch('importWallet', this.observeAddress)
-        this.resetModal()
+        this.form.validateFields(async (e: any, v: any) => {
+            if (!e) {
+                await this.$store.dispatch('importWallet', v.observeAddress)
+                this.resetModal()
+            }
+        })
+
     }
 
     public resetModal() {
-        const ele = ((this.$refs.address as Vue).$el as HTMLInputElement)
-        ele.parentElement!.classList.remove('has-error')
+        this.form.resetFields()
         this.visible = false
-        this.observeAddress = ''
     }
 
     get wallets() {
@@ -147,27 +143,5 @@ export default class Wallets extends Vue {
     height: 150px;
     padding-top: 30px;
     font-size: 45px;
-}
-
-.ant-form .has-error .ant-input:not(:placeholder-shown):invalid:focus,
-.ant-input:not(:placeholder-shown):invalid:focus {
-    background-color: transparent !important;
-    box-shadow: 0 0 0 2px rgba(245, 34, 45, 0.2);
-}
-
-.ant-form .has-error .ant-input:not(:placeholder-shown):valid:focus,
-.ant-input:not(:placeholder-shown):valid:focus {
-    border-color: #40a9ff !important;
-    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2) !important;
-}
-.ant-form .has-error .ant-input {
-    border: 1px solid red;
-}
-.ant-input:not(:placeholder-shown):invalid {
-    border: 1px solid red !important;
-}
-.ant-input:not(:placeholder-shown):valid {
-    border-color: #40a9ff !important;
-    background-color: transparent !important;
 }
 </style>
