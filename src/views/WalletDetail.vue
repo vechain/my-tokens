@@ -100,7 +100,7 @@ export default class WalletDetail extends Vue {
         return this.$store.getters.tokens.map((item: app.Token) => {
             return {
                 ...item,
-                balance: this.balances[item.symbol],
+                balance: this.balances[item.symbol] || 0,
                 img: require(`../assets/${item.icon}`)
             }
         })
@@ -108,7 +108,7 @@ export default class WalletDetail extends Vue {
 
     get balances() {
         if (this.$store.getters.balanceList && this.wallet && this.$store.getters.balanceList[this.wallet!.address]) {
-            return this.$store.getters.balanceList[this.wallet!.address]
+            return this.$store.getters.balanceList[this.wallet!.address] || 0
         } else {
             return {}
         }
