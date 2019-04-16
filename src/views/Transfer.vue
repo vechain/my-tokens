@@ -1,9 +1,18 @@
 <template>
     <a-row class="transfer" type="flex" justify="space-around">
         <a-col :xs="18">
-            <a-form>
+            <a-form :form="form" @submit="send">
                 <a-form-item label="From" :label-col="{ span: 5 }" :wrapper-col="wrapperCol">
-                    <a-select v-model="from" size="large">
+                    <a-select
+                        size="large"
+                        v-decorator="['from', {
+                        initialValue: from,
+                        rules: [{
+                            required: true,
+                            message: 'From is required'
+                        }]
+                    }]"
+                    >
                         <a-select-option
                             v-for="wallet in walletList"
                             :key="wallet.address"
@@ -23,41 +32,80 @@
                     </a-select>
                 </a-form-item>
                 <a-form-item label="To" :label-col="{ span: 5 }" :wrapper-col="wrapperCol">
-                    <a-input size="large" v-model="to" name="to"/>
+                    <a-input
+                        size="large"
+                        name="to"
+                        v-decorator="['to', {
+                            rules: [{
+                                required: true,
+                                message: 'To is required'
+                            },{
+                                pattern: '^0x[a-fA-F0-9]{40}$',
+                                message: 'To format invalid'
+                            }]
+                        }]"
+                    />
                 </a-form-item>
                 <a-form-item label="Amount" :label-col="{ span: 5 }" :wrapper-col="wrapperCol">
-                    <a-input-group size="large">
-                        <a-col :span="12">
-                            <a-input size="large" v-model="val" name="amount"/>
+                    <a-row type="flex" :gutter="8">
+                        <a-col :span="16">
+                            <a-form-item>
+                                <a-input
+                                    size="large"
+                                    v-decorator="['val', {
+                                    rules: [{
+                                        required: true,
+                                        message: 'Amount is required'
+                                    }, {
+                                        pattern: '^[0-9]+$',
+                                        message: 'Amount invalid'
+                                    }]
+                                }]"
+                                    name="amount"
+                                />
+                            </a-form-item>
                         </a-col>
-                        <a-col :span="12">
-                            <a-select v-model="unit" size="large">
-                                <a-select-option
-                                    v-for="token in tokenlist"
-                                    :key="token.symbol"
-                                    :value="token.symbol"
+                        <a-col :span="8">
+                            <a-form-item>
+                                <a-select
+                                    size="large"
+                                    v-decorator="['unit', {
+                                    initialValue: unit,
+                                    rules: [{
+                                        required: true,
+                                        message: 'Type is required'
+                                    }]
+                                }]"
                                 >
-                                    <a-row type="flex" justify="space-between">
-                                        <a-col>
-                                            <img
-                                                style="margin-right: 10px"
-                                                width="25px"
-                                                :src="token.img"
-                                                :alt="token.name"
-                                            >
-                                            <span class="item-name">{{token.symbol}}</span>
-                                        </a-col>
-                                        <a-col>
-                                            <span class="item-balance">{{token.balance | balance}}</span>
-                                        </a-col>
-                                    </a-row>
-                                </a-select-option>
-                            </a-select>
+                                    <a-select-option
+                                        v-for="token in tokenlist"
+                                        :key="token.symbol"
+                                        :value="token.symbol"
+                                    >
+                                        <a-row type="flex" justify="space-between">
+                                            <a-col>
+                                                <img
+                                                    style="margin-right: 10px"
+                                                    width="25px"
+                                                    :src="token.img"
+                                                    :alt="token.name"
+                                                >
+                                                <span class="item-name">{{token.symbol}}</span>
+                                            </a-col>
+                                            <a-col>
+                                                <span
+                                                    class="item-balance"
+                                                >{{token.balance | balance}}</span>
+                                            </a-col>
+                                        </a-row>
+                                    </a-select-option>
+                                </a-select>
+                            </a-form-item>
                         </a-col>
-                    </a-input-group>
+                    </a-row>
                 </a-form-item>
                 <a-form-item>
-                    <a-button @click="send">Send</a-button>
+                    <a-button type="primary" html-type="submit">Send</a-button>
                 </a-form-item>
             </a-form>
         </a-col>
@@ -68,12 +116,17 @@ import { Vue, Component, Watch } from 'vue-property-decorator'
 @Component
 export default class Transfer extends Vue {
     private from: string = ''
-    private to?: string | null = null
+    // private to?: string | null = null
     private unit?: string = 'VET'
-    private val: number = 0
+    // private val: number = 0
     private wrapperCol = {
         xs: 16,
         lg: 12
+    }
+    private form: any
+
+    public beforeCreate() {
+        this.form = this.$form.createForm(this)
     }
 
     get walletList(): app.Wallet[] {
@@ -112,16 +165,23 @@ export default class Transfer extends Vue {
         this.initForm()
     }
 
-    public send() {
-        this.tokenTransfer(
-            this.to!,
-            this.from,
-            this.$store.getters.tokens.find((item: app.Token) => {
-                return item.symbol === item.symbol
-            }).address,
-            this.val,
-            this.unit!
-        )
+    public send(e: Event) {
+        e.preventDefault()
+        this.form.validateFields((err: any, val: any) => {
+            console.log(err, val)
+            if (!err) {
+                this.tokenTransfer(
+                    val.to,
+                    val.from,
+                    this.$store.getters.tokens.find((item: app.Token) => {
+                        return item.symbol === val.unit
+                    }).address,
+                    val.val,
+                    val.unit!
+                )
+            }
+        })
+
     }
 
     public async tokenTransfer(to: string, from: string, address: string, amount: number, symbol: string) {
