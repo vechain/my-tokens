@@ -82,7 +82,9 @@ export default class Transfer extends Vue {
         }).map((item: app.Wallet) => {
             return {
                 ...item,
-                vtho: this.$store.getters.balanceList && this.$store.getters.balanceList[item.address] && this.$store.getters.balanceList[item.address].VTHO
+                vtho: this.$store.getters.balanceList
+                    && this.$store.getters.balanceList[item.address]
+                    && this.$store.getters.balanceList[item.address].VTHO
             }
         })
     }
