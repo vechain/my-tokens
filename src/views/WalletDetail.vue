@@ -22,7 +22,7 @@
                                             @blur="isEdit=false"
                                             v-model="name"
                                         ></a-input>
-                                        <span v-show="!isEdit">{{wallet.name}}</span>
+                                        <span :title="wallet.name" v-show="!isEdit">{{wallet.name}}</span>
                                         <a-button
                                             v-show="!isEdit"
                                             style="margin-left: 20px"
@@ -33,12 +33,9 @@
                                     </a-col>
                                 </a-row>
                             </a-col>
-                            <a-col style="margin-top: 30px">
+                            <a-col style="margin-top: 15px">
                                 <a-card>
-                                    <QRCode
-                                        style="margin: auto"
-                                        :content="wallet.address"
-                                    />
+                                    <QRCode style="margin: auto" :content="wallet.address"/>
                                 </a-card>
                             </a-col>
                             <a-col>
@@ -161,6 +158,18 @@ export default class WalletDetail extends Vue {
     text-align: left;
     font-size: 20px;
 }
+
+.wallet-name span {
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-width: 120px;
+    text-overflow: ellipsis;
+    /* word-break: break-all; */
+    display: inline-block;
+    float: left;
+}
+
 .wallet-address {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;

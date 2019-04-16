@@ -4,13 +4,10 @@
             <a-col :xs="8">
                 <img v-picasso="item.address" class="wallet-img" alt>
             </a-col>
-            <a-col :xs="16" style="padding-left: 15px;">
+            <a-col :xs="16" style="padding-left: 5px;">
                 <div style="text-align: left; font-size: 14px;">
-                    <span>
-                        {{item.name + ' '}}
-                        <a-icon v-if="!item.own" type="eye"/>
-                    </span>
-                    <br>
+                    <p class="wallet-label">{{item.name + ' '}}</p>
+                    <a-icon v-if="!item.own" type="eye"/>
                     <span :title="item.address">{{item.address | shortAddress}}</span>
                 </div>
                 <div style="text-align: left;">
@@ -47,6 +44,16 @@ export default class WalletCard extends Vue {
     width: 50px;
     height: 50px;
     border-radius: 25px;
+}
+.wallet-label {
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+    display: inline-block;
+    margin-bottom: 0;
+    float: left;
+    margin-right: 10px;
 }
 </style>
 
