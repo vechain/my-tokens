@@ -167,6 +167,7 @@ export default class Wallets extends Vue {
     border: 1px solid red !important;
 }
 .ant-input:not(:placeholder-shown):valid {
+    border-color: #40a9ff !important;
     background-color: transparent !important;
 }
 </style>
