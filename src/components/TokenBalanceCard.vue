@@ -7,7 +7,7 @@
             </a-col>
             <a-col :xs="17">
                 <p class="card-summary">{{item.symbol}}</p>
-                <p class="card-summary balance">{{item.balance}}</p>
+                <p class="card-summary balance">{{item.balance | balance}}</p>
             </a-col>
             <!-- <a-col :xs="7">
                 <router-link
