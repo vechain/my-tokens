@@ -48,13 +48,16 @@ export default class TokenBalanceCard extends Vue {
 .token-balance-card .card-summary {
     text-align: right;
     padding-left: 20px;
-    font-family: sans-serif;
+    font-family: Open Sans, Hiragino Sans GB, monospace, serif;
     font-size: 16px;
     font-weight: bold;
+    color: #596a7a;
 }
 .token-balance-card .balance {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: lighter;
+    font-family: Open Sans, Hiragino Sans GB, monospace, serif;
+    color: #9194a4;
 }
 
 .token-balance-card:hover {
