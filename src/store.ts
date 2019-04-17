@@ -97,7 +97,13 @@ class Store extends Vuex.Store<Store.State> {
           })
         },
         tokens(state) {
-          return state.tokens
+          return [{
+            name: 'VeChain',
+            symbol: 'VET',
+            address: '',
+            decimals: 18,
+            icon: 'vet.png'
+          }].concat(state.tokens!)
         },
         balanceList(state) {
           return state.balances
