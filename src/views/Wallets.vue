@@ -91,7 +91,7 @@ export default class Wallets extends Vue {
     public observeAddress = ''
     public form: any
 
-    beforeCreate() {
+    public beforeCreate() {
         this.form = this.$form.createForm(this)
     }
     public observeWallet() {

@@ -168,7 +168,6 @@ export default class Transfer extends Vue {
     public send(e: Event) {
         e.preventDefault()
         this.form.validateFields((err: any, val: any) => {
-            console.log(err, val)
             if (!err) {
                 this.tokenTransfer(
                     val.to,
@@ -181,7 +180,6 @@ export default class Transfer extends Vue {
                 )
             }
         })
-
     }
 
     public async tokenTransfer(to: string, from: string, address: string, amount: number, symbol: string) {
