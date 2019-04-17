@@ -116,9 +116,7 @@ import { Vue, Component, Watch } from 'vue-property-decorator'
 @Component
 export default class Transfer extends Vue {
     private from: string = ''
-    // private to?: string | null = null
     private unit?: string = 'VET'
-    // private val: number = 0
     private wrapperCol = {
         xs: 16,
         lg: 12
@@ -168,18 +166,33 @@ export default class Transfer extends Vue {
     public send(e: Event) {
         e.preventDefault()
         this.form.validateFields((err: any, val: any) => {
+            const isVet = (val.unit! as string).toLowerCase() === 'vet'
             if (!err) {
-                this.tokenTransfer(
-                    val.to,
-                    val.from,
-                    this.$store.getters.tokens.find((item: app.Token) => {
+                if (isVet) {
+                    this.transferVet(val.from, val.to, val.val, 18)
+                } else {
+                    const temp = this.$store.getters.tokens.find((item: app.Token) => {
                         return item.symbol === val.unit
-                    }).address,
-                    val.val,
-                    val.unit!
-                )
+                    })
+                    this.tokenTransfer(
+                        val.to,
+                        val.from,
+                        temp.address,
+                        Vue.filter('valToHex')(val.val, temp.decimals),
+                        val.unit!
+                    )
+                }
             }
         })
+    }
+
+    public transferVet(from: string, to: string, amount: number, decimals: number) {
+        const svc = connex.vendor.sign('tx')
+        svc.signer(from).request([{
+            to,
+            value: Vue.filter('valToHex')(amount, decimals),
+            data: '0x'
+        }])
     }
 
     public async tokenTransfer(to: string, from: string, address: string, amount: number, symbol: string) {
