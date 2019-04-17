@@ -1,7 +1,7 @@
 <template>
     <div class="wallet-item">
         <a-row type="flex" style="height: 100%" align="middle">
-            <a-col :xs="8">
+            <a-col :xs="8" style="text-align: center;">
                 <img v-picasso="item.address" class="wallet-img" alt>
             </a-col>
             <a-col :xs="16" style="padding-left: 5px;">
