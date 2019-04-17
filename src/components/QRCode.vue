@@ -4,6 +4,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
+// tslint:disable-next-line
 const QRious = require('qrious')
 
 @Component
