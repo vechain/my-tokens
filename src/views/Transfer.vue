@@ -2,7 +2,7 @@
     <a-row class="transfer" type="flex" justify="space-around">
         <a-col :xs="18">
             <a-form :hideRequiredMark="true" :form="form" @submit="send">
-                <a-form-item label="From" :label-col="{ span: 5 }" :wrapper-col="wrapperCol">
+                <a-form-item :label="$t('transfer.from')" :label-col="{ span: 5 }" :wrapper-col="wrapperCol">
                     <a-select
                         size="large"
                         v-decorator="['from', {
@@ -33,7 +33,7 @@
                         </a-select-option>
                     </a-select>
                 </a-form-item>
-                <a-form-item label="To" :label-col="{ span: 5 }" :wrapper-col="wrapperCol">
+                <a-form-item :label="$t('transfer.to')" :label-col="{ span: 5 }" :wrapper-col="wrapperCol">
                     <a-input
                         size="large"
                         name="to"
@@ -48,7 +48,7 @@
                         }]"
                     />
                 </a-form-item>
-                <a-form-item label="Amount" :label-col="{ span: 5 }" :wrapper-col="wrapperCol">
+                <a-form-item :label="$t('transfer.amount')" :label-col="{ span: 5 }" :wrapper-col="wrapperCol">
                     <a-row type="flex" :gutter="8">
                         <a-col :span="16">
                             <a-form-item>
@@ -107,7 +107,7 @@
                     </a-row>
                 </a-form-item>
                 <a-form-item :wrapper-col="{ xs: 10, offset: 12 }">
-                    <a-button size="large" type="primary" html-type="submit">Send</a-button>
+                    <a-button size="large" type="primary" html-type="submit">{{$t('transfer.send')}}</a-button>
                 </a-form-item>
             </a-form>
         </a-col>

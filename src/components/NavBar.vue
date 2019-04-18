@@ -13,10 +13,10 @@
                             <router-link :to="{name: 'tokens'}">Tokens</router-link>
                         </a-menu-item> -->
                         <a-menu-item key="wallets">
-                            <router-link :to="{name: 'wallets'}">Wallets</router-link>
+                            <router-link :to="{name: 'wallets'}">{{$t('navBar.wallets')}}</router-link>
                         </a-menu-item>
                         <a-menu-item key="transfer">
-                            <router-link :to="{name: 'transfer'}">Transfer</router-link>
+                            <router-link :to="{name: 'transfer'}">{{$t('navBar.transfer')}}</router-link>
                         </a-menu-item>
                         <!-- <a-menu-item key="contacts">
                             <router-link :to="{name: 'contacts'}">Contacts</router-link>

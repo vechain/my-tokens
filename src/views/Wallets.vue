@@ -4,13 +4,13 @@
             <div v-if="wallets.length" class="wallet-list">
                 <a-row type="flex" justify="space-between" style="padding: 20px 80px 0">
                     <a-col>
-                        <h2>Wallet</h2>
+                        <h2>{{$t('wallets.title')}}</h2>
                     </a-col>
                     <a-col>
                         <div>
                             <a-button-group>
-                                <a-button @click="importWallet">Import</a-button>
-                                <a-button @click="observeWallet">Observe</a-button>
+                                <a-button @click="importWallet">{{$t('wallets.import')}}</a-button>
+                                <a-button @click="observeWallet">{{$t('wallets.observe')}}</a-button>
                             </a-button-group>
                         </div>
                     </a-col>
@@ -31,13 +31,13 @@
                                 <router-link
                                     :to="{name: 'wallet-detail', params: {id: item.address}}"
                                     style="margin-right: 15px"
-                                >Detail</router-link>
+                                >{{$t('wallets.detail')}}</router-link>
                                 <router-link
                                     v-if="item.own"
                                     :to="{name: 'transfer', query: {
                                     from: item.address, unit: 'vet'
                                 }}"
-                                >Transfer</router-link>
+                                >{{$t('wallets.transfer')}}</router-link>
                             </template>
                         </wallet-card>
                     </a-col>
@@ -50,13 +50,13 @@
                     <a-col class="action" :span="12">
                         <div @click="observeWallet">
                             <a-icon type="wallet"/>
-                            <p style="font-size: 16px">Observe</p>
+                            <p style="font-size: 16px">{{$t('wallets.observe')}}</p>
                         </div>
                     </a-col>
                     <a-col class="action" :span="12">
                         <div @click="importWallet">
                             <a-icon type="sync"/>
-                            <p style="font-size: 16px">Import from Sync</p>
+                            <p style="font-size: 16px">{{$t('wallets.import')}}</p>
                         </div>
                     </a-col>
                 </a-row>

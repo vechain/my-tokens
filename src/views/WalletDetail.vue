@@ -55,7 +55,7 @@
                                     <a-col :xs="4">
                                         <a-tooltip :visible="showTip" placement="top">
                                             <template slot="title">
-                                                <span>Copied</span>
+                                                <span>{{$t('wallets.copied')}}</span>
                                             </template>
                                             <a-button
                                                 v-clipboard:copy="wallet.address"
@@ -72,7 +72,7 @@
                                             type="primary"
                                             @click="deleteWallet"
                                             ghost
-                                        >Delete the wallet</a-button>
+                                        >{{$t('wallets.delete')}}</a-button>
                                     </a-col>
                                 </a-row>
                             </a-col>
