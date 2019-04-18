@@ -22,7 +22,7 @@
                             <a-row type="flex" justify="space-between">
                                 <a-col>
                                     <span class="item-name">{{wallet.name}}</span>
-                                    <span class="item-address">({{wallet.address | shortAddress}})</span>
+                                    <span class="item-address text-monospace">({{wallet.address | shortAddress}})</span>
                                 </a-col>
                                 <a-col>
                                     <span class="item-balance">VTHO: {{wallet.vtho | balance}}</span>
