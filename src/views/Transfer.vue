@@ -1,7 +1,7 @@
 <template>
     <a-row class="transfer" type="flex" justify="space-around">
         <a-col :xs="18">
-            <a-form :form="form" @submit="send">
+            <a-form :hideRequiredMark="true" :form="form" @submit="send">
                 <a-form-item label="From" :label-col="{ span: 5 }" :wrapper-col="wrapperCol">
                     <a-select
                         size="large"
@@ -22,7 +22,9 @@
                             <a-row type="flex" justify="space-between">
                                 <a-col>
                                     <span class="item-name">{{wallet.name}}</span>
-                                    <span class="item-address text-monospace">({{wallet.address | shortAddress}})</span>
+                                    <span
+                                        class="item-address text-monospace"
+                                    >({{wallet.address | shortAddress}})</span>
                                 </a-col>
                                 <a-col>
                                     <span class="item-balance">VTHO: {{wallet.vtho | balance}}</span>
@@ -104,8 +106,8 @@
                         </a-col>
                     </a-row>
                 </a-form-item>
-                <a-form-item>
-                    <a-button type="primary" html-type="submit">Send</a-button>
+                <a-form-item :wrapper-col="{ xs: 10, offset: 12 }">
+                    <a-button size="large" type="primary" html-type="submit">Send</a-button>
                 </a-form-item>
             </a-form>
         </a-col>
@@ -241,6 +243,9 @@ export default class Transfer extends Vue {
 }
 </script>
 <style>
+.transfer {
+    padding-top: 50px;
+}
 .transfer .item-name {
     font-weight: bold;
 }
