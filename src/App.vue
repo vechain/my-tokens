@@ -49,4 +49,9 @@ export default class App extends Vue {
 #app .nav.light {
     background-color: #fff;
 }
+
+.text-monospace {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+        "Courier New", monospace;
+}
 </style>

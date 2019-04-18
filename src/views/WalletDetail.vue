@@ -38,7 +38,7 @@
                                     <QRCode style="margin: auto" :content="wallet.address"/>
                                 </a-card>
                             </a-col>
-                            <a-col>
+                            <a-col style="padding-top: 20px">
                                 <a-row
                                     type="flex"
                                     :gutter="8"
@@ -46,10 +46,24 @@
                                     align="middle"
                                 >
                                     <a-col :xs="18">
-                                        <p ref="address" class="wallet-address">{{wallet.address}}</p>
+                                        <p
+                                            ref="address"
+                                            style="margin: 0"
+                                            class="wallet-address text-monospace"
+                                        >{{wallet.address}}</p>
                                     </a-col>
                                     <a-col :xs="4">
-                                        <a-button @click="copy" shape="circle" icon="copy"/>
+                                        <a-tooltip :visible="showTip" placement="top">
+                                            <template slot="title">
+                                                <span>Copied</span>
+                                            </template>
+                                            <a-button
+                                                v-clipboard:copy="wallet.address"
+                                                v-clipboard:success="onCopy"
+                                                shape="circle"
+                                                icon="copy"
+                                            />
+                                        </a-tooltip>
                                     </a-col>
                                 </a-row>
                             </a-col>
@@ -80,6 +94,7 @@ export default class WalletDetail extends Vue {
     public qrcodeHtml?: string
     public name: string = ''
     public isEdit = false
+    public showTip = false
 
     @Watch('wallet')
     public walletChange(newVal: app.Wallet) {
@@ -139,8 +154,11 @@ export default class WalletDetail extends Vue {
         })
     }
 
-    public copy() {
-        // (this.$refs['address'] as HTMLParagraphElement).select()
+    public onCopy() {
+        this.showTip = true
+        setTimeout(() => {
+            this.showTip = false
+        }, 1000)
     }
 }
 </script>
