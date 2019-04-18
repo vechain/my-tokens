@@ -61,6 +61,13 @@ class Store extends Vuex.Store<Store.State> {
         setTokens(state, payload) {
           state.tokens = payload
         },
+        deleteWallet(state, addr) {
+          const index = state.wallets!.findIndex((item) => {
+            return item.address === addr
+          })
+          state.wallets!.splice(index, 1)
+          delete state.balances![addr]
+        },
         addWallet(state, payload) {
           state.wallets!.push(payload)
         },
@@ -97,19 +104,34 @@ class Store extends Vuex.Store<Store.State> {
           })
         },
         tokens(state) {
-          return [{
-            name: 'VeChain',
-            symbol: 'VET',
-            address: '',
-            decimals: 18,
-            icon: 'vet.png'
-          }].concat(state.tokens!)
+          return [
+            {
+              name: 'VeChain',
+              symbol: 'VET',
+              address: '',
+              decimals: 18,
+              icon: 'vet.png'
+            }
+          ].concat(state.tokens!)
         },
         balanceList(state) {
           return state.balances
         }
       },
       actions: {
+        async deleteWallet({commit}, payload) {
+          try {
+            await DB.wallets
+              .where('address')
+              .equalsIgnoreCase(payload.address)
+              .delete()
+
+            commit('deleteWallet', payload.address)
+          } catch (error) {
+            // tslint:disable-next-line:no-console
+            console.error(error)
+          }
+        },
         async updateWallet({ commit }, payload) {
           try {
             await DB.wallets
@@ -143,7 +165,7 @@ class Store extends Vuex.Store<Store.State> {
             const count = await DB.wallets.count()
             const temp = {
               name: `wallet${count}`,
-              address: result
+              address: (result as string).toLowerCase()
             }
             await DB.wallets.add(temp)
             commit('addWallet', temp)

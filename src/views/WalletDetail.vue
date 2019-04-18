@@ -66,6 +66,15 @@
                                         </a-tooltip>
                                     </a-col>
                                 </a-row>
+                                <a-row style="margin-top: 40px" type="flex" justify="space-around">
+                                    <a-col>
+                                        <a-button
+                                            type="primary"
+                                            @click="deleteWallet"
+                                            ghost
+                                        >Delete the wallet</a-button>
+                                    </a-col>
+                                </a-row>
                             </a-col>
                         </a-row>
                     </a-col>
@@ -98,7 +107,9 @@ export default class WalletDetail extends Vue {
 
     @Watch('wallet')
     public walletChange(newVal: app.Wallet) {
-        this.name = newVal.name
+        if (newVal) {
+            this.name = newVal.name
+        }
     }
 
     public created() {
@@ -119,6 +130,10 @@ export default class WalletDetail extends Vue {
                 img: require(`../assets/${item.icon}`)
             }
         })
+    }
+    public async deleteWallet() {
+        await this.$store.dispatch('deleteWallet', { address: this.wallet.address })
+        this.$router.push({ name: 'wallets' })
     }
 
     get balances() {
