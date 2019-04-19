@@ -24,7 +24,7 @@
                                     <span class="item-name">{{wallet.name}}</span>
                                     <span
                                         class="item-address text-monospace"
-                                    >({{wallet.address | shortAddress}})</span>
+                                    >({{wallet.address | toChecksumAddress | shortAddress}})</span>
                                 </a-col>
                                 <a-col>
                                     <span class="item-balance">VTHO: {{wallet.vtho | balance}}</span>

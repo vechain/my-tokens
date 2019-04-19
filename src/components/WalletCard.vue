@@ -2,13 +2,13 @@
     <div class="wallet-item">
         <a-row type="flex" style="height: 100%" align="middle">
             <a-col :xs="8" style="text-align: center;">
-                <img v-picasso="item.address" class="wallet-img" alt>
+                <img v-picasso="item.address | toChecksumAddress" class="wallet-img" alt>
             </a-col>
             <a-col :xs="16" style="padding-left: 5px;">
                 <div style="text-align: left; font-size: 14px;">
                     <p class="wallet-label">{{item.name + ' '}}</p>
                     <a-icon v-if="!item.own" type="eye"/>
-                    <span :title="item.address">{{item.address | shortAddress}}</span>
+                    <span :title="item.address">{{item.address | toChecksumAddress | shortAddress}}</span>
                 </div>
                 <div style="text-align: left;">
                     <slot name="actions"/>

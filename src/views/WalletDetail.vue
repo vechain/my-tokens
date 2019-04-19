@@ -10,7 +10,7 @@
                                     <a-col :xs="6">
                                         <div
                                             style="width: 50px; height: 50px; margin: auto; border-radius: 25px; display: inline-block"
-                                            v-picasso="wallet.address"
+                                            v-picasso="wallet.address | toChecksumAddress"
                                         ></div>
                                     </a-col>
                                     <a-col :xs="15" class="wallet-name">
@@ -50,7 +50,7 @@
                                             ref="address"
                                             style="margin: 0"
                                             class="wallet-address text-monospace"
-                                        >{{wallet.address}}</p>
+                                        >{{wallet.address | toChecksumAddress}}</p>
                                     </a-col>
                                     <a-col :xs="4">
                                         <a-tooltip :visible="showTip" placement="top">
@@ -58,7 +58,7 @@
                                                 <span>{{$t('wallets.copied')}}</span>
                                             </template>
                                             <a-button
-                                                v-clipboard:copy="wallet.address"
+                                                v-clipboard:copy="wallet.address | toChecksumAddress"
                                                 v-clipboard:success="onCopy"
                                                 shape="circle"
                                                 icon="copy"
