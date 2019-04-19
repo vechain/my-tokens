@@ -10,7 +10,7 @@
                                     <a-col :xs="6">
                                         <div
                                             style="width: 50px; height: 50px; margin: auto; border-radius: 25px; display: inline-block"
-                                            v-picasso="wallet.address | toChecksumAddress"
+                                            v-picasso="checksumAddress"
                                         ></div>
                                     </a-col>
                                     <a-col :xs="15" class="wallet-name">
@@ -58,7 +58,7 @@
                                                 <span>{{$t('wallets.copied')}}</span>
                                             </template>
                                             <a-button
-                                                v-clipboard:copy="wallet.address | toChecksumAddress"
+                                                v-clipboard:copy="checksumAddress"
                                                 v-clipboard:success="onCopy"
                                                 shape="circle"
                                                 icon="copy"
@@ -98,7 +98,14 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
-@Component
+import TokenBalanceCard from '../components/TokenBalanceCard.vue'
+import QRCode from '../components/QRCode.vue'
+@Component({
+    components: {
+        TokenBalanceCard,
+        QRCode
+    }
+})
 export default class WalletDetail extends Vue {
     public qrcodeHtml?: string
     public name: string = ''
@@ -114,6 +121,10 @@ export default class WalletDetail extends Vue {
 
     public created() {
         this.name = this.wallet.name
+    }
+
+    get checksumAddress() {
+        return Vue.filter('toChecksumAddress')(this.wallet.address)
     }
 
     get wallet(): app.Wallet {

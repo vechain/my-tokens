@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import { Vue } from 'vue-property-decorator'
 import BigNumber from 'bignumber.js'
 import { toChecksumAddress } from 'thor-devkit/es6/cry/address'
 

@@ -2,7 +2,7 @@
     <div class="wallet-item">
         <a-row type="flex" style="height: 100%" align="middle">
             <a-col :xs="8" style="text-align: center;">
-                <img v-picasso="item.address | toChecksumAddress" class="wallet-img" alt>
+                <img v-picasso="checksumAddress" class="wallet-img" alt>
             </a-col>
             <a-col :xs="16" style="padding-left: 5px;">
                 <div style="text-align: left; font-size: 14px;">
@@ -24,6 +24,10 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 export default class WalletCard extends Vue {
     @Prop({ default: {} })
     public item!: app.Wallet
+
+    get checksumAddress() {
+        return Vue.filter('toChecksumAddress')(this.item.address)
+    }
 }
 </script>
 

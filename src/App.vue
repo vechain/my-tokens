@@ -14,12 +14,15 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { Route } from 'vue-router'
-
+import NavBar from './components/NavBar.vue'
+@Component({
+    components: {
+        NavBar
+    }
+})
 export default class App extends Vue {
-
 }
 </script>
-
 
 <style>
 #app {

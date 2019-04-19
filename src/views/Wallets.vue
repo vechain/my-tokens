@@ -85,7 +85,12 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-@Component
+import WalletCard from '../components/WalletCard.vue'
+@Component({
+    components: {
+        WalletCard
+    }
+})
 export default class Wallets extends Vue {
     public visible = false
     public observeAddress = ''

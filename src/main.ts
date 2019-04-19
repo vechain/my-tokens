@@ -7,7 +7,6 @@ import router from './router'
 const VueClipboard = require('vue-clipboard2')
 import i18n from './i18n'
 import './antd'
-import './components'
 import './filters'
 import './directives'
 import 'ant-design-vue/dist/antd.css'
