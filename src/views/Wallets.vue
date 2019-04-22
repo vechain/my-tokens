@@ -144,9 +144,11 @@ export default class Wallets extends Vue {
     margin: auto;
 }
 .wallet .wallet-empty .action {
-    border: 1px solid #222;
+    border: 1px solid #e8e8e8;
     height: 150px;
     padding-top: 30px;
     font-size: 45px;
+    color: #656565;
+    text-align: center;
 }
 </style>
