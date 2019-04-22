@@ -35,7 +35,7 @@
                                 <router-link
                                     v-if="item.own"
                                     :to="{name: 'transfer', query: {
-                                    from: item.address, unit: 'vet'
+                                    from: item.address, symbol: 'vet'
                                 }}"
                                 >{{$t('wallets.transfer')}}</router-link>
                             </template>
