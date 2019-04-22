@@ -10,7 +10,7 @@
                                     <a-col :xs="6">
                                         <div
                                             style="width: 50px; height: 50px; margin: auto; border-radius: 25px; display: inline-block"
-                                            v-picasso="checksumAddress"
+                                            v-picasso="wallet.address"
                                         ></div>
                                     </a-col>
                                     <a-col :xs="15" class="wallet-name">
@@ -69,7 +69,7 @@
                                 <a-row style="margin-top: 40px" type="flex" justify="space-around">
                                     <a-col>
                                         <a-button
-                                            type="primary"
+                                            type="danger"
                                             @click="deleteWallet"
                                             ghost
                                         >{{$t('wallets.delete')}}</a-button>
@@ -79,17 +79,16 @@
                         </a-row>
                     </a-col>
                     <a-col :xs="14" :lg="16">
-                        <!-- <a-card class="token-balance-list"> -->
                         <a-row type="flex" :gutter="8">
                             <a-col :xs="24" :lg="12" v-for="item in tokenlist" :key="item.symbol">
                                 <TokenBalanceCard
                                     @click="toTransfer(item)"
                                     :item="item"
                                     style="margin-top: 10px"
+                                    :class="{'not-allowed': !isOwn}"
                                 />
                             </a-col>
                         </a-row>
-                        <!-- </a-card> -->
                     </a-col>
                 </a-row>
             </a-col>
@@ -111,6 +110,7 @@ export default class WalletDetail extends Vue {
     public name: string = ''
     public isEdit = false
     public showTip = false
+    public isOwn = false
 
     @Watch('wallet')
     public walletChange(newVal: app.Wallet) {
@@ -119,12 +119,13 @@ export default class WalletDetail extends Vue {
         }
     }
 
-    public created() {
-        this.name = this.wallet.name
-    }
-
     get checksumAddress() {
         return Vue.filter('toChecksumAddress')(this.wallet.address)
+    }
+
+    public created() {
+        this.name = this.wallet.name
+        this.isOwn = connex.vendor.owned(this.wallet.address)
     }
 
     get wallet(): app.Wallet {
@@ -154,15 +155,20 @@ export default class WalletDetail extends Vue {
             return {}
         }
     }
+
     public toTransfer(item: app.Token) {
+        if (!this.isOwn) {
+            return
+        }
         this.$router.push({
             name: 'transfer',
             query: {
-                symbol: item.symbol,
+                symbol: item.symbol.toLowerCase(),
                 from: this.wallet.address
             }
         })
     }
+
     public async saveName() {
         this.isEdit = false
         await this.$store.dispatch('updateWallet', {
@@ -222,5 +228,8 @@ export default class WalletDetail extends Vue {
     text-overflow: ellipsis;
     white-space: normal;
     word-break: break-all;
+}
+.not-allowed:hover {
+    cursor: not-allowed;
 }
 </style>
