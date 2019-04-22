@@ -1,10 +1,15 @@
 <template>
     <a-row class="transfer" type="flex" justify="space-around">
-        <a-col :xs="18">
+        <a-col :xs="24">
             <a-form :hideRequiredMark="true" :form="form" @submit="send">
-                <a-form-item :label="$t('transfer.from')" :label-col="{ span: 5 }" :wrapper-col="wrapperCol">
+                <a-form-item
+                    :label="$t('transfer.from')"
+                    :label-col="{ span: 5 }"
+                    :wrapper-col="wrapperCol"
+                >
                     <a-select
                         size="large"
+                        @change="onWChange"
                         v-decorator="['from', {
                         initialValue: from,
                         rules: [{
@@ -33,7 +38,11 @@
                         </a-select-option>
                     </a-select>
                 </a-form-item>
-                <a-form-item :label="$t('transfer.to')" :label-col="{ span: 5 }" :wrapper-col="wrapperCol">
+                <a-form-item
+                    :label="$t('transfer.to')"
+                    :label-col="{ span: 5 }"
+                    :wrapper-col="wrapperCol"
+                >
                     <a-input
                         size="large"
                         name="to"
@@ -48,7 +57,11 @@
                         }]"
                     />
                 </a-form-item>
-                <a-form-item :label="$t('transfer.amount')" :label-col="{ span: 5 }" :wrapper-col="wrapperCol">
+                <a-form-item
+                    :label="$t('transfer.amount')"
+                    :label-col="{ span: 5 }"
+                    :wrapper-col="wrapperCol"
+                >
                     <a-row type="flex" :gutter="8">
                         <a-col :span="16">
                             <a-form-item>
@@ -65,12 +78,14 @@
                                 }]"
                                     name="amount"
                                 />
+                                <span>{{tokenBalance | balance}}</span>
                             </a-form-item>
                         </a-col>
                         <a-col :span="8">
                             <a-form-item>
                                 <a-select
                                     size="large"
+                                    @change="onSChange"
                                     v-decorator="['unit', {
                                     initialValue: unit,
                                     rules: [{
@@ -85,19 +100,28 @@
                                         :value="token.symbol"
                                     >
                                         <a-row type="flex" justify="space-between">
-                                            <a-col>
+                                            <a-col :span="8">
                                                 <img
                                                     style="margin-right: 10px"
-                                                    width="25px"
+                                                    width="45px"
+                                                    height="45px"
                                                     :src="token.img"
                                                     :alt="token.name"
                                                 >
-                                                <span class="item-name">{{token.symbol}}</span>
                                             </a-col>
-                                            <a-col>
-                                                <span
-                                                    class="item-balance"
-                                                >{{token.balance | balance}}</span>
+                                            <a-col :span="16">
+                                                <a-row>
+                                                    <a-col style="text-align: right;">
+                                                        <span
+                                                            class="select-opt item-name"
+                                                        >{{token.symbol}}</span>
+                                                    </a-col>
+                                                    <a-col style="text-align: right;">
+                                                        <span
+                                                            class="select-opt item-balance"
+                                                        >{{token.balance | balance}}</span>
+                                                    </a-col>
+                                                </a-row>
                                             </a-col>
                                         </a-row>
                                     </a-select-option>
@@ -106,6 +130,10 @@
                         </a-col>
                     </a-row>
                 </a-form-item>
+                <!-- <a-form-item :wrapper-col="{ xs: 10, offset: 5 }">
+                    
+                </a-form-item>-->
+
                 <a-form-item :wrapper-col="{ xs: 10, offset: 12 }">
                     <a-button size="large" type="primary" html-type="submit">{{$t('transfer.send')}}</a-button>
                 </a-form-item>
@@ -118,12 +146,18 @@ import { Vue, Component, Watch } from 'vue-property-decorator'
 @Component
 export default class Transfer extends Vue {
     private from: string = ''
-    private unit?: string = 'VET'
+    private unit: string = 'VET'
     private wrapperCol = {
         xs: 16,
         lg: 12
     }
     private form: any
+
+    // private balances: {
+    //     [key: string]: number
+    // } = {}
+
+    // private tokenBalance = 0
 
     public beforeCreate() {
         this.form = this.$form.createForm(this)
@@ -142,23 +176,33 @@ export default class Transfer extends Vue {
         })
     }
 
+    public onWChange(val: string, items: any[]) {
+        this.from = val
+        // this.balances = this.$store.getters.balanceList && this.$store.getters.balanceList[val] || {}
+    }
+
+    public onSChange(val: string, items: any[]) {
+        this.unit = val
+    }
+
+    get balances() {
+        return this.$store.getters.balanceList && this.$store.getters.balanceList[this.from] || {}
+    }
+    get tokenBalance() {
+        return this.$store.getters.balanceList
+            && this.$store.getters.balanceList[this.from]
+            && this.$store.getters.balanceList[this.from][this.unit] || 0
+    }
+
     // All tokens
     get tokenlist() {
         return this.$store.getters.tokens.map((item: app.Token) => {
             return {
                 ...item,
-                balance: this.from ? this.balances[item.symbol] || 0 : 0,
+                balance: this.balances[item.symbol] || 0,
                 img: require(`../assets/${item.icon}`)
             }
         })
-    }
-
-    get balances() {
-        if (this.from) {
-            return this.$store.getters.balanceList && this.$store.getters.balanceList[this.from] || {}
-        } else {
-            return {}
-        }
     }
 
     public created() {
@@ -231,10 +275,10 @@ export default class Transfer extends Vue {
 
     public initForm() {
         const wallet = this.walletList.find((item) => {
-            return item.address === this.$route.query.from
+            return item.address.toLowerCase() === (this.$route.query.from || '').toString().toLowerCase()
         })
         const unit = this.tokenlist.find((item: app.Token) => {
-            return item.symbol === this.$route.query.symbol
+            return item.symbol.toLowerCase() === (this.$route.query.symbol || '').toString().toLowerCase()
         })
 
         this.from = wallet && wallet.address || ''
@@ -246,6 +290,7 @@ export default class Transfer extends Vue {
 .transfer {
     padding-top: 50px;
 }
+.select-opt.item-name,
 .transfer .item-name {
     font-weight: bold;
 }
@@ -262,6 +307,10 @@ export default class Transfer extends Vue {
 }
 .transfer form .ant-input-group .ant-select {
     width: 100%;
+}
+.transfer .ant-select-selection-selected-value img {
+    width: 25px;
+    height: 25px;
 }
 </style>
 
