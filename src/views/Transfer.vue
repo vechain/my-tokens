@@ -153,12 +153,6 @@ export default class Transfer extends Vue {
     }
     private form: any
 
-    // private balances: {
-    //     [key: string]: number
-    // } = {}
-
-    // private tokenBalance = 0
-
     public beforeCreate() {
         this.form = this.$form.createForm(this)
     }
@@ -178,7 +172,6 @@ export default class Transfer extends Vue {
 
     public onWChange(val: string, items: any[]) {
         this.from = val
-        // this.balances = this.$store.getters.balanceList && this.$store.getters.balanceList[val] || {}
     }
 
     public onSChange(val: string, items: any[]) {
