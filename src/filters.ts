@@ -7,7 +7,7 @@ Vue.filter('shortAddress', (v: string) => {
 })
 
 Vue.filter('balance', (val: number) => {
-  return Number(val).toLocaleString()
+  return Number(val).toLocaleString(undefined, {style: 'decimal', maximumFractionDigits: 2, minimumFractionDigits: 2})
 })
 
 Vue.filter('valToHex', (val: string, decimals?: number) => {
