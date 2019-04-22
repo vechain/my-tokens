@@ -2,7 +2,7 @@ import Vue from 'vue'
 import { picasso } from '@vechain/picasso'
 Vue.directive('picasso', {
   inserted(el, binding) {
-    const svg = picasso(binding.value)
+    const svg = picasso((binding.value as string).toLowerCase())
     if (el.tagName === 'IMG') {
       (el as HTMLImageElement).src = `data:image/svg+xml;utf8,${svg}`
     } else {
