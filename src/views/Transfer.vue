@@ -130,10 +130,6 @@
                         </a-col>
                     </a-row>
                 </a-form-item>
-                <!-- <a-form-item :wrapper-col="{ xs: 10, offset: 5 }">
-                    
-                </a-form-item>-->
-
                 <a-form-item :wrapper-col="{ xs: 10, offset: 12 }">
                     <a-button size="large" type="primary" html-type="submit">{{$t('transfer.send')}}</a-button>
                 </a-form-item>
@@ -181,6 +177,7 @@ export default class Transfer extends Vue {
     get balances() {
         return this.$store.getters.balanceList && this.$store.getters.balanceList[this.from] || {}
     }
+
     get tokenBalance() {
         return this.$store.getters.balanceList
             && this.$store.getters.balanceList[this.from]
