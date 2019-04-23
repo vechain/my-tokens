@@ -201,16 +201,17 @@ export default class Transfer extends Vue {
 
     public send(e: Event) {
         e.preventDefault()
-        this.form.validateFields((err: any, val: any) => {
+        this.form.validateFields(async (err: any, val: any) => {
             const isVet = (val.unit! as string).toLowerCase() === 'vet'
             if (!err) {
+                let result: any
                 if (isVet) {
-                    this.transferVet(val.from, val.to, val.val, 18)
+                    result = await this.transferVet(val.from, val.to, val.val, 18)
                 } else {
                     const temp = this.$store.getters.tokens.find((item: app.Token) => {
                         return item.symbol === val.unit
                     })
-                    this.tokenTransfer(
+                    result = await this.tokenTransfer(
                         val.to,
                         val.from,
                         temp.address,
@@ -218,13 +219,22 @@ export default class Transfer extends Vue {
                         val.unit!
                     )
                 }
+                this.$success({
+                    title: 'The request send success',
+                    content: `The Txid: ${result.txid}, check the information`,
+                    maskClosable: true,
+                    onOk() {
+                        window.open(`https://insight.vecha.in/#/txs/${result.txid}`)
+                    }
+                })
+                this.form.resetFields(['to', 'val'])
             }
         })
     }
 
-    public transferVet(from: string, to: string, amount: number, decimals: number) {
+    public async transferVet(from: string, to: string, amount: number, decimals: number) {
         const svc = connex.vendor.sign('tx')
-        svc.signer(from).request([{
+        return await svc.signer(from).request([{
             to,
             value: Vue.filter('valToHex')(amount, decimals),
             data: '0x'
@@ -260,7 +270,7 @@ export default class Transfer extends Vue {
         const svc = connex.vendor.sign('tx')
         svc.signer(from)
         svc.link('https://connex.vecha.in/{txid}')
-        await svc.comment('').request([{ ...transferClause }])
+        return await svc.comment('').request([{ ...transferClause }])
     }
 
     public initForm() {

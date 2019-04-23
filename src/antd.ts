@@ -58,3 +58,5 @@ Vue.use(Tooltip)
 Vue.component(Modal.name, Modal)
 Vue.use(Modal)
 Vue.prototype.$confirm = Modal.confirm
+Vue.prototype.$success = Modal.success
+
