@@ -10,6 +10,7 @@
     detail: 'Detail',
     transfer: 'Transfer',
     delete: 'Delete the wallet',
+    dlt_conf_msg: 'Do you Want to delete this wallet?',
     copied: 'Copied',
   },
   transfer: {

@@ -144,8 +144,13 @@ export default class WalletDetail extends Vue {
         })
     }
     public async deleteWallet() {
-        await this.$store.dispatch('deleteWallet', { address: this.wallet.address })
-        this.$router.push({ name: 'wallets' })
+        this.$confirm({
+            title: this.$tc('wallets.dlt_conf_msg'),
+            onOk: async () => {
+                await this.$store.dispatch('deleteWallet', { address: this.wallet.address })
+                this.$router.push({ name: 'wallets' })
+            }
+        })
     }
 
     get balances() {
