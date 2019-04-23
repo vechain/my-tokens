@@ -119,7 +119,7 @@ class Store extends Vuex.Store<Store.State> {
         }
       },
       actions: {
-        async deleteWallet({commit}, payload) {
+        async deleteWallet({ commit }, payload) {
           try {
             await DB.wallets
               .where('address')
@@ -190,8 +190,10 @@ class Store extends Vuex.Store<Store.State> {
 
   public async initState() {
     if (
+      window.connex &&
+      window.connex.thor &&
       connex.thor.genesis.id ===
-      '0x00000000851caf3cfdb6e899cf5958bfb1ac3413d346d43539627e6be7ec1b4a'
+        '0x00000000851caf3cfdb6e899cf5958bfb1ac3413d346d43539627e6be7ec1b4a'
     ) {
       this.commit('netWork', 'main')
       this.commit('setTokens', require('./tokens').mainNetTokens)

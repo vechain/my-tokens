@@ -100,6 +100,7 @@ export default class Wallets extends Vue {
         this.form = this.$form.createForm(this)
     }
     public observeWallet() {
+        this.checkEnv()
         this.visible = true
     }
 
@@ -114,7 +115,12 @@ export default class Wallets extends Vue {
                 this.resetModal()
             }
         })
+    }
 
+    public checkEnv() {
+        if (!window.connex) {
+            window.location.href = 'https://env.vechain.org/r/#' + encodeURIComponent(location.href)
+        }
     }
 
     public resetModal() {
@@ -131,6 +137,7 @@ export default class Wallets extends Vue {
         })
     }
     public async importWallet() {
+        this.checkEnv()
         await this.$store.dispatch('importWallet')
     }
 }

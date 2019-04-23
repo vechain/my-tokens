@@ -15,8 +15,10 @@ Vue.config.productionTip = false
 Vue.use(VueClipboard)
 
 async function createApp() {
-  await Store.initState()
-  Store.monitorBlock()
+  if (window.connex) {
+    await Store.initState()
+    Store.monitorBlock()
+  }
   new Vue({
     i18n,
     router,
