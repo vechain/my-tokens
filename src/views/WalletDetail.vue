@@ -11,7 +11,9 @@
                                         <div
                                             style="width: 60px; height: 60px; margin: auto; border-radius: 30px; display: inline-block"
                                             v-picasso="wallet.address"
-                                        ><a-icon v-if="!isOwn" type="eye"/></div>
+                                        >
+                                            <a-icon v-if="!isOwn" type="eye"/>
+                                        </div>
                                     </a-col>
                                     <a-col :xs="15" class="wallet-name">
                                         <a-input
@@ -79,11 +81,15 @@
                         </a-row>
                     </a-col>
                     <a-col :xs="14" :lg="16">
+                        <a-row>
+                            <a-checkbox @change="onHideChange" >Hide</a-checkbox>
+                        </a-row>
                         <a-row type="flex" :gutter="8">
                             <a-col :xs="24" :lg="12" v-for="item in tokenlist" :key="item.symbol">
                                 <TokenBalanceCard
                                     @click="toTransfer(item)"
                                     :item="item"
+                                    v-if="item.show"
                                     style="margin-top: 10px"
                                     :class="{'not-allowed': !isOwn}"
                                 />
@@ -111,6 +117,7 @@ export default class WalletDetail extends Vue {
     public isEdit = false
     public showTip = false
     public isOwn = false
+    public hide = false
 
     @Watch('wallet')
     public walletChange(newVal: app.Wallet) {
@@ -121,6 +128,10 @@ export default class WalletDetail extends Vue {
 
     get checksumAddress() {
         return Vue.filter('toChecksumAddress')(this.wallet.address)
+    }
+
+    public onHideChange() {
+        this.hide = !this.hide
     }
 
     public created() {
@@ -135,11 +146,17 @@ export default class WalletDetail extends Vue {
     }
 
     get tokenlist() {
+        const symbolList = ['VET', 'VTHO']
         return this.$store.getters.tokens.map((item: app.Token) => {
+            let isShow = true
+            if (this.hide) {
+                isShow = symbolList.includes(item.symbol) || this.balances[item.symbol] > 0
+            }
             return {
                 ...item,
                 balance: this.balances[item.symbol] || 0,
-                img: require(`../assets/${item.icon}`)
+                img: require(`../assets/${item.icon}`),
+                show: isShow
             }
         })
     }

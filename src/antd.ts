@@ -11,8 +11,12 @@ import {
   Tooltip,
   Modal,
   Menu,
-  Card
+  Card,
+  Checkbox
 } from 'ant-design-vue'
+
+Vue.component(Checkbox.name, Checkbox)
+Vue.use(Checkbox)
 
 Vue.component(Card.name, Card)
 Vue.use(Card)
