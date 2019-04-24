@@ -152,7 +152,7 @@ class Store extends Vuex.Store<Store.State> {
               const svc = connex.vendor.sign('cert')
 
               cert = await svc.request({
-                purpose: 'agreement',
+                purpose: 'identification',
                 payload: {
                   type: 'text',
                   content: 'Choose wallet you want to add to "Token Transfer".'
