@@ -9,9 +9,9 @@
                                 <a-row type="flex" :gutter="8" justify="center" align="middle">
                                     <a-col :xs="6">
                                         <div
-                                            style="width: 50px; height: 50px; margin: auto; border-radius: 25px; display: inline-block"
+                                            style="width: 60px; height: 60px; margin: auto; border-radius: 30px; display: inline-block"
                                             v-picasso="wallet.address"
-                                        ></div>
+                                        ><a-icon v-if="!isOwn" type="eye"/></div>
                                     </a-col>
                                     <a-col :xs="15" class="wallet-name">
                                         <a-input
@@ -35,7 +35,7 @@
                             </a-col>
                             <a-col style="margin-top: 15px">
                                 <a-card>
-                                    <QRCode style="margin: auto" :content="wallet.address"/>
+                                    <QRCode style="margin: auto" :content="checksumAddress"/>
                                 </a-card>
                             </a-col>
                             <a-col style="padding-top: 20px">
