@@ -7,7 +7,11 @@ Vue.filter('shortAddress', (v: string) => {
 })
 
 Vue.filter('balance', (val: number) => {
-  return Number(val).toLocaleString(undefined, {style: 'decimal', maximumFractionDigits: 2, minimumFractionDigits: 2})
+  return Number(val).toLocaleString(undefined, {
+    style: 'decimal',
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2
+  })
 })
 
 Vue.filter('valToHex', (val: string, decimals?: number) => {
@@ -18,4 +22,10 @@ Vue.filter('valToHex', (val: string, decimals?: number) => {
 
 Vue.filter('toChecksumAddress', (val: string) => {
   return toChecksumAddress(val)
+})
+
+Vue.filter('balanceCheck', (val: string) => {
+  const v = new BigNumber(val)
+  const temp = new BigNumber(v.multipliedBy(1e18))
+  return temp.isInteger() && !temp.isNegative()
 })

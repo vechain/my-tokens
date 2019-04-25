@@ -78,8 +78,7 @@
                                         required: true,
                                         message: 'Amount is required'
                                     }, {
-                                        pattern: '^[0-9]+$',
-                                        message: 'Amount invalid'
+                                       validator: checkAmount
                                     }]
                                 }]"
                                     name="amount"
@@ -174,6 +173,12 @@ export default class Transfer extends Vue {
 
     public onWChange(val: string, items: any[]) {
         this.from = val
+    }
+
+    public checkAmount(rule: any, value: any, callback: any) {
+        if (!Vue.filter('balanceCheck')(value)) {
+            callback(new Error('Amount is invalid'))
+        }
     }
 
     public onSChange(val: string, items: any[]) {
