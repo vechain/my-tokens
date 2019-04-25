@@ -99,37 +99,39 @@
                                     }]
                                 }]"
                                 >
-                                    <a-select-option
-                                        v-for="token in tokenlist"
-                                        :key="token.symbol"
-                                        :value="token.symbol"
-                                    >
-                                        <a-row type="flex" justify="space-between">
-                                            <a-col :span="8">
-                                                <img
-                                                    style="margin-right: 10px"
-                                                    width="45px"
-                                                    height="45px"
-                                                    :src="token.img"
-                                                    :alt="token.name"
-                                                >
-                                            </a-col>
-                                            <a-col :span="16">
-                                                <a-row>
-                                                    <a-col style="text-align: right;">
-                                                        <span
-                                                            class="select-opt item-name"
-                                                        >{{token.symbol}}</span>
-                                                    </a-col>
-                                                    <a-col style="text-align: right;">
-                                                        <span
-                                                            class="select-opt item-balance"
-                                                        >{{token.balance | balance}}</span>
-                                                    </a-col>
-                                                </a-row>
-                                            </a-col>
-                                        </a-row>
-                                    </a-select-option>
+                                    <template v-for="token in tokenlist">
+                                        <a-select-option
+                                            v-if="token.show"
+                                            :key="token.symbol"
+                                            :value="token.symbol"
+                                        >
+                                            <a-row type="flex" justify="space-between">
+                                                <a-col :span="8">
+                                                    <img
+                                                        style="margin-right: 10px"
+                                                        width="45px"
+                                                        height="45px"
+                                                        :src="token.img"
+                                                        :alt="token.name"
+                                                    >
+                                                </a-col>
+                                                <a-col :span="16">
+                                                    <a-row>
+                                                        <a-col style="text-align: right;">
+                                                            <span
+                                                                class="select-opt item-name"
+                                                            >{{token.symbol}}</span>
+                                                        </a-col>
+                                                        <a-col style="text-align: right;">
+                                                            <span
+                                                                class="select-opt item-balance"
+                                                            >{{token.balance | balance}}</span>
+                                                        </a-col>
+                                                    </a-row>
+                                                </a-col>
+                                            </a-row>
+                                        </a-select-option>
+                                    </template>
                                 </a-select>
                             </a-form-item>
                         </a-col>
@@ -195,13 +197,23 @@ export default class Transfer extends Vue {
             && this.$store.getters.balanceList[this.from][this.unit] || 0
     }
 
+    get hide() {
+        return this.$store.getters.isHide
+    }
+
     // All tokens
     get tokenlist() {
+        const symbolList = ['VET', 'VTHO']
         return this.$store.getters.tokens.map((item: app.Token) => {
+            let isShow = true
+            if (this.hide) {
+                isShow = symbolList.includes(item.symbol) || this.balances[item.symbol] > 0
+            }
             return {
                 ...item,
                 balance: this.balances[item.symbol] || 0,
-                img: require(`../assets/${item.icon}`)
+                img: require(`../assets/${item.icon}`),
+                show: isShow
             }
         })
     }
@@ -214,6 +226,7 @@ export default class Transfer extends Vue {
         e.preventDefault()
         this.form.validateFields(async (err: any, val: any) => {
             const isVet = (val.unit! as string).toLowerCase() === 'vet'
+            let decimals = 18
             if (!err) {
                 let result: any
                 if (isVet) {
@@ -222,14 +235,22 @@ export default class Transfer extends Vue {
                     const temp = this.$store.getters.tokens.find((item: app.Token) => {
                         return item.symbol === val.unit
                     })
+                    decimals = temp.decimals
                     result = await this.tokenTransfer(
                         val.to,
                         val.from,
                         temp.address,
-                        Vue.filter('valToHex')(val.val, temp.decimals),
-                        val.unit!
+                        Vue.filter('valToHex')(val.val, decimals),
+                        val.unit
                     )
                 }
+                this.$store.dispatch('addTransferLog', {
+                    txid: result.txid,
+                    from: val.from,
+                    to: val.to,
+                    amount: Vue.filter('valToHex')(val.val, decimals),
+                    coin: val.unit
+                })
                 this.$success({
                     title: 'The request send success',
                     content: `The Txid: ${result.txid}, check the information`,
