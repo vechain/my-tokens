@@ -7,6 +7,14 @@ declare namespace app {
     id?: number
   }
 
+  interface Transfer {
+    from: string
+    to: string
+    coin: string
+    amount: number
+    txid: string
+  }
+
   interface Token {
     id?: number
     name: string
