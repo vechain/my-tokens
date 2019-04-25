@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import { toChecksumAddress } from 'thor-devkit/es6/cry/address'
 
 Vue.filter('shortAddress', (v: string) => {
-  return v.substring(0, 6) + '......' + v.substring(v.length - 5, v.length)
+  return v.substring(0, 8) + '.....' + v.substring(v.length - 8, v.length)
 })
 
 Vue.filter('balance', (val: number) => {

@@ -8,7 +8,7 @@
                 <div style="text-align: left; font-size: 14px;">
                     <p class="wallet-label">{{item.name + ' '}}</p>
                     <a-icon v-if="!item.own" type="eye"/>
-                    <span :title="item.address">{{item.address | toChecksumAddress | shortAddress}}</span>
+                    <span style="font-size: 12px;" :title="item.address">{{item.address | toChecksumAddress | shortAddress}}</span>
                 </div>
                 <div style="text-align: left;">
                     <slot name="actions"/>
