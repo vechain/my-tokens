@@ -26,10 +26,16 @@
                         >
                             <a-row type="flex" justify="space-between">
                                 <a-col>
-                                    <span class="item-name">{{wallet.name}}</span>
-                                    <span
-                                        class="item-address text-monospace"
-                                    >({{wallet.address | toChecksumAddress | shortAddress}})</span>
+                                    <a-row type="flex" justify="space-between">
+                                        <a-col>
+                                            <span class="item-name">{{wallet.name}}</span>
+                                        </a-col>
+                                        <a-col>
+                                            <span
+                                                class="item-address text-monospace"
+                                            >({{wallet.address | toChecksumAddress | shortAddress}})</span>
+                                        </a-col>
+                                    </a-row>
                                 </a-col>
                                 <a-col>
                                     <span class="item-balance">VTHO: {{wallet.vtho | balance}}</span>
@@ -292,7 +298,12 @@ export default class Transfer extends Vue {
 }
 .select-opt.item-name,
 .transfer .item-name {
+    max-width: 300px;
+    overflow: hidden;
+    display: inline-block;
     font-weight: bold;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
 }
 .transfer .item-address {
     font-size: 14px;
