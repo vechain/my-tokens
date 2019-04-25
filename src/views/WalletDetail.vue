@@ -82,7 +82,7 @@
                     </a-col>
                     <a-col :xs="14" :lg="16">
                         <a-row>
-                            <a-checkbox @change="onHideChange" >Hide</a-checkbox>
+                            <a-checkbox :checked="hide" @change="onHideChange" >Hide</a-checkbox>
                         </a-row>
                         <a-row type="flex" :gutter="8">
                             <a-col :xs="24" :lg="12" v-for="item in tokenlist" :key="item.symbol">
@@ -117,7 +117,7 @@ export default class WalletDetail extends Vue {
     public isEdit = false
     public showTip = false
     public isOwn = false
-    public hide = false
+    // public hide = false
 
     @Watch('wallet')
     public walletChange(newVal: app.Wallet) {
@@ -130,8 +130,12 @@ export default class WalletDetail extends Vue {
         return Vue.filter('toChecksumAddress')(this.wallet.address)
     }
 
+    get hide() {
+        return this.$store.getters.isHide
+    }
+
     public onHideChange() {
-        this.hide = !this.hide
+        this.$store.state.hideTokens = !this.hide
     }
 
     public created() {

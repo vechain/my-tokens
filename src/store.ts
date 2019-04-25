@@ -10,6 +10,7 @@ declare namespace Store {
   interface State {
     wallets?: app.Wallet[]
     tokens?: app.Token[]
+    hideTokens: boolean
     netWork: 'main' | 'test' | null
     balances: {
       [address: string]: {
@@ -49,6 +50,7 @@ class Store extends Vuex.Store<Store.State> {
   constructor() {
     super({
       state: {
+        hideTokens: true,
         netWork: null,
         wallets: [],
         tokens: [],
@@ -96,6 +98,9 @@ class Store extends Vuex.Store<Store.State> {
         }
       },
       getters: {
+        isHide(state) {
+          return state.hideTokens
+        },
         wallets(state) {
           return state.wallets!.map((item) => {
             return {
