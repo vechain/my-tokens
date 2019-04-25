@@ -12,7 +12,7 @@
                                             style="width: 60px; height: 60px; margin: auto; border-radius: 30px; display: inline-block"
                                             v-picasso="wallet.address"
                                         >
-                                            <a-icon v-if="!isOwn" type="eye"/>
+                                            <a-icon v-if="!isOwn" class="detail-eye" type="eye"/>
                                         </div>
                                     </a-col>
                                     <a-col :xs="15" class="wallet-name">
@@ -253,5 +253,11 @@ export default class WalletDetail extends Vue {
 }
 .not-allowed:hover {
     cursor: not-allowed;
+}
+.detail-eye {
+    font-size: 20px;
+    position: absolute;
+    right: -25px;
+    color: #6f6f6f;
 }
 </style>
