@@ -124,6 +124,15 @@ class Store extends Vuex.Store<Store.State> {
         }
       },
       actions: {
+        async addTransferLog(ctx, { txid, from, to, amount, coin }) {
+          await DB.transfers.add({
+            txid: txid.toLowerCase(),
+            from: from.toLowerCase(),
+            to: to.toLowerCase(),
+            amount,
+            coin
+          })
+        },
         async deleteWallet({ commit }, payload) {
           try {
             await DB.wallets

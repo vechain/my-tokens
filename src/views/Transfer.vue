@@ -180,6 +180,8 @@ export default class Transfer extends Vue {
     public checkAmount(rule: any, value: any, callback: any) {
         if (!Vue.filter('balanceCheck')(value)) {
             callback(new Error('Amount is invalid'))
+        } else {
+            callback()
         }
     }
 
