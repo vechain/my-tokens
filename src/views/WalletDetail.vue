@@ -20,8 +20,9 @@
                                             v-show="isEdit"
                                             size="large"
                                             ref="input"
+                                            maxlength="20"
                                             @keypress.enter="saveName"
-                                            @blur="isEdit=false"
+                                            @blur="isEdit=false;name=wallet.name"
                                             v-model="name"
                                         ></a-input>
                                         <span :title="wallet.name" v-show="!isEdit">{{wallet.name}}</span>
