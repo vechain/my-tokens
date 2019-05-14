@@ -2,7 +2,7 @@
     <a-row type="flex" justify="space-between">
         <a-col :span="12">
             <a-row type="flex" justify="start">
-                <div class="logo">logo</div>
+                <div class="logo">VeChain</div>
             </a-row>
         </a-col>
         <a-col :span="12">

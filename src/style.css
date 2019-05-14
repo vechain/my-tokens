@@ -1,0 +1,97 @@
+#app.cc-theme .nav.light {
+  height: 64px;
+  line-height: 64px;
+  background-color: rgba(0, 0, 0, .2);
+  border-bottom: none;
+  color: #fff;
+}
+
+#app.cc-theme>.ant-layout {
+  background-color: #44486D;
+}
+
+#app.cc-theme .nav .ant-menu-horizontal {
+  border-bottom: none;
+}
+
+.cc-theme .nav .ant-menu {
+  background-color: transparent;
+}
+
+.cc-theme .ant-menu-horizontal>.ant-menu-item>a:hover {
+  color: #fff;
+}
+
+.cc-theme .ant-menu-horizontal>.ant-menu-item:hover, .cc-theme .ant-menu-horizontal>.ant-menu-item {
+  color: #fff;
+  background-color: transparent;
+  border-bottom: none;
+}
+
+.cc-theme .ant-menu .ant-menu-item:after {
+  display: block;
+  width: 0;
+  content: "";
+  background-color: #fff;
+  height: 2px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  bottom: 0;
+  -webkit-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+
+.cc-theme .ant-menu .ant-menu-item-selected::after {
+  width: 90%;
+}
+
+.cc-theme .ant-menu .ant-menu-item>a, .ant-menu .ant-menu-item-selected>a, .ant-menu .ant-menu-item-selected>a:hover {
+  line-height: 64px;
+  color: #fff;
+}
+
+.cus-btn {
+  padding: 10px 35px;
+  line-height: 16px;
+  height: 36px;
+  background-color: #625B6C;
+  border: none;
+  color: #fff;
+}
+
+.cus-btn:hover {
+  background-color: #80788C;
+  color: #fff;
+}
+
+.cus-btn-normal {
+  color: #000;
+  border-radius: 6px;
+}
+
+.wallet h2 {
+  font-size: 48px;
+  color: #fff;
+  margin-bottom: 0;
+}
+
+.wallet .underscore {
+  position: relative;
+  height: 35px;
+}
+
+.wallet .underscore:after {
+  height: 3px;
+  background: -webkit-gradient( linear, left top, right top, from(#FFBC27), to(#FFDF4F));
+  background: -webkit-linear-gradient( left, #FFBC27, #FFDF4F);
+  background: -o-linear-gradient( left, #FFBC27, #FFDF4F);
+  background: linear-gradient( to right, #FFBC27, #FFDF4F);
+  bottom: 0px;
+  width: 50px;
+  position: absolute;
+  content: "";
+  display: block;
+}

@@ -6,12 +6,20 @@
                     <a-col>
                         <h2>{{$t('wallets.title')}}</h2>
                     </a-col>
+                </a-row>
+                <a-row type="flex" justify="space-between" style="padding: 0 80px 0">
+                    <a-col>
+                        <div class="underscore"></div>
+                    </a-col>
                     <a-col>
                         <div>
-                            <a-button-group>
-                                <a-button @click="importWallet">{{$t('wallets.import')}}</a-button>
-                                <a-button @click="observeWallet">{{$t('wallets.observe')}}</a-button>
-                            </a-button-group>
+                            <!-- <a-button-group> -->
+                            <a-button class="cus-btn" style="margin-right: 70px;" @click="importWallet">{{$t('wallets.import')}}</a-button>
+                            <a-button
+                                class="cus-btn"
+                                @click="observeWallet"
+                            >{{$t('wallets.observe')}}</a-button>
+                            <!-- </a-button-group> -->
                         </div>
                     </a-col>
                 </a-row>
@@ -22,22 +30,27 @@
                         :key="item.address"
                         :sm="12"
                         :md="12"
-                        :lg="8"
-                        :xl="6"
-                        :xxl="4"
+                        :lg="12"
+                        :xl="8"
+                        :xxl="6"
                     >
                         <wallet-card style="margin: 30px auto 0;" :item="item">
                             <template v-slot:actions>
-                                <router-link
+                                <!-- <router-link
                                     :to="{name: 'wallet-detail', params: {id: item.address}}"
                                     style="margin-right: 15px"
-                                >{{$t('wallets.detail')}}</router-link>
-                                <router-link
+                                >{{$t('wallets.detail')}}</router-link>-->
+                                <a-button
+                                    class="cus-btn-normal"
+                                    :disabled="item.own"
+                                    @click="importWallet"
+                                >{{$t('wallets.transfer')}}</a-button>
+                                <!-- <router-link
                                     v-if="item.own"
                                     :to="{name: 'transfer', query: {
                                     from: item.address, symbol: 'vet'
                                 }}"
-                                >{{$t('wallets.transfer')}}</router-link>
+                                >{{$t('wallets.transfer')}}</router-link>-->
                             </template>
                         </wallet-card>
                     </a-col>

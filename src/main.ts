@@ -1,3 +1,5 @@
+import 'ant-design-vue/dist/antd.css'
+import './style.css'
 import Vue from 'vue'
 import Store from './store'
 import App from './App.vue'
@@ -9,13 +11,13 @@ import i18n from './i18n'
 import './antd'
 import './filters'
 import './directives'
-import 'ant-design-vue/dist/antd.css'
 Vue.config.productionTip = false
 
 Vue.use(VueClipboard)
 
 async function createApp() {
   if (window.connex) {
+    Store.getPrice()
     await Store.initState()
     Store.monitorBlock()
   }

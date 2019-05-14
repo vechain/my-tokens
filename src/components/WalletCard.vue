@@ -1,20 +1,24 @@
 <template>
     <div class="wallet-item">
-        <a-row type="flex" style="height: 100%" align="middle">
+        <a-row type="flex" style="height: 100%">
             <a-col :xs="8" style="text-align: center;">
                 <img v-picasso="item.address" class="wallet-img" alt>
             </a-col>
-            <a-col :xs="16" style="padding-left: 5px;">
-                <div style="text-align: left; font-size: 14px;">
+            <a-col :xs="14" style="margin-left: 20px">
+                <div>
                     <p class="wallet-label">{{item.name + ' '}}</p>
                     <a-icon v-if="!item.own" type="eye"/>
-                    <span style="font-size: 12px;" :title="item.address">{{item.address | toChecksumAddress | shortAddress}}</span>
                 </div>
-                <div style="text-align: left;">
+                <div
+                    style="font-size: 16px; color: #484568"
+                    :title="item.address"
+                >{{item.address | toChecksumAddress | shortAddress}}</div>
+                <div class="actions">
                     <slot name="actions"/>
                 </div>
             </a-col>
         </a-row>
+        
     </div>
 </template>
 <script lang="ts">
@@ -29,31 +33,38 @@ export default class WalletCard extends Vue {
 
 <style>
 .wallet-item {
-    width: 220px;
-    height: 90px;
-    box-shadow: 0 0.25rem 1rem rgba(48, 55, 66, 0.15);
+    padding: 20px 30px 20px 5px;
+    width: 360px;
+    height: 146px;
+    box-sizing: border-box;
     border: 1px solid rgba(48, 55, 66, 0.06);
-    border-radius: 3px;
+    border-radius: 10px;
+    background-color: #f1f3ff;
     transition: box-shadow 0.2s ease, border 0.2s ease;
 }
 .wallet-item:hover {
-    box-shadow: 0 0.25rem 1rem rgba(48, 55, 66, 0.25);
     border: 1px solid rgba(48, 55, 66, 0.08);
 }
 .wallet-item .wallet-img {
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    box-shadow: 1px 5px 10px 1px rgba(0, 0, 0, 0.35);
 }
-.wallet-label {
+.wallet-item .wallet-label {
     -webkit-line-clamp: 1;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100px;
     display: inline-block;
+    font-size: 20px;
     margin-bottom: 0;
-    float: left;
     margin-right: 10px;
+    color: #484568;
+}
+.wallet-item .actions {
+    margin-top: 5px;
+    text-align: right;
 }
 </style>
 

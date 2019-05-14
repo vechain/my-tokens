@@ -1,10 +1,10 @@
 <template>
-    <div id="app">
+    <div id="app" class="cc-theme">
         <a-layout>
             <a-layout-header class="nav light">
-                <nav-bar/>
+                <nav-bar style="max-width: 1200px; margin: auto;"/>
             </a-layout-header>
-            <a-layout-content style="padding-top: 48px;">
+            <a-layout-content style="padding-top: 64px;">
                 <router-view/>
             </a-layout-content>
         </a-layout>
