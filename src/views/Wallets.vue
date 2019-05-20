@@ -14,7 +14,11 @@
                     <a-col>
                         <div>
                             <!-- <a-button-group> -->
-                            <a-button class="cus-btn" style="margin-right: 70px;" @click="importWallet">{{$t('wallets.import')}}</a-button>
+                            <a-button
+                                class="cus-btn"
+                                style="margin-right: 70px;"
+                                @click="importWallet"
+                            >{{$t('wallets.import')}}</a-button>
                             <a-button
                                 class="cus-btn"
                                 @click="observeWallet"
@@ -34,25 +38,11 @@
                         :xl="8"
                         :xxl="6"
                     >
-                        <wallet-card style="margin: 30px auto 0;" :item="item">
-                            <template v-slot:actions>
-                                <!-- <router-link
-                                    :to="{name: 'wallet-detail', params: {id: item.address}}"
-                                    style="margin-right: 15px"
-                                >{{$t('wallets.detail')}}</router-link>-->
-                                <a-button
-                                    class="cus-btn-normal"
-                                    :disabled="item.own"
-                                    @click="importWallet"
-                                >{{$t('wallets.transfer')}}</a-button>
-                                <!-- <router-link
-                                    v-if="item.own"
-                                    :to="{name: 'transfer', query: {
-                                    from: item.address, symbol: 'vet'
-                                }}"
-                                >{{$t('wallets.transfer')}}</router-link>-->
-                            </template>
-                        </wallet-card>
+                        <wallet-card
+                            @click="$router.push({name: 'wallet-detail', params: {id: item.address}})"
+                            style="margin: 30px auto 0;"
+                            :item="item"
+                        ></wallet-card>
                     </a-col>
                 </a-row>
             </div>

@@ -1,6 +1,6 @@
 <template>
-    <div class="wallet-item">
-        <a-row type="flex" style="height: 100%">
+    <div v-on="$listeners" class="wallet-item">
+        <a-row type="flex" style="height: 100%" align="middle" >
             <a-col :xs="8" style="text-align: center;">
                 <img v-picasso="item.address" class="wallet-img" alt>
             </a-col>
@@ -33,9 +33,9 @@ export default class WalletCard extends Vue {
 
 <style>
 .wallet-item {
-    padding: 20px 30px 20px 5px;
-    width: 360px;
-    height: 146px;
+    padding: 20px 30px 20px 20px;
+    width: 320px;
+    height: 130px;
     box-sizing: border-box;
     border: 1px solid rgba(48, 55, 66, 0.06);
     border-radius: 10px;
@@ -44,6 +44,7 @@ export default class WalletCard extends Vue {
 }
 .wallet-item:hover {
     border: 1px solid rgba(48, 55, 66, 0.08);
+    cursor: pointer;
 }
 .wallet-item .wallet-img {
     width: 80px;

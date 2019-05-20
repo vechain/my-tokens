@@ -9,9 +9,10 @@
     observe: 'Observe',
     detail: 'Detail',
     transfer: 'Transfer',
-    delete: 'Delete the wallet',
+    delete: 'Remove',
     dlt_conf_msg: 'Do you Want to delete this wallet?',
     copied: 'Copied',
+    hide_amount: 'Hide small amount'
   },
   transfer: {
     from: 'From',

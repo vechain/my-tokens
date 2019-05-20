@@ -7,7 +7,7 @@
 }
 
 #app.cc-theme>.ant-layout {
-  background-color: #44486D;
+  background:  linear-gradient(170deg, #434364, #403654 30%, #745566);
 }
 
 #app.cc-theme .nav .ant-menu-horizontal {
@@ -39,8 +39,6 @@
   right: 0;
   margin: auto;
   bottom: 0;
-  -webkit-transition: all 0.2s ease-out;
-  -o-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
 }
 
@@ -85,13 +83,32 @@
 
 .wallet .underscore:after {
   height: 3px;
-  background: -webkit-gradient( linear, left top, right top, from(#FFBC27), to(#FFDF4F));
-  background: -webkit-linear-gradient( left, #FFBC27, #FFDF4F);
-  background: -o-linear-gradient( left, #FFBC27, #FFDF4F);
   background: linear-gradient( to right, #FFBC27, #FFDF4F);
   bottom: 0px;
   width: 50px;
   position: absolute;
   content: "";
   display: block;
+}
+
+.transfer .ant-form-item-label label {
+  color: #fff;
+  font-size: 24px;
+}
+
+.transfer .has-error .ant-input:focus, .transfer .has-error .ant-input, .transfer .has-error .ant-input:hover {
+  border-color: red;
+}
+
+.transfer .ant-input {
+  background-color: transparent;
+  border-color: #C1C1CD;
+  color: #fff;
+  height: 46px;
+  width: 500px;
+  box-sizing: border-box;
+}
+
+.transfer .ant-input:focus {
+  box-shadow: 0 0 0 2px rgba(247, 247, 247, 0.2);
 }

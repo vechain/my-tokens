@@ -12,11 +12,11 @@ import {
   Modal,
   Menu,
   Card,
-  Checkbox
+  Switch
 } from 'ant-design-vue'
 
-Vue.component(Checkbox.name, Checkbox)
-Vue.use(Checkbox)
+Vue.component(Switch.name, Switch)
+Vue.use(Switch)
 
 Vue.component(Card.name, Card)
 Vue.use(Card)

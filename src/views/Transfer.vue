@@ -1,11 +1,11 @@
 <template>
     <a-row class="transfer" type="flex" justify="space-around">
-        <a-col :xs="24">
-            <a-form :hideRequiredMark="true" :form="form" @submit="send">
+        <a-col :xs="14">
+            <a-form layout="vertical" :hideRequiredMark="true" :form="form" @submit="send">
+                    <!-- :label-col="{ span: 5 }"
+                    :wrapper-col="wrapperCol" -->
                 <a-form-item
                     :label="$t('transfer.from')"
-                    :label-col="{ span: 5 }"
-                    :wrapper-col="wrapperCol"
                 >
                     <a-select
                         size="large"
@@ -44,10 +44,10 @@
                         </a-select-option>
                     </a-select>
                 </a-form-item>
+                    <!-- :label-col="{ span: 5 }"
+                    :wrapper-col="wrapperCol" -->
                 <a-form-item
                     :label="$t('transfer.to')"
-                    :label-col="{ span: 5 }"
-                    :wrapper-col="wrapperCol"
                 >
                     <a-input
                         size="large"
@@ -63,10 +63,10 @@
                         }]"
                     />
                 </a-form-item>
+                    <!-- :label-col="{ span: 5 }"
+                    :wrapper-col="wrapperCol" -->
                 <a-form-item
                     :label="$t('transfer.amount')"
-                    :label-col="{ span: 5 }"
-                    :wrapper-col="wrapperCol"
                 >
                     <a-row type="flex" :gutter="8">
                         <a-col :span="16">
