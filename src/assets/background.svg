@@ -1,0 +1,15 @@
+<svg width="1920px" height="1080px" viewBox="0 0 1920 1080" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <radialGradient cx="25.393685%" cy="7.25621984%" fx="25.393685%" fy="7.25621984%" r="119.736901%" gradientTransform="translate(0.253937,0.072562),scale(0.561622,1.000000),rotate(80.326380),scale(1.000000,8.133612),translate(-0.253937,-0.072562)" id="radialGradient-1">
+            <stop stop-color="#3F4164" offset="0%"></stop>
+            <stop stop-color="#534265" offset="44.9936428%"></stop>
+            <stop stop-color="#664A5B" offset="80.47557%"></stop>
+            <stop stop-color="#745465" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="桌面-宽屏-copy-8" fill="url(#radialGradient-1)">
+            <rect id="矩形" x="-1" y="0" width="1923" height="1080"></rect>
+        </g>
+    </g>
+</svg>

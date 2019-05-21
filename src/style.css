@@ -7,9 +7,8 @@
 }
 
 .cc-theme #app>.ant-layout {
-  background: linear-gradient(to right top, #4C517C, #313347);
-  /* background:  linear-gradient(170deg, #434364, #403654 30%, #745566); */
-  /* background-image: linear-gradient(170deg, #474a6d, #464668, #444262, #433e5d, #413a58, #453b57, #493b56, #4c3c55, #554258, #5e485c, #664e5f, #6e5563); */
+  background: url(./assets/background.svg);
+  background-repeat: no-repeat;
 }
 
 .cc-theme #app .nav .ant-menu-horizontal {
@@ -182,4 +181,12 @@
   color: #fff;
   text-transform: uppercase;
   font-size: 26px;
+}
+
+.remove-wallet-dialog h1 {
+  color: #fff;
+  margin-bottom: 0.3rem;
+}
+.remove-wallet-dialog p {
+  color: #F7F7F8;
 }

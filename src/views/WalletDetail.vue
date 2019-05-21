@@ -8,15 +8,26 @@
                             <a-col>
                                 <a-row type="flex" :gutter="8" justify="center" align="middle">
                                     <a-col :xs="24">
-                                        <div class="wallet-icon" v-picasso="wallet.address">
-                                            <span v-if="true">{{$t('wallets.observe')}}</span>
+                                        <div class="icon-container">
+                                            <div
+                                                class="wallet-icon"
+                                                :class="{hide: visible}"
+                                                v-picasso="wallet.address"
+                                            >
+                                                <span v-if="!isOwn">{{$t('wallets.observe')}}</span>
+                                            </div>
+                                            <QRCode
+                                                class="code"
+                                                :class="{show: visible}"
+                                                :content="checksumAddress"
+                                            />
                                         </div>
                                     </a-col>
                                 </a-row>
                             </a-col>
                             <a-col>
                                 <a-row type="flex" align="middle">
-                                    <a-col :xs="16" class="wallet-name">
+                                    <a-col :xs="14" class="wallet-name">
                                         <a-input
                                             v-show="isEdit"
                                             size="large"
@@ -65,7 +76,8 @@
                                             style=" margin-left: 10px;"
                                             shape="circle"
                                             icon="qrcode"
-                                            @click="visible=true"
+                                            @mouseover="onHover"
+                                            @mouseleave="visible = false"
                                             ghost
                                         />
                                     </a-col>
@@ -114,8 +126,28 @@
                 </a-row>
             </a-col>
         </a-row>
-        <a-modal v-model="visible" :footer="null">
-            <QRCode style="margin: auto" :content="checksumAddress"/>
+        <a-modal
+            :mask="false"
+            wrapClassName="cus-modal"
+            class="cus-modal"
+            :title="null"
+            :closable="false"
+            :footer="null"
+            v-model="visibleM"
+            @cancel="onCancel"
+        >
+            <div class="remove-wallet-dialog">
+                <h1>Remove Wallet</h1>
+                <p>Are you sure to remove this wallet?</p>
+                <a-row style="padding-top: 20px;" type="flex" justify="space-around">
+                    <a-col>
+                        <a-button @click="onCancel" class="cus-btn">No</a-button>
+                    </a-col>
+                    <a-col>
+                        <a-button @click="onOk" class="cus-btn">Yes</a-button>
+                    </a-col>
+                </a-row>
+            </div>
         </a-modal>
     </div>
 </template>
@@ -136,6 +168,7 @@ export default class WalletDetail extends Vue {
     public showTip = false
     public isOwn = false
     public visible = false
+    public visibleM = false
 
     @Watch('wallet')
     public walletChange(newVal: app.Wallet) {
@@ -182,14 +215,27 @@ export default class WalletDetail extends Vue {
             }
         })
     }
-    public async deleteWallet() {
-        this.$confirm({
-            title: this.$tc('wallets.dlt_conf_msg'),
-            onOk: async () => {
-                await this.$store.dispatch('deleteWallet', { address: this.wallet.address })
-                this.$router.push({ name: 'wallets' })
-            }
-        })
+    public deleteWallet() {
+        this.visibleM = true
+        // this.$confirm({
+        //     title: this.$tc('wallets.dlt_conf_msg'),
+        //     onOk: async () => {
+        //         await this.$store.dispatch('deleteWallet', { address: this.wallet.address })
+        //         this.$router.push({ name: 'wallets' })
+        //     }
+        // })
+    }
+
+    public onHover() {
+        this.visible = true
+    }
+    public onCancel() {
+        this.visibleM = false
+    }
+    public async onOk() {
+        await this.$store.dispatch('deleteWallet', { address: this.wallet.address })
+        this.visibleM = false
+        this.$router.push({ name: 'wallets' })
     }
 
     get balances() {
@@ -303,5 +349,25 @@ export default class WalletDetail extends Vue {
     position: absolute;
     right: -25px;
     color: #6f6f6f;
+}
+.icon-container {
+    position: relative;
+}
+.icon-container .code {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 200px;
+    border-radius: 20px;
+    overflow: hidden;
+    visibility: hidden;
+}
+.icon-container .wallet-icon.hide {
+    visibility: hidden;
+}
+.icon-container .code.show {
+    visibility: visible;
 }
 </style>
