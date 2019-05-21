@@ -1,5 +1,5 @@
 <template>
-    <div id="app" class="cc-theme">
+    <div id="app" >
         <a-layout>
             <a-layout-header class="nav light">
                 <nav-bar style="max-width: 1200px; margin: auto;"/>

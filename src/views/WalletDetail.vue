@@ -9,7 +9,7 @@
                                 <a-row type="flex" :gutter="8" justify="center" align="middle">
                                     <a-col :xs="24">
                                         <div class="wallet-icon" v-picasso="wallet.address">
-                                            <span v-if="true">{{$t('observe')}}</span>
+                                            <span v-if="true">{{$t('wallets.observe')}}</span>
                                         </div>
                                     </a-col>
                                 </a-row>
@@ -43,9 +43,10 @@
                             <a-col style="padding-top: 20px">
                                 <a-row type="flex" :gutter="8" align="middle">
                                     <a-col :xs="16">
-                                        <p ref="address" class="wallet-address text-monospace">
-                                            {{wallet.address | toChecksumAddress | shortAddress}}
-                                        </p>
+                                        <p
+                                            ref="address"
+                                            class="wallet-address text-monospace"
+                                        >{{wallet.address | toChecksumAddress | shortAddress}}</p>
                                     </a-col>
                                     <a-col :xs="8">
                                         <a-tooltip :visible="showTip" placement="top">
@@ -87,30 +88,33 @@
                             <a-col>
                                 <a-switch :defaultChecked="true" @change="onHideChange"/>
                             </a-col>
-                            <a-col style="color: #fff; font-size: 18px; padding-left: 15px;">{{$t('wallets.hide_amount')}}</a-col>
+                            <a-col
+                                style="color: #fff; font-size: 18px; padding-left: 15px;"
+                            >{{$t('wallets.hide_amount')}}</a-col>
                         </a-row>
                         <a-row type="flex" :gutter="8" justify="space-between">
-                            <a-col
-                                style="margin-top: 25px"
-                                :xs="24"
-                                :lg="11"
-                                v-for="item in tokenlist"
-                                :key="item.symbol"
-                            >
-                                <TokenBalanceCard
-                                    @click="toTransfer(item)"
-                                    :item="item"
+                            <template v-for="item in tokenlist">
+                                <a-col
+                                    style="margin-top: 25px"
+                                    :xs="24"
+                                    :lg="11"
                                     v-if="item.show"
-                                    style="margin-top: 10px"
-                                    :class="{'not-allowed': !isOwn}"
-                                />
-                            </a-col>
+                                    :key="item.symbol"
+                                >
+                                    <TokenBalanceCard
+                                        @click="toTransfer(item)"
+                                        :item="item"
+                                        style="margin-top: 10px"
+                                        :class="{'not-allowed': !isOwn}"
+                                    />
+                                </a-col>
+                            </template>
                         </a-row>
                     </a-col>
                 </a-row>
             </a-col>
         </a-row>
-        <a-modal v-model="visible"  :footer="null">
+        <a-modal v-model="visible" :footer="null">
             <QRCode style="margin: auto" :content="checksumAddress"/>
         </a-modal>
     </div>
@@ -258,7 +262,7 @@ export default class WalletDetail extends Vue {
     display: block;
     box-shadow: 2px 20px 20px 1px rgba(0, 0, 0, 0.13);
 }
-.wallet-icon span{
+.wallet-icon span {
     display: block;
     width: 140px;
     height: 35px;

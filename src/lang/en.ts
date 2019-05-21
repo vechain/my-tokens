@@ -6,7 +6,10 @@
   wallets: {
     title: 'Wallets',
     import: 'Import',
+    add: 'Add',
     observe: 'Observe',
+    title_add: 'Add Wallet',
+    or: 'OR',
     detail: 'Detail',
     transfer: 'Transfer',
     delete: 'Remove',

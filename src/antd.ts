@@ -12,11 +12,15 @@ import {
   Modal,
   Menu,
   Card,
-  Switch
+  Switch,
+  Divider
 } from 'ant-design-vue'
 
 Vue.component(Switch.name, Switch)
 Vue.use(Switch)
+
+Vue.component(Divider.name, Divider)
+Vue.use(Divider)
 
 Vue.component(Card.name, Card)
 Vue.use(Card)

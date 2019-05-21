@@ -2,11 +2,9 @@
     <a-row class="transfer" type="flex" justify="space-around">
         <a-col :xs="14">
             <a-form layout="vertical" :hideRequiredMark="true" :form="form" @submit="send">
-                    <!-- :label-col="{ span: 5 }"
-                    :wrapper-col="wrapperCol" -->
-                <a-form-item
-                    :label="$t('transfer.from')"
-                >
+                <!-- :label-col="{ span: 5 }"
+                :wrapper-col="wrapperCol"-->
+                <a-form-item :label="$t('transfer.from')">
                     <a-select
                         size="large"
                         @change="onWChange"
@@ -44,11 +42,9 @@
                         </a-select-option>
                     </a-select>
                 </a-form-item>
-                    <!-- :label-col="{ span: 5 }"
-                    :wrapper-col="wrapperCol" -->
-                <a-form-item
-                    :label="$t('transfer.to')"
-                >
+                <!-- :label-col="{ span: 5 }"
+                :wrapper-col="wrapperCol"-->
+                <a-form-item :label="$t('transfer.to')">
                     <a-input
                         size="large"
                         name="to"
@@ -63,11 +59,9 @@
                         }]"
                     />
                 </a-form-item>
-                    <!-- :label-col="{ span: 5 }"
-                    :wrapper-col="wrapperCol" -->
-                <a-form-item
-                    :label="$t('transfer.amount')"
-                >
+                <!-- :label-col="{ span: 5 }"
+                :wrapper-col="wrapperCol"-->
+                <a-form-item :label="$t('transfer.amount')">
                     <a-row type="flex" :gutter="8">
                         <a-col :span="16">
                             <a-form-item>
@@ -350,6 +344,9 @@ export default class Transfer extends Vue {
 .transfer .ant-select-selection-selected-value img {
     width: 25px;
     height: 25px;
+}
+.transfer .ant-input-group {
+    width: 500px;
 }
 </style>
 

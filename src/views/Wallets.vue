@@ -13,17 +13,11 @@
                     </a-col>
                     <a-col>
                         <div>
-                            <!-- <a-button-group> -->
                             <a-button
                                 class="cus-btn"
                                 style="margin-right: 70px;"
-                                @click="importWallet"
-                            >{{$t('wallets.import')}}</a-button>
-                            <a-button
-                                class="cus-btn"
                                 @click="observeWallet"
-                            >{{$t('wallets.observe')}}</a-button>
-                            <!-- </a-button-group> -->
+                            >{{$t('wallets.add')}}</a-button>
                         </div>
                     </a-col>
                 </a-row>
@@ -47,61 +41,46 @@
                 </a-row>
             </div>
             <div v-else class="wallet-empty">
-                <h1>Wallets</h1>
-                <p>There is no wallet. You need to add a wallet first</p>
-                <a-row type="flex">
-                    <a-col class="action" :span="12">
-                        <div @click="observeWallet">
-                            <a-icon type="wallet"/>
-                            <p style="font-size: 16px">{{$t('wallets.observe')}}</p>
-                        </div>
-                    </a-col>
-                    <a-col class="action" :span="12">
-                        <div @click="importWallet">
-                            <a-icon type="sync"/>
-                            <p style="font-size: 16px">{{$t('wallets.import')}}</p>
-                        </div>
-                    </a-col>
-                </a-row>
+                <div>
+                    <p style="font-size: 50px; color: #fff;">
+                        There is no wallet,
+                        <br>You need to add a wallet
+                        <br>before using.
+                    </p>
+                    <AddWallet/>
+                </div>
             </div>
         </div>
-        <a-modal title="Observe Wallet" v-model="visible" @ok="submitWallet" @cancel="resetModal">
-            <a-form :form="form">
-                <a-form-item>
-                    <a-input
-                        ref="address"
-                        v-decorator="['observeAddress', {
-                            rules: [{
-                                required: true,
-                                message: 'Address is required '
-                            }, {
-                                pattern: '^0x[a-fA-F0-9]{40}$',
-                                message: 'Address format invalid'
-                            }]
-                        }]"
-                        placeholder="Start with 0x"
-                    />
-                </a-form-item>
-            </a-form>
+        <a-modal
+            :centered="true"
+            :mask="false"
+            wrapClassName="cus-modal"
+            class="cus-modal"
+            :title="null"
+            :closable="false"
+            :footer="null"
+            v-model="visible"
+            @cancel="onCancel"
+        >
+            <h1 style="color: #fff;">{{$t('wallets.title_add')}}</h1>
+            <add-wallet style="margin: auto" ref="addform"/>
         </a-modal>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import WalletCard from '../components/WalletCard.vue'
+import AddWallet from '../components/AddWallet.vue'
 @Component({
     components: {
-        WalletCard
+        WalletCard,
+        AddWallet
     }
 })
 export default class Wallets extends Vue {
     public visible = false
     public observeAddress = ''
-    public form: any
 
-    public beforeCreate() {
-        this.form = this.$form.createForm(this)
-    }
     public observeWallet() {
         this.checkEnv()
         this.visible = true
@@ -111,37 +90,24 @@ export default class Wallets extends Vue {
         return this.wallets === null
     }
 
-    public async submitWallet() {
-        this.form.validateFields(async (e: any, v: any) => {
-            if (!e) {
-                await this.$store.dispatch('importWallet', v.observeAddress)
-                this.resetModal()
-            }
-        })
-    }
-
     public checkEnv() {
         if (!window.connex) {
             window.location.href = 'https://env.vechain.org/r/#' + encodeURIComponent(location.href)
         }
     }
-
-    public resetModal() {
-        this.form.resetFields()
-        this.visible = false
+    public onCancel() {
+        const temp = this.$refs.addform as AddWallet
+        temp.resetForm()
     }
 
     get wallets() {
+        // return []
         return this.$store.getters.wallets.map((item: app.Wallet) => {
             return {
                 ...item,
                 own: connex.vendor.owned(item.address)
             }
         })
-    }
-    public async importWallet() {
-        this.checkEnv()
-        await this.$store.dispatch('importWallet')
     }
 }
 </script>
@@ -150,15 +116,9 @@ export default class Wallets extends Vue {
     padding: 20px 80px;
 }
 .wallet .wallet-empty {
-    max-width: 500px;
-    margin: auto;
-}
-.wallet .wallet-empty .action {
-    border: 1px solid #e8e8e8;
-    height: 150px;
-    padding-top: 30px;
-    font-size: 45px;
-    color: #656565;
-    text-align: center;
+    margin-top: 50px;
+    margin-left: 20%;
+    max-width: 800px;
+    /* margin: auto; */
 }
 </style>
