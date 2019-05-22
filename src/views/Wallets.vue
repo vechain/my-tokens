@@ -15,7 +15,6 @@
                         <div>
                             <a-button
                                 class="cus-btn"
-                                style="margin-right: 70px;"
                                 @click="observeWallet"
                             >{{$t('wallets.add')}}</a-button>
                         </div>

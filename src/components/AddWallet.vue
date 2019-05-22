@@ -3,6 +3,7 @@
         <a-form-item>
             <a-input
                 ref="address"
+                size="large"
                 v-decorator="['observeAddress', {
                             rules: [{
                                 required: true,

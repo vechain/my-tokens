@@ -360,7 +360,7 @@ export default class WalletDetail extends Vue {
     right: 0;
     margin: auto;
     width: 200px;
-    border-radius: 20px;
+    border-radius: 10px;
     overflow: hidden;
     visibility: hidden;
 }

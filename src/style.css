@@ -105,7 +105,7 @@
   background-color: transparent;
   border-color: #C1C1CD;
   color: #fff;
-  height: 46px;
+  /* height: 46px; */
   box-sizing: border-box;
 }
 
@@ -122,11 +122,11 @@
   /* background-color:  */
 }
 
-.add-wallet .ant-input, .add-wallet .btn {
+.add-wallet .ant-input,
+.add-wallet .btn {
   width: 400px;
   margin: auto;
   display: block;
-  height: 55px;
   box-sizing: border-box;
 }
 .add-wallet .ant-form-item {

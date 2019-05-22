@@ -7,7 +7,6 @@
             <a-col :xs="14" style="margin-left: 20px">
                 <div>
                     <p class="wallet-label">{{item.name + ' '}}</p>
-                    <a-icon v-if="!item.own" type="eye"/>
                 </div>
                 <div
                     style="font-size: 16px; color: #484568"
