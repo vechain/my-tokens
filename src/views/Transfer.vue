@@ -1,157 +1,194 @@
 <template>
-    <a-row class="transfer" type="flex" justify="space-around">
-        <a-col :xs="14">
-            <a-form layout="vertical" :hideRequiredMark="true" :form="form" @submit="send">
-                <!-- :label-col="{ span: 5 }"
-                :wrapper-col="wrapperCol"-->
-                <a-form-item :label="$t('transfer.from')">
-                    <a-select
-                        size="large"
-                        @change="onWChange"
-                        v-decorator="['from', {
-                        initialValue: from,
-                        rules: [{
-                            required: true,
-                            message: 'From is required'
-                        }]
-                    }]"
-                    >
-                        <a-select-option
-                            v-for="wallet in walletList"
-                            :key="wallet.address"
-                            :value="wallet.address"
-                            :title="wallet.name"
+    <div class="transfer">
+        <a-row type="flex" justify="space-between" style="padding: 20px 180px 50px">
+            <a-col>
+                <h2 class="font-g underscore">Transfer</h2>
+            </a-col>
+        </a-row>
+        <a-row type="flex" justify="space-around">
+            <a-col :xs="6">
+                <a-form layout="vertical" :hideRequiredMark="true" :form="form" @submit="send">
+                    <a-form-item :label="$t('transfer.from')">
+                        <a-input
+                            v-show="false"
+                            v-decorator="['from', {
+                                initialValue: from,
+                                rules: [{
+                                    required: true,
+                                    message: 'From is required'
+                                }]
+                            }]"
+                        />
+                        <WalletCard
+                            class="transfer-wallet show-card"
+                            @click="showWl = true"
+                            :item="wallet"
+                        ></WalletCard>
+                    </a-form-item>
+                    <a-form-item :label="$t('transfer.to')">
+                        <a-input
+                            size="large"
+                            name="to"
+                            v-decorator="['to', {
+                                rules: [{
+                                    required: true,
+                                    message: 'To is required'
+                                },{
+                                    pattern: '^0x[a-fA-F0-9]{40}$',
+                                    message: 'To format invalid'
+                                }]
+                            }]"
+                        />
+                    </a-form-item>
+                    <a-form-item :label="$t('transfer.amount')">
+                        <a-input
+                            size="large"
+                            class="amount-input"
+                            v-decorator="['val', {
+                                rules: [{
+                                    required: true,
+                                    message: 'Amount is required'
+                                }, {
+                                    validator: checkAmount
+                                }]
+                            }]"
+                            name="amount"
                         >
-                            <a-row type="flex" justify="space-between">
-                                <a-col>
-                                    <a-row type="flex" justify="space-between">
-                                        <a-col>
-                                            <span class="item-name">{{wallet.name}}</span>
-                                        </a-col>
-                                        <a-col>
-                                            <span
-                                                class="item-address text-monospace"
-                                            >({{wallet.address | toChecksumAddress | shortAddress}})</span>
-                                        </a-col>
-                                    </a-row>
-                                </a-col>
-                                <a-col>
-                                    <span class="item-balance">VTHO: {{wallet.vtho | balance}}</span>
-                                </a-col>
-                            </a-row>
-                        </a-select-option>
+                            <a-button
+                                @click="showTl=true"
+                                class="cus-btn token-btn"
+                                slot="addonBefore"
+                            >
+                                <img :src="token.img" :alt="token.symbol">
+                            </a-button>
+                            <a-button
+                                @click="setAmount"
+                                class="cus-btn balance-btn"
+                                slot="addonAfter"
+                            >{{tokenBalance | balance}}</a-button>
+                        </a-input>
+                    </a-form-item>
+                    <a-form-item v-if="showImport">
+                        <a-checkbox
+                            @change="doImport = !doImport"
+                            style="color: #fff;"
+                        >Import this wallet after the transaction</a-checkbox>
+                    </a-form-item>
+                    <a-form-item class="send-wapper">
+                        <button
+                            class="send-btn add-btn btn ant-btn ant-btn-default ant-btn-lg"
+                            type="submit"
+                        >{{$t('transfer.send')}}</button>
+                    </a-form-item>
+                </a-form>
+            </a-col>
+        </a-row>
+        <a-modal
+            :mask="false"
+            :closable="false"
+            :footer="null"
+            wrapClassName="cus-modal"
+            v-model="showTl"
+        >
+            <h1>Tokens</h1>
+            <div class="transfer-list-container">
+                <TokenBalanceCard
+                    v-for="item in tokenlist"
+                    :key="item.symbol"
+                    style="margin-top: 10px;"
+                    @click="tokenChange(item.symbol)"
+                    :item="item"
+                />
+            </div>
+        </a-modal>
+        <a-modal
+            :mask="false"
+            :closable="false"
+            :footer="null"
+            wrapClassName="cus-modal"
+            v-model="showWl"
+        >
+            <a-row type="flex" align="middle" justify="space-between">
+                <a-col>
+                    <h1>Wallets</h1>
+                </a-col>
+                <a-col>
+                    <a-select
+                        class="token-select"
+                        dropdownClassName="token-select-dropdown"
+                        v-model="unit"
+                        @change="tokenChange"
+                    >
+                        <template v-for="token in tokenlist">
+                            <a-select-option
+                                :key="token.symbol"
+                                :value="token.symbol"
+                            >{{token.symbol}}</a-select-option>
+                        </template>
                     </a-select>
-                </a-form-item>
-                <!-- :label-col="{ span: 5 }"
-                :wrapper-col="wrapperCol"-->
-                <a-form-item :label="$t('transfer.to')">
-                    <a-input
+                </a-col>
+            </a-row>
+
+            <div class="transfer-list-container">
+                <template v-if="walletList.length">
+                    <!-- <template v-if="false"> -->
+                    <WalletCard
+                        style="margin-bottom: 20px;"
+                        class="transfer-wallet"
+                        @click="walletChange(item)"
+                        v-for="item in walletList"
+                        :item="item"
+                        :key="item.address"
+                    >
+                        <div slot="actions">{{item.balance | balance}} {{unit}}</div>
+                    </WalletCard>
+                </template>
+                <template v-else>
+                    <p style="text-align: center; color: #fff; padding: 30px 0;font-size: 16px">
+                        There is no wallet,
+                        <br>You need to import a wallet first.
+                    </p>
+                    <a-button
+                        style="width: 300px; font-size: 22px; margin: auto; display: block"
                         size="large"
-                        name="to"
-                        v-decorator="['to', {
-                            rules: [{
-                                required: true,
-                                message: 'To is required'
-                            },{
-                                pattern: '^0x[a-fA-F0-9]{40}$',
-                                message: 'To format invalid'
-                            }]
-                        }]"
-                    />
-                </a-form-item>
-                <!-- :label-col="{ span: 5 }"
-                :wrapper-col="wrapperCol"-->
-                <a-form-item :label="$t('transfer.amount')">
-                    <a-row type="flex" :gutter="8">
-                        <a-col :span="16">
-                            <a-form-item>
-                                <a-input
-                                    size="large"
-                                    v-decorator="['val', {
-                                    rules: [{
-                                        required: true,
-                                        message: 'Amount is required'
-                                    }, {
-                                       validator: checkAmount
-                                    }]
-                                }]"
-                                    name="amount"
-                                />
-                                <span>{{tokenBalance | balance}}</span>
-                            </a-form-item>
-                        </a-col>
-                        <a-col :span="8">
-                            <a-form-item>
-                                <a-select
-                                    size="large"
-                                    @change="onSChange"
-                                    v-decorator="['unit', {
-                                    initialValue: unit,
-                                    rules: [{
-                                        required: true,
-                                        message: 'Type is required'
-                                    }]
-                                }]"
-                                >
-                                    <template v-for="token in tokenlist">
-                                        <a-select-option
-                                            v-if="token.show"
-                                            :key="token.symbol"
-                                            :value="token.symbol"
-                                        >
-                                            <a-row type="flex" justify="space-between">
-                                                <a-col :span="8">
-                                                    <img
-                                                        style="margin-right: 10px"
-                                                        width="45px"
-                                                        height="45px"
-                                                        :src="token.img"
-                                                        :alt="token.name"
-                                                    >
-                                                </a-col>
-                                                <a-col :span="16">
-                                                    <a-row>
-                                                        <a-col style="text-align: right;">
-                                                            <span
-                                                                class="select-opt item-name"
-                                                            >{{token.symbol}}</span>
-                                                        </a-col>
-                                                        <a-col style="text-align: right;">
-                                                            <span
-                                                                class="select-opt item-balance"
-                                                            >{{token.balance | balance}}</span>
-                                                        </a-col>
-                                                    </a-row>
-                                                </a-col>
-                                            </a-row>
-                                        </a-select-option>
-                                    </template>
-                                </a-select>
-                            </a-form-item>
-                        </a-col>
-                    </a-row>
-                </a-form-item>
-                <a-form-item :wrapper-col="{ xs: 10, offset: 12 }">
-                    <a-button size="large" type="primary" html-type="submit">{{$t('transfer.send')}}</a-button>
-                </a-form-item>
-            </a-form>
-        </a-col>
-    </a-row>
+                        @click="importWallet"
+                        class="btn import-btn"
+                    >IMPOERT</a-button>
+                </template>
+            </div>
+            <div style="text-align:center">
+                <a-button type="primary" @click="importWallet" ghost v-if="walletList.length">Import</a-button>
+            </div>
+        </a-modal>
+    </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
-@Component
+import TokenBalanceCard from '../components/TokenBalanceCard.vue'
+import WalletCard from '../components/WalletCard.vue'
+@Component({
+    components: {
+        TokenBalanceCard,
+        WalletCard
+    }
+})
 export default class Transfer extends Vue {
     private from: string = ''
     private unit: string = 'VET'
-    private wrapperCol = {
-        xs: 16,
-        lg: 12
-    }
+    private token!: app.Token
+    private showTl = false
+    private showWl = false
     private form: any
+    private wallet: app.Wallet | null = null
+    private showImport = false
+    private doImport = false
 
     public beforeCreate() {
         this.form = this.$form.createForm(this)
+    }
+
+    public async importWallet() {
+        await this.$store.dispatch('importWallet')
     }
 
     get walletList(): app.Wallet[] {
@@ -160,15 +197,11 @@ export default class Transfer extends Vue {
         }).map((item: app.Wallet) => {
             return {
                 ...item,
-                vtho: this.$store.getters.balanceList
+                balance: this.$store.getters.balanceList
                     && this.$store.getters.balanceList[item.address]
-                    && this.$store.getters.balanceList[item.address].VTHO
+                    && this.$store.getters.balanceList[item.address][this.unit]
             }
         })
-    }
-
-    public onWChange(val: string, items: any[]) {
-        this.from = val
     }
 
     public checkAmount(rule: any, value: any, callback: any) {
@@ -179,8 +212,24 @@ export default class Transfer extends Vue {
         }
     }
 
-    public onSChange(val: string, items: any[]) {
-        this.unit = val
+    public walletChange(wallet: app.Wallet) {
+        this.wallet = wallet
+        this.from = wallet.address
+        this.form.setFieldsValue({ from: wallet.address })
+        this.showWl = false
+        this.showImport = false
+    }
+
+    public tokenChange(symbol: string) {
+        this.token = this.tokenlist.find((item: app.Token) => {
+            return item.symbol === symbol
+        })
+        this.unit = symbol
+        this.showTl = false
+    }
+
+    public setAmount() {
+        this.form.setFieldsValue({ val: this.tokenBalance })
     }
 
     get balances() {
@@ -193,35 +242,29 @@ export default class Transfer extends Vue {
             && this.$store.getters.balanceList[this.from][this.unit] || 0
     }
 
-    get hide() {
-        return this.$store.getters.isHide
-    }
-
-    // All tokens
     get tokenlist() {
-        const symbolList = ['VET', 'VTHO']
         return this.$store.getters.tokens.map((item: app.Token) => {
-            let isShow = true
-            if (this.hide) {
-                isShow = symbolList.includes(item.symbol) || this.balances[item.symbol] > 0
-            }
             return {
                 ...item,
                 balance: this.balances[item.symbol] || 0,
-                img: require(`../assets/${item.icon}`),
-                show: isShow
+                img: require(`../assets/${item.icon}`)
             }
         })
     }
 
     public created() {
+        this.token = this.tokenlist[0]
         this.initForm()
+    }
+
+    public mounted() {
+        this.form.setFieldsValue({ from: this.from })
     }
 
     public send(e: Event) {
         e.preventDefault()
         this.form.validateFields(async (err: any, val: any) => {
-            const isVet = (val.unit! as string).toLowerCase() === 'vet'
+            const isVet = (this.unit! as string).toLowerCase() === 'vet'
             let decimals = 18
             if (!err) {
                 let result: any
@@ -255,9 +298,19 @@ export default class Transfer extends Vue {
                         window.open(`https://insight.vecha.in/#/txs/${result.txid}`)
                     }
                 })
-                this.form.resetFields(['to', 'val'])
+                if (this.doImport) {
+                    this.$store.dispatch('importWallet', this.from)
+                }
+                this.resetForm()
             }
         })
+    }
+
+    public resetForm() {
+        this.form.resetFields(['to', 'val', 'from'])
+        this.wallet = null
+        this.doImport = false
+        this.showImport = false
     }
 
     public async transferVet(from: string, to: string, amount: number, decimals: number) {
@@ -306,17 +359,31 @@ export default class Transfer extends Vue {
             return item.address.toLowerCase() === (this.$route.query.from || '').toString().toLowerCase()
         })
         const unit = this.tokenlist.find((item: app.Token) => {
-            return item.symbol.toLowerCase() === (this.$route.query.symbol || '').toString().toLowerCase()
+            return item.symbol.toLowerCase() === (this.$route.query.symbol || 'VET').toString().toLowerCase()
         })
+        if (this.$route.query && this.$route.query.from) {
+            if (connex.vendor.owned(this.$route.query.from.toString())) {
+                if (wallet) {
+                    this.from = wallet.address
+                    this.wallet = wallet
+                } else {
+                    this.showImport = true
+                    this.from = this.$route.query.from.toString().toLowerCase()
+                    this.wallet = {
+                        name: 'Unknow wallet',
+                        address: this.from
+                    }
+                }
+            }
+        }
 
-        this.from = wallet && wallet.address || ''
         this.unit = unit && unit.symbol
     }
 }
 </script>
 <style>
 .transfer {
-    padding-top: 50px;
+    padding: 20px 80px;
 }
 .select-opt.item-name,
 .transfer .item-name {
@@ -345,8 +412,111 @@ export default class Transfer extends Vue {
     width: 25px;
     height: 25px;
 }
-.transfer .ant-input-group {
-    width: 500px;
+.transfer .ant-input-group-addon {
+    background: transparent;
+}
+.transfer .token-btn:after,
+.transfer .balance-btn:after {
+    border: none;
+}
+.transfer .token-btn img {
+    background-color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+}
+.transfer .token-btn,
+.transfer .balance-btn {
+    background: transparent;
+    padding: 0;
+    border: none;
+}
+
+.transfer .ant-input-wrapper .ant-input-group-addon {
+    border-color: #c1c1cd;
+}
+
+.transfer .ant-input-wrapper .ant-input-group-addon:hover {
+    background-color: rgba(247, 247, 247, 0.2);
+}
+.transfer .ant-form-item-control.has-error .ant-input,
+.transfer .ant-input-wrapper .ant-input:focus,
+.transfer .ant-input-wrapper .ant-input:hover {
+    border-left-width: 1px;
+    border-right-width: 1px;
+}
+.transfer .ant-input-group .ant-input {
+    border-left-width: 0;
+    border-right-width: 0;
+}
+.transfer-wallet {
+    width: 380px;
+    margin: auto;
+    transition: all 0.3s ease;
+}
+.transfer .send-wapper {
+    padding-top: 30px;
+}
+.transfer .send-wapper .ant-form-item-children,
+.transfer .send-wapper .send-btn {
+    display: block;
+    margin: auto;
+}
+.transfer .send-wapper .send-btn {
+    width: 350px;
+    font-size: 20px;
+    opacity: 0.6;
+}
+.transfer .send-wapper .send-btn:hover {
+    opacity: 1;
+}
+.transfer .send-wapper .send-btn::after {
+    background-image: url(../assets/sendLeft.png);
+}
+
+.transfer .send-wapper .send-btn::before {
+    background-image: url(../assets/sendRight.png);
+}
+
+.transfer-list-container .transfer-wallet:hover {
+    transform: scale(1.11);
+}
+
+.transfer-list-container {
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 20px 15px;
+    overflow-x: visible;
+}
+.transfer-list-container .actions {
+    font-size: 16px;
+    color: #333;
+}
+.token-select .ant-select-selection,
+.token-select .ant-select-selection span {
+    background-color: transparent;
+    border-color: rgba(247, 247, 247, 0.2);
+    color: #fff;
+}
+.ant-select-dropdown.token-select-dropdown {
+    background-color: #80788c;
+}
+.ant-select-dropdown.token-select-dropdown .ant-select-dropdown-menu-item {
+    color: #fefefe;
+}
+.ant-select-dropdown.token-select-dropdown
+    .ant-select-dropdown-menu-item-active {
+    background-color: #afafaf;
+}
+.ant-select-dropdown.token-select-dropdown
+    .ant-select-dropdown-menu-item-selected,
+.ant-select-dropdown.token-select-dropdown
+    .ant-select-dropdown-menu-item:hover {
+    background-color: #9e99a7;
+}
+.amount-input input {
+    font-family: "teko";
+    font-size: 22px;
 }
 </style>
 

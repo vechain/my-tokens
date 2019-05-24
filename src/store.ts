@@ -10,6 +10,11 @@ declare namespace Store {
   interface State {
     wallets?: app.Wallet[]
     tokens?: app.Token[]
+    prices: {
+      [symbol: string]: {
+        [currencies: string]: number
+      }
+    } | null
     hideTokens: boolean
     netWork: 'main' | 'test' | null
     balances: {
@@ -54,6 +59,7 @@ class Store extends Vuex.Store<Store.State> {
         netWork: null,
         wallets: [],
         tokens: [],
+        prices: null,
         balances: null
       },
       mutations: {
@@ -81,6 +87,17 @@ class Store extends Vuex.Store<Store.State> {
         },
         netWork(state, payload) {
           state.netWork = payload
+        },
+        setPrices(state, payload) {
+          const keys = Object.keys(payload)
+
+          if (!state.prices) {
+            state.prices = {}
+          }
+
+          keys.forEach((item) => {
+            Vue.set(state.prices!, item, payload[item])
+          })
         },
         setBalance(state, payload) {
           if (!state.balances) {
@@ -162,19 +179,19 @@ class Store extends Vuex.Store<Store.State> {
           let result = addr
           try {
             let cert!: Connex.Vendor.SigningService.CertResponse
-            if (!addr) {
-              const svc = connex.vendor.sign('cert')
-
-              cert = await svc.request({
-                purpose: 'identification',
-                payload: {
-                  type: 'text',
-                  content: 'Choose wallet you want to add to "Token Transfer".'
-                }
-              })
-
-              result = cert.annex.signer
+            const svc = connex.vendor.sign('cert')
+            if (addr) {
+              svc.signer(addr)
             }
+            cert = await svc.request({
+              purpose: 'identification',
+              payload: {
+                type: 'text',
+                content: 'Choose wallet you want to add to "Token Transfer".'
+              }
+            })
+
+            result = cert.annex.signer
 
             const count = await DB.wallets.count()
             const temp = {
@@ -222,7 +239,26 @@ class Store extends Vuex.Store<Store.State> {
     } catch (error) {}
     this.initTokenMethods()
   }
+  public async getPrice() {
+    const resp = await fetch(
+      'https://api.coingecko.com/api/v3/simple/price?ids=vechain%2Cvethor-token&vs_currencies=usd',
+      {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        referrer: 'no-referrer'
+      }
+    )
 
+    if (resp.status === 200) {
+      const body = await resp.json()
+      const payload = {
+        VET: body.vechain,
+        VTHO: body['vethor-token']
+      }
+      this.commit('setPrices', payload)
+    }
+  }
   private async getBalance() {
     this.state.wallets!.forEach(async (item) => {
       const info = await connex.thor.account(item.address).get()

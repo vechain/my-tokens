@@ -1,23 +1,26 @@
 <template>
     <div v-on="$listeners" class="wallet-item">
-        <a-row type="flex" style="height: 100%" align="middle" >
+        <a-row type="flex" style="height: 100%" align="middle">
             <a-col :xs="8" style="text-align: center;">
-                <img v-picasso="item.address" class="wallet-img" alt>
+                <img v-if="item" v-picasso="item.address" class="wallet-img">
+                <img v-else src="../assets/unknowWallet.png" class="wallet-img">
             </a-col>
             <a-col :xs="14" style="margin-left: 20px">
                 <div>
-                    <p class="wallet-label">{{item.name + ' '}}</p>
+                    <p v-if="item" :title="item.name" class="wallet-label">{{item.name + ' '}}</p>
+                    <p v-else class="wallet-label">Unknow Wallet</p>
                 </div>
                 <div
-                    style="font-size: 16px; color: #484568"
+                    v-if="item"
+                    class="wallet-address"
                     :title="item.address"
                 >{{item.address | toChecksumAddress | shortAddress}}</div>
+                <div v-else style="color:#807F89;">click to select a wallet</div>
                 <div class="actions">
                     <slot name="actions"/>
                 </div>
             </a-col>
         </a-row>
-        
     </div>
 </template>
 <script lang="ts">
@@ -60,11 +63,17 @@ export default class WalletCard extends Vue {
     font-size: 20px;
     margin-bottom: 0;
     margin-right: 10px;
+    white-space: nowrap;
     color: #484568;
 }
 .wallet-item .actions {
     margin-top: 5px;
-    text-align: right;
+    text-align: left;
+}
+.wallet-item .wallet-address {
+    font-size: 16px;
+    color: #484568;
+    text-align: left;
 }
 </style>
 

@@ -28,7 +28,7 @@
     </a-form>
 </template>
 <script lang="ts">
-import { Vue, Component, Emit } from 'vue-property-decorator'
+import { Vue, Component } from 'vue-property-decorator'
 @Component
 export default class AddWallet extends Vue {
     public form: any
@@ -42,12 +42,14 @@ export default class AddWallet extends Vue {
             if (!e) {
                 await this.$store.dispatch('importWallet', v.observeAddress)
                 this.resetForm()
+                this.$emit('finished')
             }
         })
     }
 
     public async importWallet() {
         await this.$store.dispatch('importWallet')
+        this.$emit('finished')
     }
 
     public resetForm() {

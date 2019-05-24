@@ -13,11 +13,15 @@ import {
   Menu,
   Card,
   Switch,
-  Divider
+  Divider,
+  Checkbox
 } from 'ant-design-vue'
 
 Vue.component(Switch.name, Switch)
 Vue.use(Switch)
+
+Vue.component(Checkbox.name, Checkbox)
+Vue.use(Checkbox)
 
 Vue.component(Divider.name, Divider)
 Vue.use(Divider)

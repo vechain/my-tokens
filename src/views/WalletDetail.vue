@@ -129,8 +129,6 @@
         <a-modal
             :mask="false"
             wrapClassName="cus-modal"
-            class="cus-modal"
-            :title="null"
             :closable="false"
             :footer="null"
             v-model="visibleM"
@@ -327,11 +325,6 @@ export default class WalletDetail extends Vue {
 
 .wallet-name span {
     display: block;
-}
-
-.cc-theme .wallet-name span,
-.cc-theme .wallet-address {
-    color: #fff;
 }
 
 .wallet-address {

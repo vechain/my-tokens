@@ -2,14 +2,9 @@
     <div class="wallet">
         <div v-if="!loading">
             <div v-if="wallets.length" class="wallet-list">
-                <a-row type="flex" justify="space-between" style="padding: 20px 80px 0">
+                <a-row type="flex" justify="space-between" style="padding: 20px 180px 0">
                     <a-col>
-                        <h2>{{$t('wallets.title')}}</h2>
-                    </a-col>
-                </a-row>
-                <a-row type="flex" justify="space-between" style="padding: 0 80px 0">
-                    <a-col>
-                        <div class="underscore"></div>
+                        <h2 class="font-g underscore">{{$t('wallets.title')}}</h2>
                     </a-col>
                     <a-col>
                         <div>
@@ -62,7 +57,7 @@
             @cancel="onCancel"
         >
             <h1 style="color: #fff;">{{$t('wallets.title_add')}}</h1>
-            <add-wallet style="margin: auto" ref="addform"/>
+            <add-wallet @finished="visible=false" style="margin: auto" ref="addform"/>
         </a-modal>
     </div>
 </template>

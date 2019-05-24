@@ -1,25 +1,23 @@
 <template>
     <a-card v-on="$listeners" class="token-balance-card">
-        <a-row type="flex" align="middle">
+        <a-row type="flex" align="middle" justify="space-between">
             <a-col :xs="5">
                 <div class="img" :style="background"></div>
             </a-col>
-            <a-col :xs="16">
-                <p class="card-summary balance">{{item.balance | balance}}<span class="card-summary">{{item.symbol}}</span></p>
+            <a-col :xs="19">
+                <p
+                    ref="balance"
+                    class="card-summary balance"
+                >
+                    <span>{{item.balance | balance}}</span>
+                    <span class="card-summary">{{item.symbol}}</span>
+                </p>
             </a-col>
-            <!-- <a-col :xs="7">
-                <router-link
-                    class="go-transfer"
-                    :to="{name: 'transfer', query: {
-                    symbol: item.symbol
-                }}"
-                >Transfer</router-link>
-            </a-col>-->
         </a-row>
     </a-card>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 @Component
 export default class TokenBalanceCard extends Vue {
     @Prop(Object)
@@ -33,7 +31,7 @@ export default class TokenBalanceCard extends Vue {
 <style>
 .token-balance-card {
     transition: box-shadow 0.2s ease;
-    background-color: #F1F3FF;
+    background-color: #f1f3ff;
     border-radius: 8px;
 }
 .token-balance-card .img {
