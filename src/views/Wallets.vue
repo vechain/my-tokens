@@ -95,7 +95,6 @@ export default class Wallets extends Vue {
     }
 
     get wallets() {
-        // return []
         return this.$store.getters.wallets.map((item: app.Wallet) => {
             return {
                 ...item,
@@ -113,6 +112,5 @@ export default class Wallets extends Vue {
     margin-top: 50px;
     margin-left: 20%;
     max-width: 800px;
-    /* margin: auto; */
 }
 </style>

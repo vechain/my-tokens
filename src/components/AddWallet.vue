@@ -7,23 +7,23 @@
                 v-decorator="['observeAddress', {
                             rules: [{
                                 required: true,
-                                message: 'Address is required'
+                                message: $t('msg.addr_require')
                             }, {
                                 pattern: '^0x[a-fA-F0-9]{40}$',
-                                message: 'Address format invalid'
+                                message: $t('msg.addr_format')
                             }]
                         }]"
-                placeholder="Start with 0x"
+                :placeholder="$t('wallets.addr_placeholder')"
             />
         </a-form-item>
         <a-form-item>
-            <a-button size="large" class="btn add-btn" @click="submitWallet">ADD</a-button>
+            <a-button size="large" class="btn add-btn" @click="submitWallet">{{$t('wallets.add')}}</a-button>
         </a-form-item>
         <a-divider class="divider">
             <span style="color: #fff; font-size: 20px">{{$t('wallets.or')}}</span>
         </a-divider>
         <a-form-item>
-            <a-button size="large" class="btn import-btn" @click="importWallet">IMPOERT</a-button>
+            <a-button size="large" class="btn import-btn" @click="importWallet">{{$t('wallets.import')}}</a-button>
         </a-form-item>
     </a-form>
 </template>

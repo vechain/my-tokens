@@ -1,6 +1,6 @@
 <template>
     <div style="padding: 20px 80px;">
-        <h1>Tokens</h1>
+        <h1>{{$t('wallets.token')}}</h1>
         <a-row type="flex" justify="start">
             <a-col
                 :xs="24"

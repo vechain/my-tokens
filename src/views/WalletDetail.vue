@@ -135,14 +135,14 @@
             @cancel="onCancel"
         >
             <div class="remove-wallet-dialog">
-                <h1>Remove Wallet</h1>
-                <p>Are you sure to remove this wallet?</p>
+                <h1>{{$t('wallets.remove_title')}}</h1>
+                <p>{{$t('wallets.remove_msg')}}</p>
                 <a-row style="padding-top: 20px;" type="flex" justify="space-around">
                     <a-col>
-                        <a-button @click="onCancel" class="cus-btn">No</a-button>
+                        <a-button @click="onCancel" class="cus-btn">{{$t('wallets.remove_no')}}</a-button>
                     </a-col>
                     <a-col>
-                        <a-button @click="onOk" class="cus-btn">Yes</a-button>
+                        <a-button @click="onOk" class="cus-btn">{{$t('wallets.remove_yes')}}</a-button>
                     </a-col>
                 </a-row>
             </div>

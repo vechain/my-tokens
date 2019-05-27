@@ -2,7 +2,7 @@
     <div class="transfer">
         <a-row type="flex" justify="space-between" style="padding: 20px 180px 50px">
             <a-col>
-                <h2 class="font-g underscore">Transfer</h2>
+                <h2 class="font-g underscore">{{$t('transfer.title')}}</h2>
             </a-col>
         </a-row>
         <a-row type="flex" justify="space-around">
@@ -15,7 +15,7 @@
                                 initialValue: from,
                                 rules: [{
                                     required: true,
-                                    message: 'From is required'
+                                    message: $t('msg.from_require')
                                 }]
                             }]"
                         />
@@ -32,10 +32,10 @@
                             v-decorator="['to', {
                                 rules: [{
                                     required: true,
-                                    message: 'To is required'
+                                    message: $t('msg.to_require')
                                 },{
                                     pattern: '^0x[a-fA-F0-9]{40}$',
-                                    message: 'To format invalid'
+                                    message: $t('msg.to_format')
                                 }]
                             }]"
                         />
@@ -47,7 +47,7 @@
                             v-decorator="['val', {
                                 rules: [{
                                     required: true,
-                                    message: 'Amount is required'
+                                    message: $t('msg.amount_require')
                                 }, {
                                     validator: checkAmount
                                 }]
@@ -72,7 +72,7 @@
                         <a-checkbox
                             @change="doImport = !doImport"
                             style="color: #fff;"
-                        >Import this wallet after the transaction</a-checkbox>
+                        >{{$t('transfer.import_after_tx')}}</a-checkbox>
                     </a-form-item>
                     <a-form-item class="send-wapper">
                         <button
@@ -90,7 +90,7 @@
             wrapClassName="cus-modal"
             v-model="showTl"
         >
-            <h1>Tokens</h1>
+            <h1>{{$t('wallets.token')}}</h1>
             <div class="transfer-list-container">
                 <TokenBalanceCard
                     v-for="item in tokenlist"
@@ -110,7 +110,7 @@
         >
             <a-row type="flex" align="middle" justify="space-between">
                 <a-col>
-                    <h1>Wallets</h1>
+                    <h1>{{$t('wallets.title')}}</h1>
                 </a-col>
                 <a-col>
                     <a-select
@@ -144,20 +144,24 @@
                     </WalletCard>
                 </template>
                 <template v-else>
-                    <p style="text-align: center; color: #fff; padding: 30px 0;font-size: 16px">
-                        There is no wallet,
-                        <br>You need to import a wallet first.
-                    </p>
+                    <p
+                        style="text-align: center; color: #fff; padding: 30px 0;font-size: 16px"
+                    >{{$t('transfer.no_wallet')}}</p>
                     <a-button
                         style="width: 300px; font-size: 22px; margin: auto; display: block"
                         size="large"
                         @click="importWallet"
                         class="btn import-btn"
-                    >IMPOERT</a-button>
+                    >{{$t('wallets.import')}}</a-button>
                 </template>
             </div>
             <div style="text-align:center">
-                <a-button type="primary" @click="importWallet" ghost v-if="walletList.length">Import</a-button>
+                <a-button
+                    type="primary"
+                    @click="importWallet"
+                    ghost
+                    v-if="walletList.length"
+                >{{$t('wallets.import')}}</a-button>
             </div>
         </a-modal>
     </div>
@@ -205,8 +209,9 @@ export default class Transfer extends Vue {
     }
 
     public checkAmount(rule: any, value: any, callback: any) {
+        const msg = this.$t('msg.amount_invalid')
         if (!Vue.filter('balanceCheck')(value)) {
-            callback(new Error('Amount is invalid'))
+            callback(new Error(msg.toString()))
         } else {
             callback()
         }
@@ -291,8 +296,8 @@ export default class Transfer extends Vue {
                     coin: val.unit
                 })
                 this.$success({
-                    title: 'The request send success',
-                    content: `The Txid: ${result.txid}, check the information`,
+                    title: this.$t('transfer.tx_success').toString(),
+                    content: this.$t('transfer.tx_info', {txid: result.txid}).toString(),
                     maskClosable: true,
                     onOk() {
                         window.open(`https://insight.vecha.in/#/txs/${result.txid}`)
