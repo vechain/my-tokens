@@ -1,12 +1,12 @@
 <template>
     <div class="transfer">
-        <a-row type="flex" justify="space-between" style="padding: 20px 180px 50px">
-            <a-col>
+        <a-row type="flex" justify="space-around">
+            <a-col :md="22" :lg="18" :xl="16" :xxl="14">
                 <h2 class="font-g underscore">{{$t('transfer.title')}}</h2>
             </a-col>
         </a-row>
         <a-row type="flex" justify="space-around">
-            <a-col :xs="6">
+            <a-col :md="18" :lg="14" :xl="12" :xxl="8">
                 <a-form layout="vertical" :hideRequiredMark="true" :form="form" @submit="send">
                     <a-form-item :label="$t('transfer.from')">
                         <a-input

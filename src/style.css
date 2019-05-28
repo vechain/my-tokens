@@ -88,7 +88,7 @@
   height: 5px;
   background: linear-gradient( to right, #FFBC27, #FFDF4F);
   bottom: 10px;
-  width: 100%;
+  width: 150px;
   position: absolute;
   content: "";
   display: block;
