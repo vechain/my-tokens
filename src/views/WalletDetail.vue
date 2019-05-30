@@ -35,7 +35,7 @@
                                             maxlength="20"
                                             @keypress.enter="saveName"
                                             @blur="isEdit=false;name=wallet.name"
-                                            v-model="name"
+                                            v-model.trim="name"
                                         ></a-input>
                                         <span :title="wallet.name" v-show="!isEdit">{{wallet.name}}</span>
                                     </a-col>
@@ -98,7 +98,7 @@
                     <a-col :xs="14" :lg="16">
                         <a-row type="flex" justify="end">
                             <a-col>
-                                <a-switch :defaultChecked="true" @change="onHideChange"/>
+                                <a-switch :defaultChecked="hide" @change="onHideChange"/>
                             </a-col>
                             <a-col
                                 style="color: #fff; font-size: 18px; padding-left: 15px;"
