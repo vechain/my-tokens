@@ -2,8 +2,8 @@
     <div class="wallet">
         <div v-if="!loading">
             <div v-if="wallets.length" class="wallet-list">
-                <a-row type="flex" justify="space-around">
-                    <a-col a-col :md="22" :lg="18" :xl="16" :xxl="14">
+                <a-row type="flex" align="middle" justify="space-around">
+                    <a-col a-col :md="20" :lg="18" :xl="16" :xxl="14">
                         <h2 class="font-g underscore">{{$t('wallets.title')}}</h2>
                     </a-col>
                     <a-col>

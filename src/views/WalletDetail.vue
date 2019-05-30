@@ -37,7 +37,7 @@
                                             @blur="isEdit=false;name=wallet.name"
                                             v-model.trim="name"
                                         ></a-input>
-                                        <a-tooltip placement="top" :title="wallet.name">
+                                        <a-tooltip placement="topRight" :title="wallet.name">
                                             <span
                                                 v-show="!isEdit"
                                             >{{wallet.name}}</span>
