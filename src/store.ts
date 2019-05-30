@@ -178,20 +178,18 @@ class Store extends Vuex.Store<Store.State> {
         async importWallet({ commit }, addr) {
           let result = addr
           try {
-            let cert!: Connex.Vendor.SigningService.CertResponse
-            const svc = connex.vendor.sign('cert')
-            if (addr) {
-              svc.signer(addr)
+            if (!addr) {
+              let cert!: Connex.Vendor.SigningService.CertResponse
+              const svc = connex.vendor.sign('cert')
+              cert = await svc.request({
+                purpose: 'identification',
+                payload: {
+                  type: 'text',
+                  content: 'Choose wallet you want to add to "Token Transfer".'
+                }
+              })
+              result = cert.annex.signer
             }
-            cert = await svc.request({
-              purpose: 'identification',
-              payload: {
-                type: 'text',
-                content: 'Choose wallet you want to add to "Token Transfer".'
-              }
-            })
-
-            result = cert.annex.signer
 
             const count = await DB.wallets.count()
             const temp = {
