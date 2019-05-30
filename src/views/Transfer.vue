@@ -230,6 +230,7 @@ export default class Transfer extends Vue {
         })
         this.unit = symbol
         this.showTl = false
+        this.form.resetFields(['val'])
     }
 
     public setAmount() {
