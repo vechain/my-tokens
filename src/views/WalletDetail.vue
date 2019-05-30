@@ -37,7 +37,11 @@
                                             @blur="isEdit=false;name=wallet.name"
                                             v-model.trim="name"
                                         ></a-input>
-                                        <span :title="wallet.name" v-show="!isEdit">{{wallet.name}}</span>
+                                        <a-tooltip placement="top" :title="wallet.name">
+                                            <span
+                                                v-show="!isEdit"
+                                            >{{wallet.name}}</span>
+                                        </a-tooltip>
                                     </a-col>
                                     <a-col :xs="5">
                                         <a-button
@@ -215,13 +219,6 @@ export default class WalletDetail extends Vue {
     }
     public deleteWallet() {
         this.visibleM = true
-        // this.$confirm({
-        //     title: this.$tc('wallets.dlt_conf_msg'),
-        //     onOk: async () => {
-        //         await this.$store.dispatch('deleteWallet', { address: this.wallet.address })
-        //         this.$router.push({ name: 'wallets' })
-        //     }
-        // })
     }
 
     public onHover() {
@@ -329,6 +326,8 @@ export default class WalletDetail extends Vue {
 
 .wallet-name span {
     display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .wallet-address {
