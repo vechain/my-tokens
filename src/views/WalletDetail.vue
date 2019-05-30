@@ -3,7 +3,7 @@
         <a-row type="flex" justify="center">
             <a-col :xs="24">
                 <a-row :gutter="{xs: 8, lg: 24}" type="flex" justify="space-around">
-                    <a-col :xs="8" :lg="6">
+                    <a-col :xs="8" :lg="7">
                         <a-row>
                             <a-col>
                                 <a-row type="flex" :gutter="8" justify="center" align="middle">
@@ -43,7 +43,7 @@
                                             >{{wallet.name}}</span>
                                         </a-tooltip>
                                     </a-col>
-                                    <a-col :xs="5">
+                                    <a-col :xs="6">
                                         <a-button
                                             v-show="!isEdit"
                                             style="margin-left: 20px"
@@ -108,7 +108,7 @@
                                 style="color: #fff; font-size: 18px; padding-left: 15px;"
                             >{{$t('wallets.hide_amount')}}</a-col>
                         </a-row>
-                        <a-row type="flex" :gutter="8" justify="space-between">
+                        <a-row type="flex" :gutter="2" justify="space-between">
                             <template v-for="item in tokenlist">
                                 <a-col
                                     style="margin-top: 25px"
