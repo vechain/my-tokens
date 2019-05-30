@@ -20,7 +20,7 @@
             <a-button size="large" class="btn add-btn" @click="submitWallet">{{$t('wallets.add')}}</a-button>
         </a-form-item>
         <a-divider class="divider">
-            <span style="color: #fff; font-size: 20px">{{$t('wallets.or')}}</span>
+            <span style="color: #fff; font-size: 16px">{{$t('wallets.or')}}</span>
         </a-divider>
         <a-form-item>
             <a-button size="large" class="btn import-btn" @click="importWallet">{{$t('wallets.import')}}</a-button>
@@ -49,6 +49,7 @@ export default class AddWallet extends Vue {
 
     public async importWallet() {
         await this.$store.dispatch('importWallet')
+        this.resetForm()
         this.$emit('finished')
     }
 
