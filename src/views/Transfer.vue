@@ -131,7 +131,6 @@
 
             <div class="transfer-list-container">
                 <template v-if="walletList.length">
-                    <!-- <template v-if="false"> -->
                     <WalletCard
                         style="margin-bottom: 20px;"
                         class="transfer-wallet"
@@ -148,7 +147,7 @@
                         style="text-align: center; color: #fff; padding: 30px 0;font-size: 16px"
                     >{{$t('transfer.no_wallet')}}</p>
                     <a-button
-                        style="width: 300px; font-size: 22px; margin: auto; display: block"
+                        style="width: 300px; font-size: 22px; margin: 15px auto; display: block"
                         size="large"
                         @click="importWallet"
                         class="btn import-btn"
@@ -258,7 +257,6 @@ export default class Transfer extends Vue {
     }
 
     public created() {
-        this.token = this.tokenlist[0]
         this.initForm()
     }
 
@@ -269,7 +267,8 @@ export default class Transfer extends Vue {
     public send(e: Event) {
         e.preventDefault()
         this.form.validateFields(async (err: any, val: any) => {
-            const isVet = (this.unit! as string).toLowerCase() === 'vet'
+            const symbolUnit = this.unit
+            const isVet = (symbolUnit! as string).toLowerCase() === 'vet'
             let decimals = 18
             if (!err) {
                 let result: any
@@ -277,7 +276,7 @@ export default class Transfer extends Vue {
                     result = await this.transferVet(val.from, val.to, val.val, 18)
                 } else {
                     const temp = this.$store.getters.tokens.find((item: app.Token) => {
-                        return item.symbol === val.unit
+                        return item.symbol.toString().toLowerCase() === symbolUnit.toString().toLowerCase()
                     })
                     decimals = temp.decimals
                     result = await this.tokenTransfer(
@@ -285,7 +284,7 @@ export default class Transfer extends Vue {
                         val.from,
                         temp.address,
                         Vue.filter('valToHex')(val.val, decimals),
-                        val.unit
+                        symbolUnit
                     )
                 }
                 this.$store.dispatch('addTransferLog', {
@@ -293,11 +292,11 @@ export default class Transfer extends Vue {
                     from: val.from,
                     to: val.to,
                     amount: Vue.filter('valToHex')(val.val, decimals),
-                    coin: val.unit
+                    coin: symbolUnit
                 })
                 this.$success({
                     title: this.$t('transfer.tx_success').toString(),
-                    content: this.$t('transfer.tx_info', {txid: result.txid}).toString(),
+                    content: this.$t('transfer.tx_info', { txid: result.txid }).toString(),
                     maskClosable: true,
                     onOk() {
                         window.open(`https://insight.vecha.in/#/txs/${result.txid}`)
@@ -363,7 +362,7 @@ export default class Transfer extends Vue {
         const wallet = this.walletList.find((item) => {
             return item.address.toLowerCase() === (this.$route.query.from || '').toString().toLowerCase()
         })
-        const unit = this.tokenlist.find((item: app.Token) => {
+        const token = this.tokenlist.find((item: app.Token) => {
             return item.symbol.toLowerCase() === (this.$route.query.symbol || 'VET').toString().toLowerCase()
         })
         if (this.$route.query && this.$route.query.from) {
@@ -381,8 +380,12 @@ export default class Transfer extends Vue {
                 }
             }
         }
-
-        this.unit = unit && unit.symbol
+        if (token) {
+            this.unit = token.symbol
+            this.token = token
+        } else {
+            this.token = this.tokenlist[0]
+        }
     }
 }
 </script>
@@ -469,7 +472,7 @@ export default class Transfer extends Vue {
 }
 .transfer .send-wapper .send-btn {
     width: 350px;
-    font-size: 20px;
+    font-size: 16px;
     opacity: 0.6;
 }
 .transfer .send-wapper .send-btn:hover {
@@ -490,7 +493,7 @@ export default class Transfer extends Vue {
 .transfer-list-container {
     max-height: 500px;
     overflow-y: auto;
-    padding: 20px 15px;
+    padding: 20px 15px 0px;
     overflow-x: visible;
 }
 .transfer-list-container .actions {
