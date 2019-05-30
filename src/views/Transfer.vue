@@ -132,7 +132,7 @@
             <div class="transfer-list-container">
                 <template v-if="walletList.length">
                     <WalletCard
-                        style="margin-bottom: 20px;"
+                        style="margin: 25px auto"
                         class="transfer-wallet"
                         @click="walletChange(item)"
                         v-for="item in walletList"
@@ -154,7 +154,7 @@
                     >{{$t('wallets.import')}}</a-button>
                 </template>
             </div>
-            <div style="text-align:center">
+            <div style="text-align:center; padding-top: 25px;">
                 <a-button
                     type="primary"
                     @click="importWallet"
@@ -494,7 +494,7 @@ export default class Transfer extends Vue {
 .transfer-list-container {
     max-height: 500px;
     overflow-y: auto;
-    padding: 20px 15px 0px;
+    padding: 0 15px;
     overflow-x: visible;
 }
 .transfer-list-container .actions {
