@@ -259,6 +259,10 @@ export default class WalletDetail extends Vue {
 
     public async saveName() {
         this.isEdit = false
+        if (!this.name) {
+            this.name = this.wallet.name
+            return
+        }
         await this.$store.dispatch('updateWallet', {
             address: this.wallet.address,
             name: this.name
