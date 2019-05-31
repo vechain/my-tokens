@@ -1,6 +1,4 @@
 .cc-theme #app .nav.light {
-  height: 64px;
-  line-height: 64px;
   background-color: rgba(0, 0, 0, .2);
   border-bottom: none;
   color: #fff;
@@ -51,7 +49,6 @@
 }
 
 .cc-theme .ant-menu .ant-menu-item>a, .ant-menu .ant-menu-item-selected>a, .ant-menu .ant-menu-item-selected>a:hover {
-  line-height: 64px;
   color: #fff;
 }
 
@@ -142,9 +139,7 @@
 
 .cus-modal .ant-modal .ant-modal-content {
   background-color: #34344C;
-  border-radius: 30px;
   box-shadow: none;
-  /* background-color:  */
 }
 
 .add-wallet .ant-input, .add-wallet .btn {
