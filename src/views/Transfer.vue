@@ -114,7 +114,6 @@
                 </a-col>
                 <a-col>
                     <a-select
-
                         class="token-select"
                         dropdownClassName="token-select-dropdown"
                         v-model="unit"
@@ -203,8 +202,10 @@ export default class Transfer extends Vue {
                 ...item,
                 balance: this.$store.getters.balanceList
                     && this.$store.getters.balanceList[item.address]
-                    && this.$store.getters.balanceList[item.address][this.unit]
+                    && this.$store.getters.balanceList[item.address][this.unit] || 0
             }
+        }).sort((a: app.Wallet & { balance: number }, b: app.Wallet & { balance: number }) => {
+            return b.balance - a.balance
         })
     }
 
