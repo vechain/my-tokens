@@ -26,8 +26,8 @@
                                 </a-row>
                             </a-col>
                             <a-col>
-                                <a-row type="flex" align="middle">
-                                    <a-col :xs="14" class="wallet-name">
+                                <a-row type="flex" :gutter="8" align="middle">
+                                    <a-col :xs="16" class="wallet-name">
                                         <a-input
                                             v-show="isEdit"
                                             size="large"
@@ -43,7 +43,7 @@
                                             >{{wallet.name}}</span>
                                         </a-tooltip>
                                     </a-col>
-                                    <a-col :xs="6">
+                                    <a-col :xs="8">
                                         <a-button
                                             v-show="!isEdit"
                                             style="margin-left: 20px"
@@ -300,8 +300,8 @@ export default class WalletDetail extends Vue {
 
 .wallet-icon {
     position: relative;
-    width: 230px;
-    height: 230px;
+    width: 180px;
+    height: 180px;
     margin: 50px auto;
     border-radius: 115px;
     display: block;
@@ -351,11 +351,11 @@ export default class WalletDetail extends Vue {
 }
 .icon-container .code {
     position: absolute;
-    top: 15px;
+    top: 0;
     left: 0;
     right: 0;
     margin: auto;
-    width: 200px;
+    width: 180px;
     border-radius: 10px;
     overflow: hidden;
     visibility: hidden;
