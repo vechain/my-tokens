@@ -191,17 +191,18 @@ class Store extends Vuex.Store<Store.State> {
               result = cert.annex.signer
             }
 
-            const count = await DB.wallets.count()
             const temp = {
-              name: `wallet${count}`,
+              name: `wallet`,
               address: (result as string).toLowerCase()
             }
-            await DB.wallets.add(temp)
+            const id = await DB.wallets.add(temp)
+            await DB.wallets.where('address').equalsIgnoreCase(result).modify({name: `wallet${id}`})
+            temp.name = `wallet${id}`
+
             commit('addWallet', temp)
           } catch (error) {
             return ''
           }
-
           return result
         }
       }
