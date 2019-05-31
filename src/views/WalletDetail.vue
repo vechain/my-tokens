@@ -40,13 +40,13 @@
                                         <a-tooltip placement="topRight" :title="wallet.name">
                                             <span
                                                 v-show="!isEdit"
+                                                style="margin-right: 10px"
                                             >{{wallet.name}}</span>
                                         </a-tooltip>
                                     </a-col>
                                     <a-col :xs="8">
                                         <a-button
                                             v-show="!isEdit"
-                                            style="margin-left: 20px"
                                             shape="circle"
                                             icon="edit"
                                             @click="showEdit"
@@ -333,7 +333,8 @@ export default class WalletDetail extends Vue {
 .wallet-address {
     overflow: hidden;
     margin: 0;
-    text-align: center;
+    text-align: right;
+    padding-right: 10px;
 }
 
 .not-allowed:hover {
