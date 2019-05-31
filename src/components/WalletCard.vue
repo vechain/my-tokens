@@ -5,7 +5,7 @@
                 <img v-if="item" v-picasso="item.address" class="wallet-img">
                 <img v-else src="../assets/unknowWallet.png" class="wallet-img">
             </a-col>
-            <a-col :xs="14" style="margin-left: 20px">
+            <a-col :xs="14" style="margin-left: 10px">
                 <div>
                     <p v-if="item" :title="item.name" class="wallet-label">{{item.name + ' '}}</p>
                     <p v-else class="wallet-label">{{$t('wallets.unknow')}}</p>

@@ -139,7 +139,7 @@
                         :item="item"
                         :key="item.address"
                     >
-                        <div slot="actions">{{item.balance | balance}} {{unit}}</div>
+                        <div slot="actions">{{item.balance | balance}} <span style="font-size: 14px">{{unit}}</span></div>
                     </WalletCard>
                 </template>
                 <template v-else>
@@ -488,11 +488,50 @@ export default class Transfer extends Vue {
 .transfer .send-wapper .send-btn::before {
     background-image: url(../assets/sendRight.png);
 }
-
+.transfer-list-container .transfer-wallet img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+.transfer-list-container .transfer-wallet {
+    width: 390px;
+    height: initial;
+    padding: 20px 0;
+}
 .transfer-list-container .transfer-wallet:hover {
     transform: scale(1.11);
 }
-
+.transfer-list-container .transfer-wallet .ant-col-xs-8 {
+    width: 100px;
+}
+.transfer-list-container .transfer-wallet .ant-col-xs-14 {
+    width: 250px;
+}
+.transfer-list-container .transfer-wallet .ant-col-xs-14 > div:nth-child(1) {
+    display: inline-block;
+    line-height: 20px;
+}
+.transfer-list-container .transfer-wallet .wallet-label {
+    vertical-align: text-bottom;
+}
+.transfer-list-container
+    .transfer-wallet
+    .ant-col-xs-14
+    > div:nth-child(2)::after {
+    content: ")";
+}
+.transfer-list-container
+    .transfer-wallet
+    .ant-col-xs-14
+    > div:nth-child(2)::before {
+    content: "(";
+}
+.transfer-list-container .transfer-wallet .ant-col-xs-14 > div:nth-child(2) {
+    display: inline-block;
+    font-size: 12px;
+    color: #737373;
+    vertical-align:bottom;
+}
 .transfer-list-container {
     max-height: 500px;
     overflow-y: auto;
@@ -501,6 +540,7 @@ export default class Transfer extends Vue {
 }
 .transfer-list-container .actions {
     font-size: 16px;
+    text-align: right;
     color: #333;
 }
 .token-select {
