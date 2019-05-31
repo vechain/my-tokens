@@ -91,7 +91,7 @@
             v-model="showTl"
         >
             <h1>{{$t('wallets.token')}}</h1>
-            <div class="transfer-list-container">
+            <div ref="tokenList" class="transfer-list-container">
                 <TokenBalanceCard
                     v-for="item in tokenlist"
                     :key="item.symbol"
@@ -128,8 +128,7 @@
                     </a-select>
                 </a-col>
             </a-row>
-
-            <div class="transfer-list-container">
+            <div ref="walletList" class="transfer-list-container">
                 <template v-if="walletList.length">
                     <WalletCard
                         style="margin: 25px auto"
@@ -139,7 +138,10 @@
                         :item="item"
                         :key="item.address"
                     >
-                        <div slot="actions">{{item.balance | balance}} <span style="font-size: 14px">{{unit}}</span></div>
+                        <div slot="actions">
+                            {{item.balance | balance}}
+                            <span style="font-size: 14px">{{unit}}</span>
+                        </div>
                     </WalletCard>
                 </template>
                 <template v-else>
@@ -219,20 +221,24 @@ export default class Transfer extends Vue {
     }
 
     public walletChange(wallet: app.Wallet) {
+        const el = this.$refs.walletList as HTMLElement
         this.wallet = wallet
         this.from = wallet.address
         this.form.setFieldsValue({ from: wallet.address })
         this.showWl = false
         this.showImport = false
+        el.scrollTop = 0
     }
 
     public tokenChange(symbol: string) {
+        const el = this.$refs.tokenList as HTMLElement
         this.token = this.tokenlist.find((item: app.Token) => {
             return item.symbol === symbol
         })
         this.unit = symbol
         this.showTl = false
         this.form.resetFields(['val'])
+        el.scrollTop = 0
     }
 
     public setAmount() {
@@ -530,7 +536,7 @@ export default class Transfer extends Vue {
     display: inline-block;
     font-size: 12px;
     color: #737373;
-    vertical-align:bottom;
+    vertical-align: bottom;
 }
 .transfer-list-container {
     max-height: 500px;
