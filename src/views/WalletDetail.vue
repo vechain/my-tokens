@@ -58,10 +58,11 @@
                             <a-col style="padding-top: 20px">
                                 <a-row type="flex" :gutter="8" align="middle">
                                     <a-col :xs="16">
-                                        <p
-                                            ref="address"
+                                        <a-tooltip placement="topRight" :title="wallet.address">
+                                        <p 
                                             class="wallet-address text-monospace"
                                         >{{wallet.address | toChecksumAddress | shortAddress}}</p>
+                                        </a-tooltip>
                                     </a-col>
                                     <a-col :xs="8">
                                         <a-tooltip :visible="showTip" placement="top">
