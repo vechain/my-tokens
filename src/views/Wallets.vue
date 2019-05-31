@@ -106,7 +106,7 @@ export default class Wallets extends Vue {
 </script>
 <style>
 .wallet {
-    padding: 20px 80px;
+    padding: 20px 70px;
 }
 .wallet .wallet-empty {
     margin-top: 50px;
