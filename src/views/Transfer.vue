@@ -114,6 +114,7 @@
                 </a-col>
                 <a-col>
                     <a-select
+
                         class="token-select"
                         dropdownClassName="token-select-dropdown"
                         v-model="unit"
@@ -501,6 +502,9 @@ export default class Transfer extends Vue {
     font-size: 16px;
     color: #333;
 }
+.token-select {
+    width: 120px;
+}
 .token-select .ant-select-selection,
 .token-select .ant-select-selection span {
     background-color: transparent;
@@ -522,10 +526,6 @@ export default class Transfer extends Vue {
 .ant-select-dropdown.token-select-dropdown
     .ant-select-dropdown-menu-item:hover {
     background-color: #9e99a7;
-}
-.amount-input input {
-    font-family: "teko";
-    font-size: 22px;
 }
 </style>
 
