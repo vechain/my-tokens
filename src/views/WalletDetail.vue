@@ -59,9 +59,9 @@
                                 <a-row type="flex" :gutter="8" align="middle">
                                     <a-col :xs="16">
                                         <a-tooltip placement="topRight" :title="wallet.address">
-                                        <p 
-                                            class="wallet-address text-monospace"
-                                        >{{wallet.address | toChecksumAddress | shortAddress}}</p>
+                                            <p
+                                                class="wallet-address text-monospace"
+                                            >{{wallet.address | toChecksumAddress | shortAddress}}</p>
                                         </a-tooltip>
                                     </a-col>
                                     <a-col :xs="8">
@@ -193,8 +193,14 @@ export default class WalletDetail extends Vue {
     }
 
     public created() {
-        this.name = this.wallet.name
-        this.isOwn = connex.vendor.owned(this.wallet.address)
+        if (this.wallet) {
+            this.name = this.wallet.name
+            this.isOwn = connex.vendor.owned(this.wallet.address)
+        } else {
+            this.$router.push({
+                name: 'wallets'
+            })
+        }
     }
 
     get wallet(): app.Wallet {
@@ -218,6 +224,7 @@ export default class WalletDetail extends Vue {
             }
         })
     }
+
     public deleteWallet() {
         this.visibleM = true
     }
