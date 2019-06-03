@@ -176,6 +176,9 @@ class Store extends Vuex.Store<Store.State> {
           }
         },
         async importWallet({ commit }, addr) {
+          if (!window.connex) {
+            window.location.href = 'https://env.vechain.org/r/#' + encodeURIComponent(location.href)
+          }
           let result = addr
           try {
             if (!addr) {
@@ -196,7 +199,7 @@ class Store extends Vuex.Store<Store.State> {
               address: (result as string).toLowerCase()
             }
             const id = await DB.wallets.add(temp)
-            await DB.wallets.where('address').equalsIgnoreCase(result).modify({name: `wallet${id}`})
+            await DB.wallets.where('address').equalsIgnoreCase(result).modify({ name: `wallet${id}` })
             temp.name = `wallet${id}`
 
             commit('addWallet', temp)
@@ -211,7 +214,7 @@ class Store extends Vuex.Store<Store.State> {
 
   public async monitorBlock() {
     const tick = connex.thor.ticker()
-    for (;;) {
+    for (; ;) {
       await tick.next()
       this.getTokenBalance()
       this.getBalance()
@@ -223,7 +226,7 @@ class Store extends Vuex.Store<Store.State> {
       window.connex &&
       window.connex.thor &&
       connex.thor.genesis.id ===
-        '0x00000000851caf3cfdb6e899cf5958bfb1ac3413d346d43539627e6be7ec1b4a'
+      '0x00000000851caf3cfdb6e899cf5958bfb1ac3413d346d43539627e6be7ec1b4a'
     ) {
       this.commit('netWork', 'main')
       this.commit('setTokens', require('./tokens').mainNetTokens)
@@ -235,7 +238,7 @@ class Store extends Vuex.Store<Store.State> {
       const wallets = await DB.wallets.toArray()
       this.commit('setWallets', wallets)
       // tslint:disable-next-line:no-empty
-    } catch (error) {}
+    } catch (error) { }
     this.initTokenMethods()
   }
   public async getPrice() {

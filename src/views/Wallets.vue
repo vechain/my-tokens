@@ -76,7 +76,6 @@ export default class Wallets extends Vue {
     public observeAddress = ''
 
     public observeWallet() {
-        this.checkEnv()
         this.visible = true
     }
 
@@ -84,11 +83,6 @@ export default class Wallets extends Vue {
         return this.wallets === null
     }
 
-    public checkEnv() {
-        if (!window.connex) {
-            window.location.href = 'https://env.vechain.org/r/#' + encodeURIComponent(location.href)
-        }
-    }
     public onCancel() {
         const temp = this.$refs.addform as AddWallet
         temp.resetForm()
