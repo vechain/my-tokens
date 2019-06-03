@@ -574,5 +574,13 @@ export default class Transfer extends Vue {
     .ant-select-dropdown-menu-item:hover {
     background-color: #9e99a7;
 }
+.transfer-list-container .token-balance-card {
+    transition: all 0.2s ease;
+    width: 390px;
+    margin: 20px auto;
+}
+.transfer-list-container .token-balance-card:hover {
+    transform: scale(1.1);
+}
 </style>
 

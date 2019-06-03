@@ -107,4 +107,10 @@ export default class Wallets extends Vue {
     margin-left: 20%;
     max-width: 800px;
 }
+.wallet .wallet-item {
+    transition: all 0.2s ease;
+}
+.wallet .wallet-item:hover {
+    transform: scale(1.1);
+}
 </style>

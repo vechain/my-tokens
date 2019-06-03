@@ -375,4 +375,11 @@ export default class WalletDetail extends Vue {
 .icon-container .code.show {
     visibility: visible;
 }
+
+.wallet-detail .token-balance-card {
+    transition: all 0.2s ease;
+}
+.wallet-detail .token-balance-card:not(.not-allowed):hover {
+    transform: scale(1.1);
+}
 </style>
