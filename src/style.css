@@ -78,6 +78,7 @@
 }
 .transfer h2.underscore,
 .wallet h2.underscore {
+  display: inline-block;
   position: relative;
 }
 .transfer h2.underscore::after,

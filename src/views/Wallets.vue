@@ -4,15 +4,17 @@
             <div v-if="wallets.length" class="wallet-list">
                 <a-row type="flex" align="middle" justify="space-around">
                     <a-col a-col :md="20" :lg="18" :xl="16" :xxl="14">
-                        <h2 class="font-g underscore">{{$t('wallets.title')}}</h2>
-                    </a-col>
-                    <a-col>
-                        <div>
-                            <a-button
-                                class="cus-btn"
-                                @click="observeWallet"
-                            >{{$t('wallets.add')}}</a-button>
-                        </div>
+                        <a-row type="flex" align="middle" justify="space-between">
+                            <a-col>
+                                <h2 class="font-g underscore">{{$t('wallets.title')}}</h2>
+                            </a-col>
+                            <a-col>
+                                <a-button
+                                    class="cus-btn"
+                                    @click="observeWallet"
+                                >{{$t('wallets.add')}}</a-button>
+                            </a-col>
+                        </a-row>
                     </a-col>
                 </a-row>
                 <a-row type="flex" justify="start">
