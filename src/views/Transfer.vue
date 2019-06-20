@@ -259,8 +259,7 @@ export default class Transfer extends Vue {
         return this.$store.getters.tokens.map((item: app.Token) => {
             return {
                 ...item,
-                balance: this.balances[item.symbol] || 0,
-                img: require(`../assets/${item.icon}`)
+                balance: this.balances[item.symbol] || 0
             }
         })
     }

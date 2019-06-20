@@ -219,7 +219,6 @@ export default class WalletDetail extends Vue {
             return {
                 ...item,
                 balance: this.balances[item.symbol] || 0,
-                img: require(`../assets/${item.icon}`),
                 show: isShow
             }
         })

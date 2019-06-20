@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import DB from './database'
 import BigNumber from 'bignumber.js'
+import { getTokens } from './tokens'
 
 Vue.use(Vuex)
 
@@ -132,7 +133,8 @@ class Store extends Vuex.Store<Store.State> {
               symbol: 'VET',
               address: '',
               decimals: 18,
-              icon: 'vet.png'
+              icon: 'vet.png',
+              img: require('./assets/vet.png')
             }
           ].concat(state.tokens!)
         },
@@ -222,18 +224,20 @@ class Store extends Vuex.Store<Store.State> {
   }
 
   public async initState() {
+    let list: [] = []
     if (
       window.connex &&
       window.connex.thor &&
       connex.thor.genesis.id ===
       '0x00000000851caf3cfdb6e899cf5958bfb1ac3413d346d43539627e6be7ec1b4a'
     ) {
+      list = await getTokens('main')
       this.commit('netWork', 'main')
-      this.commit('setTokens', require('./tokens').mainNetTokens)
     } else {
+      list = await getTokens('test')
       this.commit('netWork', 'test')
-      this.commit('setTokens', require('./tokens').testNetTokens)
     }
+    this.commit('setTokens', list)
     try {
       const wallets = await DB.wallets.toArray()
       this.commit('setWallets', wallets)

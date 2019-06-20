@@ -23,7 +23,8 @@ declare namespace app {
     desc: string
     address: string
     url?: string
-    decimals: number
+    decimals: number,
+    img: string
   }
 
   interface Balance {

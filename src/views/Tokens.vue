@@ -24,8 +24,7 @@ export default class Tokens extends Vue {
     get tokenList() {
         return (this.$store.state.tokens as app.Token[]).map((item) => {
             return {
-                ...item,
-                img: require(`../assets/${item.icon}`)
+                ...item
             }
         })
     }
