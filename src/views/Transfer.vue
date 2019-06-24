@@ -238,7 +238,9 @@ export default class Transfer extends Vue {
         this.unit = symbol
         this.showTl = false
         this.form.resetFields(['val'])
-        el && (el.scrollTop = 0)
+        if (el) {
+            el.scrollTop = 0
+        }
     }
 
     public setAmount() {
