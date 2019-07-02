@@ -40,10 +40,10 @@
                 <div>
                     <p style="font-size: 50px; color: #fff;">
                         There is no wallet,
-                        <br>You need to add a wallet
-                        <br>before using.
+                        <br />You need to add a wallet
+                        <br />before using.
                     </p>
-                    <AddWallet/>
+                    <AddWallet />
                 </div>
             </div>
         </div>
@@ -59,7 +59,7 @@
             @cancel="onCancel"
         >
             <h1 style="color: #fff;">{{$t('wallets.title_add')}}</h1>
-            <add-wallet @finished="visible=false" style="margin: auto" ref="addform"/>
+            <add-wallet @finished="visible=false" style="margin: auto" ref="addform" />
         </a-modal>
     </div>
 </template>
@@ -103,6 +103,11 @@ export default class Wallets extends Vue {
 <style>
 .wallet {
     padding: 20px 70px;
+}
+@media (min-width: 768px) {
+    .wallet {
+        padding: 20px 40px;
+    }
 }
 .wallet .wallet-empty {
     margin-top: 50px;
