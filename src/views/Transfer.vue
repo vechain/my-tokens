@@ -325,6 +325,7 @@ export default class Transfer extends Vue {
         this.wallet = null
         this.doImport = false
         this.showImport = false
+        this.from = ''
     }
 
     public async transferVet(from: string, to: string, amount: number, decimals: number) {
