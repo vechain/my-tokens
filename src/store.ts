@@ -239,7 +239,7 @@ class Store extends Vuex.Store<Store.State> {
     }
     this.commit('setTokens', list)
     try {
-      const wallets = await DB.wallets.toArray()
+      const wallets = await DB.wallets.reverse().toArray()
       this.commit('setWallets', wallets)
       // tslint:disable-next-line:no-empty
     } catch (error) { }
