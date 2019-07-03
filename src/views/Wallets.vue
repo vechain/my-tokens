@@ -38,11 +38,7 @@
             </div>
             <div v-else class="wallet-empty">
                 <div>
-                    <p style="font-size: 50px; color: #fff;">
-                        There is no wallet,
-                        <br />You need to add a wallet
-                        <br />before using.
-                    </p>
+                    <p v-html="$t('wallets.first_time')" style="font-size: 50px; color: #fff;"></p>
                     <AddWallet />
                 </div>
             </div>

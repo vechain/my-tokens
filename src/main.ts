@@ -19,6 +19,7 @@ async function createApp() {
   if (window.connex) {
     Store.getPrice()
     await Store.initState()
+    await Store.setToHistoryList()
     Store.monitorBlock()
   }
   new Vue({

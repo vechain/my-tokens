@@ -26,7 +26,10 @@
                         ></WalletCard>
                     </a-form-item>
                     <a-form-item :label="$t('transfer.to')">
-                        <a-input
+                        <a-auto-complete
+                            :allowClear="true"
+                            class="select-re-theme"
+                            dropdownClassName="select-list-rebg"
                             size="large"
                             name="to"
                             v-decorator="['to', {
@@ -38,7 +41,9 @@
                                     message: $t('msg.to_format')
                                 }]
                             }]"
-                        />
+                            
+                            :dataSource="toList"
+                        ></a-auto-complete>
                     </a-form-item>
                     <a-form-item :label="$t('transfer.amount')">
                         <a-input
@@ -59,7 +64,7 @@
                                 class="cus-btn token-btn"
                                 slot="addonBefore"
                             >
-                                <img :src="token.img" :alt="token.symbol">
+                                <img :src="token.img" :alt="token.symbol" />
                             </a-button>
                             <a-button
                                 @click="setAmount"
@@ -114,8 +119,8 @@
                 </a-col>
                 <a-col>
                     <a-select
-                        class="token-select"
-                        dropdownClassName="token-select-dropdown"
+                        class="select-re-theme"
+                        dropdownClassName="select-list-rebg"
                         v-model="unit"
                         @change="tokenChange"
                     >
@@ -208,6 +213,12 @@ export default class Transfer extends Vue {
             }
         }).sort((a: app.Wallet & { balance: number }, b: app.Wallet & { balance: number }) => {
             return b.balance - a.balance
+        })
+    }
+
+    get toList() {
+        return this.$store.state.toList.map((item: string) => {
+            return Vue.filter('toChecksumAddress')(item)
         })
     }
 
@@ -551,29 +562,26 @@ export default class Transfer extends Vue {
     text-align: right;
     color: #333;
 }
-.token-select {
+.select-re-theme {
     width: 120px;
 }
-.token-select .ant-select-selection,
-.token-select .ant-select-selection span {
+.ant-select-selection,
+.ant-select-selection span {
     background-color: transparent;
     border-color: rgba(247, 247, 247, 0.2);
     color: #fff;
 }
-.ant-select-dropdown.token-select-dropdown {
+.ant-select-dropdown.select-list-rebg {
     background-color: #80788c;
 }
-.ant-select-dropdown.token-select-dropdown .ant-select-dropdown-menu-item {
+.ant-select-dropdown.select-list-rebg .ant-select-dropdown-menu-item {
     color: #fefefe;
 }
-.ant-select-dropdown.token-select-dropdown
-    .ant-select-dropdown-menu-item-active {
+.ant-select-dropdown.select-list-rebg .ant-select-dropdown-menu-item-active {
     background-color: #afafaf;
 }
-.ant-select-dropdown.token-select-dropdown
-    .ant-select-dropdown-menu-item-selected,
-.ant-select-dropdown.token-select-dropdown
-    .ant-select-dropdown-menu-item:hover {
+.ant-select-dropdown.select-list-rebg .ant-select-dropdown-menu-item-selected,
+.ant-select-dropdown.select-list-rebg .ant-select-dropdown-menu-item:hover {
     background-color: #9e99a7;
 }
 .transfer-list-container .token-balance-card {
