@@ -41,7 +41,6 @@
                                     message: $t('msg.to_format')
                                 }]
                             }]"
-                            
                             :dataSource="toList"
                         ></a-auto-complete>
                     </a-form-item>
@@ -223,12 +222,20 @@ export default class Transfer extends Vue {
     }
 
     public checkAmount(rule: any, value: any, callback: any) {
-        const msg = this.$t('msg.amount_invalid')
-        if (!Vue.filter('balanceCheck')(value)) {
-            callback(new Error(msg.toString()))
-        } else {
+        let msg = ''
+        if (!value) {
             callback()
         }
+        if (!Vue.filter('balanceCheck')(value)) {
+            msg = this.$t('msg.amount_invalid').toString()
+            callback(new Error(msg))
+        }
+
+        if (value > this.tokenBalance) {
+            msg = this.$t('msg.amount_not_enough').toString()
+            callback(new Error(msg))
+        }
+        callback()
     }
 
     public walletChange(wallet: app.Wallet) {

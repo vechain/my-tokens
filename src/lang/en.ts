@@ -43,6 +43,7 @@
     to_format: 'To format invalid',
     to_require: 'To is required',
     amount_require: 'Amount is required',
-    amount_invalid: 'Amount is invalid'
+    amount_invalid: 'Amount is invalid',
+    amount_not_enough: 'Insufficient balance',
   }
 }
