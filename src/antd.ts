@@ -14,11 +14,15 @@ import {
   Card,
   Switch,
   Divider,
-  Checkbox
+  Checkbox,
+  AutoComplete
 } from 'ant-design-vue'
 
 Vue.component(Switch.name, Switch)
 Vue.use(Switch)
+
+Vue.component(AutoComplete.name, AutoComplete)
+Vue.use(AutoComplete)
 
 Vue.component(Checkbox.name, Checkbox)
 Vue.use(Checkbox)

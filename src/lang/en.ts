@@ -13,9 +13,8 @@
     detail: 'Detail',
     transfer: 'Transfer',
     delete: 'Remove',
-    dlt_conf_msg: 'Do you Want to delete this wallet?',
     copied: 'Copied',
-    hide_amount: 'Hide small amount',
+    hide_amount: 'Hide small assets',
     addr_placeholder: 'Start with 0x',
     token: 'Tokens',
     select_wallet: 'click to select a wallet',
@@ -23,7 +22,8 @@
     remove_msg: 'Are you sure to remove this wallet?',
     remove_yes: 'Yes',
     remove_no: 'No',
-    remove_title: 'Remove Wallet'
+    remove_title: 'Remove Wallet',
+    first_time: 'There is no wallet,<br />You need to add a wallet<br />before using.'
   },
   transfer: {
     from: 'From',
@@ -43,6 +43,7 @@
     to_format: 'To format invalid',
     to_require: 'To is required',
     amount_require: 'Amount is required',
-    amount_invalid: 'Amount is invalid'
+    amount_invalid: 'Amount is invalid',
+    amount_not_enough: 'Insufficient balance',
   }
 }

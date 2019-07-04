@@ -23,6 +23,7 @@ declare namespace Store {
         [symbol: string]: number
       }
     } | null
+    toList: string[] | null
   }
   interface TokenMethod {
     symbol: string
@@ -61,7 +62,8 @@ class Store extends Vuex.Store<Store.State> {
         wallets: [],
         tokens: [],
         prices: null,
-        balances: null
+        balances: null,
+        toList: null
       },
       mutations: {
         setWallets(state, payload) {
@@ -113,6 +115,10 @@ class Store extends Vuex.Store<Store.State> {
             : 0
 
           Vue.set(state.balances![payload.address], payload.symbol, balance)
+        },
+        setToList(state, payload) {
+          state.toList = payload
+          // Vue.set(state, 'toList', payload)
         }
       },
       getters: {
@@ -239,7 +245,7 @@ class Store extends Vuex.Store<Store.State> {
     }
     this.commit('setTokens', list)
     try {
-      const wallets = await DB.wallets.toArray()
+      const wallets = await DB.wallets.reverse().toArray()
       this.commit('setWallets', wallets)
       // tslint:disable-next-line:no-empty
     } catch (error) { }
@@ -265,6 +271,15 @@ class Store extends Vuex.Store<Store.State> {
       this.commit('setPrices', payload)
     }
   }
+
+  public async setToHistoryList() {
+    const list = await DB.transfers.reverse().toArray()
+    const temp = Array.from(new Set(list.map((item: app.Transfer) => {
+      return item.to
+    }))).slice(0, 5)
+    this.commit('setToList', temp)
+  }
+
   private async getBalance() {
     this.state.wallets!.forEach(async (item) => {
       const info = await connex.thor.account(item.address).get()
