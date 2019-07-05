@@ -34,7 +34,7 @@
     no_wallet: '未检测到钱包，您需要先导入',
     import_after_tx: '交易发出后将钱包导入',
     tx_success: '交易已发送',
-    tx_info : '交易哈希为: {txid},点击查看详情'
+    tx_info : '交易哈希为: <a href="{path}{txid}" target="_blank">{txid}</a>,点击查看详情'
   },
   msg: {
     addr_require: '地址为必填项',

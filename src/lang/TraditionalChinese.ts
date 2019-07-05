@@ -33,7 +33,7 @@ export default {
     no_wallet: '未檢測到錢包，您需要先導入',
     import_after_tx: '交易發出後將錢包導入',
     tx_success: '交易已發送',
-    tx_info : '交易哈希為: {txid},點擊查看詳情'
+    tx_info : '交易哈希為: <a href="{path}{txid}" target="_blank">{txid}</a>,點擊查看詳情'
   },
   msg: {
     addr_require: '地址為必填項',
