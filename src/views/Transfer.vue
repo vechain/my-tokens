@@ -416,7 +416,7 @@ export default class Transfer extends Vue {
                     this.showImport = true
                     this.from = this.$route.query.from.toString().toLowerCase()
                     this.wallet = {
-                        name: 'Unknow wallet',
+                        name: this.$t('wallets.unknown').toString(),
                         address: this.from
                     }
                 }
