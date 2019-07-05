@@ -572,25 +572,6 @@ export default class Transfer extends Vue {
 .select-re-theme {
     width: 120px;
 }
-.ant-select-selection,
-.ant-select-selection span {
-    background-color: transparent;
-    border-color: rgba(247, 247, 247, 0.2);
-    color: #fff;
-}
-.ant-select-dropdown.select-list-rebg {
-    background-color: #80788c;
-}
-.ant-select-dropdown.select-list-rebg .ant-select-dropdown-menu-item {
-    color: #fefefe;
-}
-.ant-select-dropdown.select-list-rebg .ant-select-dropdown-menu-item-active {
-    background-color: #afafaf;
-}
-.ant-select-dropdown.select-list-rebg .ant-select-dropdown-menu-item-selected,
-.ant-select-dropdown.select-list-rebg .ant-select-dropdown-menu-item:hover {
-    background-color: #9e99a7;
-}
 .transfer-list-container .token-balance-card {
     transition: all 0.2s ease;
     width: 390px;
