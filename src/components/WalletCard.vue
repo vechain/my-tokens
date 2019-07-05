@@ -8,7 +8,7 @@
             <a-col :xs="14" style="margin-left: 10px">
                 <div>
                     <p v-if="item" :title="item.name" class="wallet-label">{{item.name + ' '}}</p>
-                    <p v-else class="wallet-label">{{$t('wallets.unknow')}}</p>
+                    <p v-else class="wallet-label">{{$t('wallets.unknown')}}</p>
                 </div>
                 <div
                     v-if="item"
