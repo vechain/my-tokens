@@ -323,12 +323,25 @@ export default class Transfer extends Vue {
                     coin: symbolUnit
                 })
                 this.$success({
-                    title: this.$t('transfer.tx_success').toString(),
-                    content: this.$t('transfer.tx_info', { txid: result.txid }).toString(),
-                    maskClosable: true,
-                    onOk() {
-                        window.open(`https://insight.vecha.in/#/txs/${result.txid}`)
-                    }
+                    title: this.$createElement('span', {
+                        style: {
+                            color: '#fff'
+                        }
+                    }, this.$t('transfer.tx_success').toString()),
+                    class: 'cus-modal',
+                    content: this.$createElement('div', {
+                        style: {
+                            color: '#fff'
+                        },
+                        domProps: {
+                            innerHTML: this.$t('transfer.tx_info',
+                                {
+                                    txid: result.txid,
+                                    path: 'https://insight.vecha.in/#/txs/'
+                                }).toString()
+                        }
+                    }),
+                    maskClosable: true
                 })
                 if (this.doImport) {
                     this.$store.dispatch('importWallet', this.from)

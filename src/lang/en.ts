@@ -34,7 +34,8 @@
     no_wallet: 'There is no wallet, You need to import a wallet first.',
     import_after_tx: 'Import this wallet after the transaction',
     tx_success: 'The request send success',
-    tx_info : 'The Txid: {txid}, check the information.'
+    // tslint:disable-next-line:max-line-length
+    tx_info : 'The Txid: <a href="{path}{txid}" target="_blank">{txid}</a>, check the information.'
   },
   msg: {
     addr_require: 'Address is required',

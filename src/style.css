@@ -138,9 +138,11 @@
     color: #fff;
 }
 
+.cus-modal.ant-modal .ant-modal-content,
 .cus-modal .ant-modal .ant-modal-content {
   background-color: #34344C;
   box-shadow: none;
+  color: #fff;
 }
 
 .add-wallet .ant-input, .add-wallet .btn {
