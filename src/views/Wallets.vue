@@ -1,41 +1,45 @@
 <template>
     <div class="wallet">
         <div v-if="!loading">
-            <div v-if="wallets.length" class="wallet-list">
-                <a-row type="flex" align="middle" justify="space-around">
-                    <a-col a-col :md="20" :lg="18" :xl="16" :xxl="14">
-                        <a-row type="flex" align="middle" justify="space-between">
-                            <a-col>
-                                <h2 class="font-g underscore">{{$t('wallets.title')}}</h2>
-                            </a-col>
-                            <a-col>
-                                <a-button
-                                    class="cus-btn"
-                                    @click="observeWallet"
-                                >{{$t('wallets.add')}}</a-button>
-                            </a-col>
-                        </a-row>
-                    </a-col>
-                </a-row>
-                <a-row type="flex" justify="start">
-                    <a-col
-                        :xs="24"
-                        v-for="item in wallets"
-                        :key="item.address"
-                        :sm="12"
-                        :md="12"
-                        :lg="12"
-                        :xl="8"
-                        :xxl="6"
-                    >
-                        <wallet-card
-                            @click="$router.push({name: 'wallet-detail', params: {id: item.address}})"
-                            style="margin: 30px auto 0;"
-                            :item="item"
-                        ></wallet-card>
-                    </a-col>
-                </a-row>
-            </div>
+            <template v-if="wallets.length">
+                <div class="wallet-list" style="padding: 0 40px">
+                    <a-row type="flex" align="middle" justify="space-around">
+                        <a-col a-col :md="22" :lg="18" :xl="16" :xxl="14">
+                            <a-row type="flex" align="middle" justify="space-between">
+                                <a-col>
+                                    <h2 class="font-g underscore">{{$t('wallets.title')}}</h2>
+                                </a-col>
+                                <a-col>
+                                    <a-button
+                                        class="cus-btn"
+                                        @click="observeWallet"
+                                    >{{$t('wallets.add')}}</a-button>
+                                </a-col>
+                            </a-row>
+                        </a-col>
+                    </a-row>
+                </div>
+                <div>
+                    <a-row type="flex" justify="start">
+                        <a-col
+                            :xs="24"
+                            v-for="item in wallets"
+                            :key="item.address"
+                            :sm="12"
+                            :md="12"
+                            :lg="12"
+                            :xl="8"
+                            :xxl="6"
+                        >
+                            <wallet-card
+                                @click="$router.push({name: 'wallet-detail', params: {id: item.address}})"
+                                style="margin: 30px auto 0;"
+                                :item="item"
+                            ></wallet-card>
+                        </a-col>
+                    </a-row>
+                </div>
+            </template>
             <div v-else class="wallet-empty">
                 <div>
                     <p v-html="$t('wallets.first_time')" style="font-size: 50px; color: #fff;"></p>
@@ -98,12 +102,7 @@ export default class Wallets extends Vue {
 </script>
 <style>
 .wallet {
-    padding: 20px 70px;
-}
-@media (min-width: 768px) {
-    .wallet {
-        padding: 20px 40px;
-    }
+    padding: 20px 40px;
 }
 .wallet .wallet-empty {
     margin-top: 50px;
