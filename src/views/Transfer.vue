@@ -67,6 +67,7 @@
                             </a-button>
                             <a-button
                                 @click="setAmount"
+                                :style="SetAmountStyle"
                                 class="cus-btn balance-btn"
                                 slot="addonAfter"
                             >{{tokenBalance | balance}}</a-button>
@@ -215,6 +216,10 @@ export default class Transfer extends Vue {
         })
     }
 
+    get SetAmountStyle() {
+        return (this.unit && this.unit.toLowerCase() === 'vtho') ? { cursor: 'not-allowed' } : ''
+    }
+
     get toList() {
         return this.$store.state.toList.map((item: string) => {
             return Vue.filter('toChecksumAddress')(item)
@@ -262,6 +267,9 @@ export default class Transfer extends Vue {
     }
 
     public setAmount() {
+        if (this.unit && this.unit.toLowerCase() === 'vtho') {
+            return
+        }
         this.form.setFieldsValue({ val: this.tokenBalance })
     }
 
