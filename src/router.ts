@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Wallets from './views/Wallets.vue'
+import WalletDetail from './views/WalletDetail.vue'
+import Transfer from './views/Transfer.vue'
 
 Vue.use(Router)
 
@@ -10,31 +13,13 @@ export default new Router({
       name: 'home',
       redirect: { name: 'wallets' }
     },
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (about.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
-    // },
-    // {
-    //   path: '/tokens',
-    //   name: 'tokens',
-    //   meta: {
-    //     key: 'tokens'
-    //   },
-    //   component: () =>
-    //     import('./views/Tokens.vue')
-    // },
     {
       path: '/wallets',
       name: 'wallets',
       meta: {
         key: 'wallets'
       },
-      component: () =>
-        import('./views/Wallets.vue')
+      component: Wallets
     },
     {
       name: 'wallet-detail',
@@ -42,8 +27,7 @@ export default new Router({
       meta: {
         key: 'wallets'
       },
-      component: () =>
-        import('./views/WalletDetail.vue')
+      component: WalletDetail
     },
     {
       path: '/transfer',
@@ -51,17 +35,7 @@ export default new Router({
       meta: {
         key: 'transfer'
       },
-      component: () =>
-        import('./views/Transfer.vue')
-    },
-    // {
-    //   path: '/contacts',
-    //   name: 'contacts',
-    //   meta: {
-    //     key: 'contacts'
-    //   },
-    //   component: () =>
-    //     import('./views/Contacts.vue')
-    // }
+      component: Transfer
+    }
   ]
 })
