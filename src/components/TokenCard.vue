@@ -55,7 +55,6 @@ export default class TokenCard extends Vue {
     margin-top: 15px;
     width: 100px;
     height: 100px;
-    border-radius: 50px;
     background-color: #eee;
     border-width: 0;
     transition: margin-top 0.2s;
