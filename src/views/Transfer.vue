@@ -470,10 +470,8 @@ export default class Transfer extends Vue {
     border: none;
 }
 .transfer .token-btn img {
-    background-color: #fff;
     width: 30px;
     height: 30px;
-    border-radius: 15px;
 }
 .transfer .token-btn,
 .transfer .balance-btn {

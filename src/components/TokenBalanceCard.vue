@@ -36,13 +36,10 @@ export default class TokenBalanceCard extends Vue {
 }
 .token-balance-card .img {
     background-size: contain;
-    border-radius: 50%;
-    /* border: 2px solid #eee; */
     width: 40px;
     height: 40px;
     background-position: center center;
     background-repeat: no-repeat;
-    box-shadow: 1px 8px 15px 1px rgba(0, 0, 0, 0.25);
 }
 .token-balance-card .card-summary {
     text-align: right;
