@@ -1,11 +1,11 @@
 <template>
-    <div id="app" >
-        <a-layout>
+    <div id="app">
+        <a-layout :class="{plants: bgClass}">
             <a-layout-header class="nav light">
-                <nav-bar style="max-width: 1200px; margin: auto;"/>
+                <nav-bar style="max-width: 1200px; margin: auto;" />
             </a-layout-header>
             <a-layout-content style="padding-top: 64px;">
-                <router-view/>
+                <router-view />
             </a-layout-content>
         </a-layout>
     </div>
@@ -21,6 +21,10 @@ import NavBar from './components/NavBar.vue'
     }
 })
 export default class App extends Vue {
+    get bgClass() {
+        return this.$route.name === 'wallets'
+            && (this.$store.state.wallets && this.$store.state.wallets.length === 0)
+    }
 }
 </script>
 
