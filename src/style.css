@@ -3,12 +3,23 @@
   border-bottom: none;
   color: #fff;
 }
-
-.cc-theme #app>.ant-layout {
-  background: url(./assets/background.svg);
+.cc-theme #app {
+  background: url(./assets/bg.png);
+  background-size: cover;
+  background-attachment: fixed;
   background-repeat: no-repeat;
+  background-position: center bottom;
 }
-
+.cc-theme #app>.ant-layout {
+  background: transparent;
+}
+.cc-theme #app>.ant-layout.plants {
+  background-image: url(./assets/planets.png);
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+}
 .cc-theme #app .nav .ant-menu-horizontal {
   border-bottom: none;
 }
