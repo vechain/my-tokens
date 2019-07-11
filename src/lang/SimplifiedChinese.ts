@@ -18,7 +18,6 @@
     addr_placeholder: '地址为0x开头',
     token: '币种',
     select_wallet: '选择钱包',
-    unknown: '未知钱包',
     remove_msg: '是否要移除钱包?',
     remove_yes: '是',
     remove_no: '否',
