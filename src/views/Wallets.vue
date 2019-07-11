@@ -76,7 +76,7 @@ import AddWallet from '../components/AddWallet.vue'
 export default class Wallets extends Vue {
     public visible = false
     public observeAddress = ''
-    created() {
+    public created() {
         this.$ga.page('/wallets')
     }
     public observeWallet() {
