@@ -5,6 +5,8 @@ import Store from './store'
 import App from './App.vue'
 import router from './router'
 
+import VueAnalytics from 'vue-analytics'
+
 // tslint:disable-next-line:no-var-requires
 const VueClipboard = require('vue-clipboard2')
 import i18n from './i18n'
@@ -14,6 +16,10 @@ import './directives'
 Vue.config.productionTip = false
 
 Vue.use(VueClipboard)
+Vue.use(VueAnalytics, {
+  id: 'UA-132391998-2',
+  disabled: process.env.NODE_ENV !== 'production'
+})
 
 async function createApp() {
   if (window.connex) {
