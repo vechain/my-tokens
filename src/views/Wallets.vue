@@ -42,7 +42,7 @@
             </template>
             <div v-else class="wallet-empty">
                 <div>
-                    <p v-html="$t('wallets.first_time')" style="font-size: 50px; color: #fff;"></p>
+                    <p v-html="$t('wallets.first_time')" style="font-size: 36px; color: #fff;"></p>
                     <AddWallet />
                 </div>
             </div>
@@ -76,7 +76,9 @@ import AddWallet from '../components/AddWallet.vue'
 export default class Wallets extends Vue {
     public visible = false
     public observeAddress = ''
-
+    created() {
+        this.$ga.page('/wallets')
+    }
     public observeWallet() {
         this.visible = true
     }
