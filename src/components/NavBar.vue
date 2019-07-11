@@ -3,7 +3,7 @@
         <a-col :span="8">
             <a-row type="flex" justify="start">
                 <div class="logo">
-                    <img src="../assets/logo.png" alt="Logo">
+                    <img width="157px" src="../assets/logo.png" alt="Logo">
                 </div>
             </a-row>
         </a-col>
