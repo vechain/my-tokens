@@ -5,11 +5,9 @@
                 <div class="img" :style="background"></div>
             </a-col>
             <a-col :xs="19">
-                <p
-                    ref="balance"
-                    class="card-summary balance"
-                >
-                    <span>{{item.balance | balance}}</span>
+                <p ref="balance" class="card-summary balance">
+                    <span v-if="isBalanceZero">{{item.balance | balance}}</span>
+                    <span v-else>- -</span>
                     <span class="card-summary">{{item.symbol}}</span>
                 </p>
             </a-col>
@@ -25,6 +23,10 @@ export default class TokenBalanceCard extends Vue {
 
     get background() {
         return `background-image: url('${this.item.img}')`
+    }
+
+    get isBalanceZero() {
+        return this.$store.state.tickedCount > 0
     }
 }
 </script>

@@ -8,14 +8,14 @@
             <a-col :xs="14" style="margin-left: 10px">
                 <div>
                     <p v-if="item" :title="item.name" class="wallet-label">{{item.name + ' '}}</p>
-                    <p v-else class="wallet-label">{{$t('wallets.unknown')}}</p>
+                    <p v-else class="wallet-label">{{$t('wallets.select_wallet')}}</p>
                 </div>
                 <div
                     v-if="item"
                     class="wallet-address"
                     :title="item.address"
                 >{{item.address | toChecksumAddress | shortAddress}}</div>
-                <div v-else style="color:#807F89;">{{$t('wallets.select_wallet')}}</div>
+                
                 <div class="actions">
                     <slot name="actions"/>
                 </div>
