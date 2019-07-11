@@ -293,6 +293,7 @@ export default class Transfer extends Vue {
     }
 
     public created() {
+        this.$ga.page('/transfer')
         this.initForm()
     }
 
@@ -424,7 +425,7 @@ export default class Transfer extends Vue {
                     this.showImport = true
                     this.from = this.$route.query.from.toString().toLowerCase()
                     this.wallet = {
-                        name: this.$t('wallets.unknown').toString(),
+                        name: this.$t('wallets.select_wallet').toString(),
                         address: this.from
                     }
                 }

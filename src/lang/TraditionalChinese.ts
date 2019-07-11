@@ -18,7 +18,6 @@ export default {
     addr_placeholder: '地址為0x開頭',
     token: '幣種',
     select_wallet: '選擇錢包',
-    unknown: '未知錢包',
     remove_msg: '是否要移除錢包?',
     remove_yes: '是',
     remove_no: '否',
