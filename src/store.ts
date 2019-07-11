@@ -9,6 +9,7 @@ Vue.use(Vuex)
 // tslint:disable-next-line:no-namespace
 declare namespace Store {
   interface State {
+    tickedCount: 0
     wallets?: app.Wallet[]
     tokens?: app.Token[]
     prices: {
@@ -57,6 +58,7 @@ class Store extends Vuex.Store<Store.State> {
   constructor() {
     super({
       state: {
+        tickedCount: 0,
         hideTokens: true,
         netWork: null,
         wallets: [],
@@ -66,6 +68,9 @@ class Store extends Vuex.Store<Store.State> {
         toList: null
       },
       mutations: {
+        setTickedTimes(state) {
+          state.tickedCount++
+        },
         setWallets(state, payload) {
           state.wallets = payload
         },
@@ -226,6 +231,7 @@ class Store extends Vuex.Store<Store.State> {
       await tick.next()
       this.getTokenBalance()
       this.getBalance()
+      this.commit('setTickedTimes')
     }
   }
 
