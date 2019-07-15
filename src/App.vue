@@ -7,6 +7,7 @@
             <a-layout-content style="padding-top: 64px;">
                 <router-view />
             </a-layout-content>
+            <Corner/>
         </a-layout>
     </div>
 </template>
@@ -15,9 +16,11 @@
 import { Vue, Component } from 'vue-property-decorator'
 import { Route } from 'vue-router'
 import NavBar from './components/NavBar.vue'
+import Corner from './components/Corner.vue'
 @Component({
     components: {
-        NavBar
+        NavBar,
+        Corner
     }
 })
 export default class App extends Vue {
