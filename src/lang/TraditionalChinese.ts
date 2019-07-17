@@ -21,7 +21,8 @@ export default {
     remove_msg: '是否要移除錢包?',
     remove_yes: '是',
     remove_no: '否',
-    remove_title: '移除錢包'
+    remove_title: '移除錢包',
+    first_time: '使用前請先添加錢包'
   },
   transfer: {
     from: '轉出',
