@@ -22,10 +22,10 @@ Vue.use(VueAnalytics, {
 })
 
 async function createApp() {
+  Store.getPrice()
+  await Store.initState()
+  await Store.setToHistoryList()
   if (window.connex) {
-    Store.getPrice()
-    await Store.initState()
-    await Store.setToHistoryList()
     Store.monitorBlock()
   }
   new Vue({
