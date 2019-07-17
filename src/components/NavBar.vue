@@ -3,7 +3,7 @@
         <a-col :span="8">
             <a-row type="flex" justify="start">
                 <div class="logo">
-                    <img width="157px" src="../assets/logo.png" alt="Logo">
+                    <img width="157px" src="../assets/logo.png" alt="Logo" />
                 </div>
             </a-row>
         </a-col>
@@ -49,6 +49,9 @@ import { langList } from '../lang'
 export default class NavBar extends Vue {
     public current: any[] = []
     public langs = langList
+    public created() {
+        this.routed()
+    }
     @Watch('$route')
     public routed() {
         this.current = [this.$route.meta.key]
