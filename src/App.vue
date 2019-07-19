@@ -5,9 +5,12 @@
                 <nav-bar style="max-width: 1200px; margin: auto;" />
             </a-layout-header>
             <a-layout-content style="padding-top: 64px;">
+                <a-alert v-if="isConnexOk" banner>
+                    <span slot="description" v-html="msg"></span>
+                </a-alert>
                 <router-view />
             </a-layout-content>
-            <Corner/>
+            <Corner />
         </a-layout>
     </div>
 </template>
@@ -24,6 +27,12 @@ import Corner from './components/Corner.vue'
     }
 })
 export default class App extends Vue {
+    private isConnexOk = (window.connex && window.connex.version !== '1.2.3')
+    private syncLink = 'https://env.vechain.org/r/#' + encodeURIComponent(location.href)
+
+    get msg() {
+        return this.$t('msg.require_connex', { url: this.syncLink })
+    }
     get bgClass() {
         return this.$route.name === 'wallets'
             && (this.$store.state.wallets && this.$store.state.wallets.length === 0)

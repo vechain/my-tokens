@@ -15,8 +15,12 @@ import {
   Switch,
   Divider,
   Checkbox,
-  AutoComplete
+  AutoComplete,
+  Alert
 } from 'ant-design-vue'
+
+Vue.component(Alert.name, Alert)
+Vue.use(Alert)
 
 Vue.component(Switch.name, Switch)
 Vue.use(Switch)
