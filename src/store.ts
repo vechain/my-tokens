@@ -123,7 +123,6 @@ class Store extends Vuex.Store<Store.State> {
         },
         setToList(state, payload) {
           state.toList = payload
-          // Vue.set(state, 'toList', payload)
         }
       },
       getters: {
@@ -191,6 +190,7 @@ class Store extends Vuex.Store<Store.State> {
         async importWallet({ commit }, addr) {
           if (!window.connex) {
             window.location.href = 'https://env.vechain.org/r/#' + encodeURIComponent(location.href)
+            return
           }
           let result = addr
           try {
@@ -201,7 +201,7 @@ class Store extends Vuex.Store<Store.State> {
                 purpose: 'identification',
                 payload: {
                   type: 'text',
-                  content: 'Choose wallet you want to add to "Token Transfer".'
+                  content: 'Please select a wallet to grant access to My tokens.'
                 }
               })
               result = cert.annex.signer
