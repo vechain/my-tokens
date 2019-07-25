@@ -25,9 +25,9 @@ export default {
     first_time: '使用前請先添加錢包'
   },
   transfer: {
-    from: '轉出',
-    to: '轉入',
-    amount: '數額',
+    from: '轉出地址',
+    to: '收款地址',
+    amount: '數量',
     title: '轉賬',
     send: '發送',
     no_wallet: '未檢測到錢包，您需要先導入',
@@ -42,6 +42,7 @@ export default {
     to_format: '轉入地址格式錯誤',
     to_require: '轉入地址未輸入',
     amount_require: '轉出數額未輸入',
-    amount_invalid: '轉出數額格式錯誤'
+    amount_invalid: '轉出數額格式錯誤',
+    require_connex: `當前Connex環境不支持程序運行，請下載 <a href="{url}" target="_blank"> VeChain Sync </a> 享受流暢體驗。`
   }
 }

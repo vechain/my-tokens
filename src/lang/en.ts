@@ -1,4 +1,4 @@
- export default {
+export default {
   navBar: {
     wallets: 'Wallets',
     transfer: 'Transfer'
@@ -34,7 +34,7 @@
     import_after_tx: 'Import this wallet after the transaction',
     tx_success: 'The request send success',
     // tslint:disable-next-line:max-line-length
-    tx_info : 'The Txid: <a href="{path}{txid}" target="_blank">{txid}</a>, check the information.'
+    tx_info: 'The Txid: <a href="{path}{txid}" target="_blank">{txid}</a>, check the information.'
   },
   msg: {
     addr_require: 'Address is required',
@@ -45,5 +45,8 @@
     amount_require: 'Amount is required',
     amount_invalid: 'Amount is invalid',
     amount_not_enough: 'Insufficient balance',
+    // tslint:disable-next-line:max-line-length
+    require_connex: `Required Connex environment is not supported. Please download <a href="{url}" target="_blank"> VeChain sync </a> for a frictionless experience.
+    `
   }
 }
