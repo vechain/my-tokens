@@ -12,7 +12,7 @@
                 </div>
                 <div
                     v-if="item"
-                    class="wallet-address"
+                    class="wallet-address text-monospace"
                     :title="item.address"
                 >{{item.address | toChecksumAddress | shortAddress}}</div>
                 
@@ -35,9 +35,9 @@ export default class WalletCard extends Vue {
 
 <style>
 .wallet-item {
-    padding: 20px 30px 20px 20px;
+    padding: 15px 30px 15px 20px;
     width: 320px;
-    height: 130px;
+    height: 120px;
     box-sizing: border-box;
     border: 1px solid rgba(48, 55, 66, 0.06);
     border-radius: 4px;
@@ -70,7 +70,7 @@ export default class WalletCard extends Vue {
     text-align: left;
 }
 .wallet-item .wallet-address {
-    font-size: 16px;
+    font-size: 15px;
     color: #484568;
     text-align: left;
 }
