@@ -34,7 +34,7 @@
                                             ref="input"
                                             maxlength="20"
                                             @keypress.enter="saveName"
-                                            @blur="isEdit=false;name=wallet.name"
+                                            @blur="onBlurName"
                                             v-model.trim="name"
                                         ></a-input>
                                         <a-tooltip placement="topRight" :title="wallet.name">
@@ -49,7 +49,17 @@
                                             v-show="!isEdit"
                                             shape="circle"
                                             icon="edit"
+                                            size="small"
                                             @click="showEdit"
+                                            ghost
+                                        />
+                                        <a-button
+                                            name="check"
+                                            v-show="isEdit"
+                                            shape="circle"
+                                            icon="check"
+                                            size="small"
+                                            @click="saveName"
                                             ghost
                                         />
                                     </a-col>
@@ -73,6 +83,7 @@
                                                 v-clipboard:copy="checksumAddress"
                                                 v-clipboard:success="onCopy"
                                                 shape="circle"
+                                                size="small"
                                                 icon="copy"
                                                 ghost
                                             />
@@ -81,6 +92,7 @@
                                             style=" margin-left: 10px;"
                                             shape="circle"
                                             icon="qrcode"
+                                            size="small"
                                             @mouseover="onHover"
                                             @mouseleave="visible = false"
                                             ghost
@@ -103,7 +115,7 @@
                     <a-col :xs="14" :lg="16">
                         <a-row type="flex" justify="end">
                             <a-col>
-                                <a-switch :defaultChecked="hide" @change="onHideChange"/>
+                                <a-switch :defaultChecked="hide" @change="onHideChange" />
                             </a-col>
                             <a-col
                                 style="color: #fff; font-size: 18px; padding-left: 15px;"
@@ -262,6 +274,19 @@ export default class WalletDetail extends Vue {
         })
     }
 
+    public onBlurName(e: Event & { relatedTarget: EventTarget & { type: string } | null }) {
+        if (
+            e.relatedTarget &&
+            e.relatedTarget.type === 'button' &&
+            (e.relatedTarget as HTMLButtonElement).name === 'check'
+        ) {
+            return
+        }
+        e.stopPropagation()
+        this.isEdit = false
+        this.name = this.wallet.name
+    }
+
     public async saveName() {
         this.isEdit = false
         if (!this.name) {
@@ -320,13 +345,13 @@ export default class WalletDetail extends Vue {
     width: 140px;
     height: 35px;
     line-height: 35px;
-    font-size: 24px;
+    font-size: 16px;
     background-color: rgba(17, 31, 49, 0.33);
     border-radius: 5px;
     margin: auto;
     text-align: center;
     position: absolute;
-    top: 95px;
+    top: 75px;
     left: 0;
     right: 0;
     color: #fff;
