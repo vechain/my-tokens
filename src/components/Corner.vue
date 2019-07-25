@@ -4,16 +4,6 @@
             <a-col>
                 <a-tooltip placement="top">
                     <template slot="title">
-                        <span>Gitter Chat Room</span>
-                    </template>
-                    <a-button @click="openWindow('https://gitter.im/vechain/sync')" shape="circle">
-                        <GitterIcon />
-                    </a-button>
-                </a-tooltip>
-            </a-col>
-            <a-col>
-                <a-tooltip placement="top">
-                    <template slot="title">
                         <span>Github</span>
                     </template>
                     <a-button
