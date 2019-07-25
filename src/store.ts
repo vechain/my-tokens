@@ -33,6 +33,14 @@ declare namespace Store {
   }
 }
 
+const getHistoryList = async () => {
+  const list = await DB.transfers.reverse().toArray()
+  const temp = Array.from(new Set(list.map((item: app.Transfer) => {
+    return item.to
+  }))).slice(0, 5)
+  return temp
+}
+
 class Store extends Vuex.Store<Store.State> {
   private balanceOfABI = {
     constant: true,
@@ -54,7 +62,6 @@ class Store extends Vuex.Store<Store.State> {
     type: 'function'
   }
   private tokenMethods: Store.TokenMethod[] | null = null
-
   constructor() {
     super({
       state: {
@@ -122,7 +129,7 @@ class Store extends Vuex.Store<Store.State> {
           Vue.set(state.balances![payload.address], payload.symbol, balance)
         },
         setToList(state, payload) {
-          state.toList = payload
+          Vue.set(state, 'toList', payload)
         }
       },
       getters: {
@@ -161,6 +168,8 @@ class Store extends Vuex.Store<Store.State> {
             amount,
             coin
           })
+          const toList = await getHistoryList()
+          ctx.commit('setToList', toList)
         },
         async deleteWallet({ commit }, payload) {
           try {
@@ -253,6 +262,8 @@ class Store extends Vuex.Store<Store.State> {
     try {
       const wallets = await DB.wallets.reverse().toArray()
       this.commit('setWallets', wallets)
+      const toList = await getHistoryList()
+      this.commit('setToList', toList)
       // tslint:disable-next-line:no-empty
     } catch (error) { }
     this.initTokenMethods()
@@ -276,14 +287,6 @@ class Store extends Vuex.Store<Store.State> {
       }
       this.commit('setPrices', payload)
     }
-  }
-
-  public async setToHistoryList() {
-    const list = await DB.transfers.reverse().toArray()
-    const temp = Array.from(new Set(list.map((item: app.Transfer) => {
-      return item.to
-    }))).slice(0, 5)
-    this.commit('setToList', temp)
   }
 
   private async getBalance() {
