@@ -1,7 +1,12 @@
 .cc-theme #app .nav.light {
-  background-color: rgba(0, 0, 0, .2);
+  background-color: rgba(0, 0, 0, 0.4);
   border-bottom: none;
   color: #fff;
+  transition: all ease-in 0.5s;
+}
+
+.cc-theme #app .nav.light.full {
+  background-color: rgba(0, 0, 0, 0.9);
 }
 .cc-theme #app {
   background: url(./assets/bg.png);
