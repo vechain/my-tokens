@@ -25,9 +25,9 @@
     first_time: '使用前请先添加钱包'
   },
   transfer: {
-    from: '转出',
-    to: '转入',
-    amount: '数额',
+    from: '转出地址',
+    to: '收款地址',
+    amount: '数量',
     title: '转账',
     send: '发送',
     no_wallet: '未检测到钱包，您需要先导入',
@@ -42,6 +42,7 @@
     to_format: '转入地址格式错误',
     to_require: '转入地址未输入',
     amount_require: '转出数额未输入',
-    amount_invalid: '转出数额格式错误'
+    amount_invalid: '转出数额格式错误',
+    require_connex: `当前Connex环境不支持程序运行，请下载 <a href="{url}" target="_blank"> VeChain Sync </a> 享受流畅体验。`
   }
 }
