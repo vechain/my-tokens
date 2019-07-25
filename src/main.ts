@@ -4,7 +4,6 @@ import Vue from 'vue'
 import Store from './store'
 import App from './App.vue'
 import router from './router'
-
 import VueAnalytics from 'vue-analytics'
 
 // tslint:disable-next-line:no-var-requires
@@ -24,7 +23,6 @@ Vue.use(VueAnalytics, {
 async function createApp() {
   Store.getPrice()
   await Store.initState()
-  await Store.setToHistoryList()
   if (window.connex) {
     Store.monitorBlock()
   }
