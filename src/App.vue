@@ -1,10 +1,10 @@
 <template>
     <div id="app">
         <a-layout :class="{plants: bgClass}">
-            <a-layout-header class="nav light">
+            <a-layout-header :class="navClass" class="nav light">
                 <nav-bar style="max-width: 1200px; margin: auto;" />
             </a-layout-header>
-            <a-layout-content style="padding-top: 64px;">
+            <a-layout-content ref="content" style="padding-top: 64px;">
                 <a-alert v-if="isConnexOk" banner>
                     <span slot="description" v-html="msg"></span>
                 </a-alert>
@@ -30,12 +30,28 @@ export default class App extends Vue {
     private isConnexOk = (window.connex && window.connex.version !== '1.2.3')
     private syncLink = 'https://env.vechain.org/r/#' + encodeURIComponent(location.href)
 
+    private navClass = ''
+
     get msg() {
         return this.$t('msg.require_connex', { url: this.syncLink })
     }
     get bgClass() {
         return this.$route.name === 'wallets'
             && (this.$store.state.wallets && this.$store.state.wallets.length === 0)
+    }
+
+    public mounted() {
+        let timer: any
+        (this.$refs.content as Vue).$el.addEventListener('scroll', (e: Event) => {
+            if (timer) { clearTimeout(timer) }
+            timer = setTimeout(() => {
+                if ((e.target as HTMLElement).scrollTop > 100) {
+                    this.navClass = 'full'
+                } else {
+                    this.navClass = ''
+                }
+            }, 300)
+        })
     }
 }
 </script>
@@ -51,11 +67,12 @@ export default class App extends Vue {
 }
 #app > .ant-layout {
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
     background-color: #fff;
 }
 #app > .ant-layout .ant-layout-content {
-    min-height: calc(100% - 48px);
+    height: calc(100% - 48px);
+    overflow: auto;
 }
 #app .nav {
     height: 48px;
