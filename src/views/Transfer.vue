@@ -29,7 +29,7 @@
                         <a-auto-complete
                             :allowClear="true"
                             class="select-re-theme"
-                            dropdownClassName="select-list-rebg"
+                            dropdownClassName="select-list-rebg text-monospace"
                             size="large"
                             name="to"
                             v-decorator="['to', {
@@ -320,8 +320,9 @@ export default class Transfer extends Vue {
                         val.to,
                         val.from,
                         temp.address,
-                        Vue.filter('valToHex')(val.val, decimals),
-                        symbolUnit
+                        val.val,
+                        symbolUnit,
+                        decimals
                     )
                 }
                 this.$store.dispatch('addTransferLog', {
@@ -350,8 +351,11 @@ export default class Transfer extends Vue {
                                 }).toString()
                         }
                     }),
+                    okType: 'primary',
+                    maskStyle: { background: 'transparent' },
+                    okButtonProps: { props: { ghost: true } },
                     maskClosable: true
-                })
+                } as any)
                 if (this.doImport) {
                     this.$store.dispatch('importWallet', this.from)
                 }
@@ -373,11 +377,19 @@ export default class Transfer extends Vue {
         return await svc.signer(from).request([{
             to,
             value: Vue.filter('valToHex')(amount, decimals),
-            data: '0x'
+            data: '0x',
+            comment: `Transfering ${amount} VET`
         }])
     }
 
-    public async tokenTransfer(to: string, from: string, address: string, amount: number, symbol: string) {
+    public async tokenTransfer(
+        to: string,
+        from: string,
+        address: string,
+        amount: number,
+        symbol: string,
+        decimals: number
+    ) {
         const abi = {
             constant: false,
             inputs: [
@@ -402,11 +414,11 @@ export default class Transfer extends Vue {
             type: 'function'
         }
         const method = connex.thor.account(address).method(abi)
-        const transferClause = method.asClause(to, amount)
+        const transferClause = method.asClause(to, Vue.filter('valToHex')(amount, decimals))
         const svc = connex.vendor.sign('tx')
         svc.signer(from)
         svc.link('https://connex.vecha.in/{txid}')
-        return await svc.comment('').request([{ ...transferClause }])
+        return await svc.comment('').request([{ ...transferClause, comment: `Transfering ${amount} ${symbol}` }])
     }
 
     public initForm() {
