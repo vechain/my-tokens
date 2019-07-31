@@ -417,7 +417,6 @@ export default class Transfer extends Vue {
         const transferClause = method.asClause(to, Vue.filter('valToHex')(amount, decimals))
         const svc = connex.vendor.sign('tx')
         svc.signer(from)
-        svc.link('https://connex.vecha.in/{txid}')
         return await svc.comment('').request([{ ...transferClause, comment: `Transfering ${amount} ${symbol}` }])
     }
 
