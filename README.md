@@ -1,4 +1,4 @@
-# token-transfer
+# My Tokens
 
 ## Project setup
 ```
