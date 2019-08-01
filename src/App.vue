@@ -27,7 +27,7 @@ import Corner from './components/Corner.vue'
     }
 })
 export default class App extends Vue {
-    private isConnexOk = (window.connex && window.connex.version !== '1.2.3')
+    private isConnexOk = (!window.connex || window.connex && window.connex.version !== '1.2.3')
     private syncLink = 'https://env.vechain.org/r/#' + encodeURIComponent(location.href)
 
     private navClass = ''
