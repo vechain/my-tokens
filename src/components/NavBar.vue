@@ -3,7 +3,9 @@
         <a-col :span="8">
             <a-row type="flex" justify="start">
                 <div class="logo">
-                    <img width="157px" src="../assets/logo.png" alt="Logo" />
+                    <router-link :to="{name: 'wallets'}">
+                        <img width="157px" src="../assets/logo.png" alt="Logo" />
+                    </router-link>
                 </div>
             </a-row>
         </a-col>
