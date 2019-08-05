@@ -205,7 +205,7 @@ export default class WalletDetail extends Vue {
     }
 
     public created() {
-        this.$ga.page('/wallet/detail')
+        this.$ga.page('/tokens/wallet/detail')
         if (this.wallet) {
             this.name = this.wallet.name
             this.isOwn = connex.vendor.owned(this.wallet.address)

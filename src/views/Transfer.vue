@@ -293,7 +293,7 @@ export default class Transfer extends Vue {
     }
 
     public created() {
-        this.$ga.page('/transfer')
+        this.$ga.page('/tokens/transfer')
         this.initForm()
     }
 
