@@ -77,7 +77,7 @@ export default class Wallets extends Vue {
     public visible = false
     public observeAddress = ''
     public created() {
-        this.$ga.page('/wallets')
+        this.$ga.page('/tokens/wallets')
     }
     public observeWallet() {
         this.visible = true
