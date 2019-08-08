@@ -5,7 +5,7 @@
                 <nav-bar style="max-width: 1200px; margin: auto;" />
             </a-layout-header>
             <a-layout-content ref="content" style="padding-top: 64px;">
-                <a-alert v-if="isConnexOk" banner>
+                <a-alert v-if="!isConnexOk" banner>
                     <span slot="description" v-html="msg"></span>
                 </a-alert>
                 <router-view />
