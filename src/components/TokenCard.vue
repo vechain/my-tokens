@@ -1,17 +1,17 @@
 <template>
     <div class="token-card">
         <div>
-            <img
-                :src="item.img"
-                :alt="item.name"
-            >
+            <img :src="item.img" :alt="item.name" />
             <div class="token-name">
                 <p>
                     <span>{{item.name}}</span>
                 </p>
-                <router-link class="go-transfer" :to="{name: 'transfer', query: {
+                <router-link
+                    class="go-transfer"
+                    :to="{name: 'transfer', query: {
                     symbol: item.symbol
-                }}">Transfer</router-link>
+                }}"
+                >Transfer</router-link>
             </div>
         </div>
     </div>
@@ -41,7 +41,7 @@ export default class TokenCard extends Vue {
     border-radius: 4px;
 }
 .token-card > div {
-  position: absolute;
+    position: absolute;
 }
 .token-card:before {
     position: absolute;
@@ -69,8 +69,10 @@ export default class TokenCard extends Vue {
 .token-card:hover .go-transfer {
     opacity: 1;
 }
-.token-card:hover:before {
-    transform: scaleY(1.2) scaleX(1.1);
+@media (min-width: 576.1px) {
+    .token-card:hover:before {
+        transform: scaleY(1.2) scaleX(1.1);
+    }
 }
 .token-card .token-name {
     margin-top: 15px;

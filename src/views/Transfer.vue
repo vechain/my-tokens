@@ -1,9 +1,15 @@
 <template>
     <div class="transfer">
-        <a-row type="flex" justify="space-around">
+        <a-row class="hide-small" type="flex" justify="space-around">
             <a-col :md="22" :lg="18" :xl="16" :xxl="14">
                 <h2 class="font-g underscore">{{$t('transfer.title')}}</h2>
             </a-col>
+        </a-row>
+        <a-row class="hide-gt-small" type="flex" justify="space-between">
+            <a-col>
+                <h2 class="font-g underscore">{{$t('transfer.title')}}</h2>
+            </a-col>
+            <a-col></a-col>
         </a-row>
         <a-row type="flex" justify="space-around">
             <a-col :md="18" :lg="14" :xl="12" :xxl="8">
@@ -92,7 +98,7 @@
             :mask="false"
             :closable="false"
             :footer="null"
-            wrapClassName="cus-modal"
+            wrapClassName="cus-modal transfer-p"
             v-model="showTl"
         >
             <h1>{{$t('wallets.token')}}</h1>
@@ -110,7 +116,7 @@
             :mask="false"
             :closable="false"
             :footer="null"
-            wrapClassName="cus-modal"
+            wrapClassName="cus-modal transfer-p"
             v-model="showWl"
         >
             <a-row type="flex" align="middle" justify="space-between">
@@ -136,7 +142,7 @@
             <div ref="walletList" class="transfer-list-container">
                 <template v-if="walletList.length">
                     <WalletCard
-                        style="margin: 25px auto"
+                        style="margin: 25px auto; width: 100%;"
                         class="transfer-wallet"
                         @click="walletChange(item)"
                         v-for="item in walletList"
@@ -555,9 +561,7 @@ export default class Transfer extends Vue {
     height: initial;
     padding: 20px 0;
 }
-.transfer-list-container .transfer-wallet:hover {
-    transform: scale(1.11);
-}
+
 .transfer-list-container .transfer-wallet .ant-col-xs-8 {
     width: 100px;
 }
@@ -608,8 +612,31 @@ export default class Transfer extends Vue {
     width: 390px;
     margin: 20px auto;
 }
-.transfer-list-container .token-balance-card:hover {
-    transform: scale(1.1);
+
+@media (max-width: 576px) {
+    .transfer { 
+        padding: 20px 40px;
+    }
+    .transfer-list-container .token-balance-card {
+        width: 100%;
+    }
+    .transfer-list-container .token-balance-card .ant-card-body {
+        padding: 10px;
+    }
+    .cus-modal .ant-modal-body .transfer-list-container {
+        padding: 0;
+    }
+    .cus-modal.transfer-p .ant-modal-body {
+        padding: 15px 5px;
+    }
+}
+@media (min-width: 576.1px) {
+    .transfer-list-container .token-balance-card:hover {
+        transform: scale(1.1);
+    }
+    .transfer-list-container .transfer-wallet:hover {
+        transform: scale(1.11);
+    }
 }
 </style>
 

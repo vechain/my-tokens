@@ -3,11 +3,11 @@
         <a-row type="flex" justify="center">
             <a-col :xs="24">
                 <a-row :gutter="{xs: 8, lg: 24}" type="flex" justify="space-around">
-                    <a-col :xs="8" :lg="7">
-                        <a-row>
-                            <a-col>
+                    <a-col :xs="24" :sm="8" :lg="7">
+                        <a-row type="flex" justify="center">
+                            <a-col :xs="8" :sm="24">
                                 <a-row type="flex" :gutter="8" justify="center" align="middle">
-                                    <a-col :xs="24">
+                                    <a-col :sm="24">
                                         <div class="icon-container">
                                             <div
                                                 class="wallet-icon"
@@ -17,7 +17,7 @@
                                                 <span v-if="!isOwn">{{$t('wallets.observe')}}</span>
                                             </div>
                                             <QRCode
-                                                class="code"
+                                                class="code hide-small"
                                                 :class="{show: visible}"
                                                 :content="checksumAddress"
                                             />
@@ -25,9 +25,9 @@
                                     </a-col>
                                 </a-row>
                             </a-col>
-                            <a-col>
-                                <a-row type="flex" :gutter="8" align="middle">
-                                    <a-col :xs="16" class="wallet-name">
+                            <a-col :xs="16" :sm="24">
+                                <a-row type="flex" justify="start" :gutter="8" align="middle">
+                                    <a-col :sm="16" class="wallet-name">
                                         <a-input
                                             v-show="isEdit"
                                             size="large"
@@ -44,7 +44,7 @@
                                             >{{wallet.name}}</span>
                                         </a-tooltip>
                                     </a-col>
-                                    <a-col :xs="8">
+                                    <a-col :sm="8">
                                         <a-button
                                             v-show="!isEdit"
                                             shape="circle"
@@ -64,17 +64,20 @@
                                         />
                                     </a-col>
                                 </a-row>
-                            </a-col>
-                            <a-col style="padding-top: 20px">
-                                <a-row type="flex" :gutter="8" align="middle">
-                                    <a-col :xs="16">
+                                <a-row
+                                    type="flex"
+                                    :gutter="8"
+                                    style="margin-top: 10px;"
+                                    align="middle"
+                                >
+                                    <a-col :sm="16">
                                         <a-tooltip placement="topRight" :title="wallet.address">
                                             <p
                                                 class="wallet-address text-monospace"
                                             >{{wallet.address | toChecksumAddress | shortAddress}}</p>
                                         </a-tooltip>
                                     </a-col>
-                                    <a-col :xs="8">
+                                    <a-col :sm="8">
                                         <a-tooltip :visible="showTip" placement="top">
                                             <template slot="title">
                                                 <span>{{$t('wallets.copied')}}</span>
@@ -89,17 +92,21 @@
                                             />
                                         </a-tooltip>
                                         <a-button
-                                            style=" margin-left: 10px;"
+                                            style="margin-left: 10px;"
                                             shape="circle"
                                             icon="qrcode"
                                             size="small"
-                                            @mouseover="onHover"
-                                            @mouseleave="visible = false"
+                                            @click="onCodeClick"
                                             ghost
                                         />
                                     </a-col>
                                 </a-row>
-                                <a-row style="margin-top: 30px" type="flex" justify="space-around">
+                                <a-row
+                                    class="hide-small"
+                                    style="margin-top: 30px"
+                                    type="flex"
+                                    justify="space-around"
+                                >
                                     <a-col>
                                         <a-button
                                             type="danger"
@@ -112,8 +119,8 @@
                             </a-col>
                         </a-row>
                     </a-col>
-                    <a-col :xs="14" :lg="16">
-                        <a-row type="flex" justify="end">
+                    <a-col :xs="20" :sm="14" :lg="16">
+                        <a-row class="hide-small" type="flex" justify="end">
                             <a-col>
                                 <a-switch :defaultChecked="hide" @change="onHideChange" />
                             </a-col>
@@ -121,10 +128,39 @@
                                 style="color: #fff; font-size: 18px; padding-left: 15px;"
                             >{{$t('wallets.hide_amount')}}</a-col>
                         </a-row>
+                        <a-row
+                            class="hide-gt-small"
+                            style="margin-top: 20px"
+                            type="flex"
+                            justify="space-between"
+                        >
+                            <a-col>
+                                <a-switch
+                                    :defaultChecked="hide"
+                                    size="small"
+                                    @change="onHideChange"
+                                />
+                                <span
+                                    style="color: #fff; font-size: 14px; padding-left: 15px;"
+                                >{{$t('wallets.hide_amount')}}</span>
+                            </a-col>
+                            <a-col>
+                                <a-button
+                                    type="danger"
+                                    class="cus-btn"
+                                    size="small"
+                                    shape="circle"
+                                    icon="delete"
+                                    style="color: #D58693;"
+                                    @click="deleteWallet"
+                                ></a-button>
+                            </a-col>
+                        </a-row>
+
                         <a-row type="flex" :gutter="2" justify="space-between">
                             <template v-for="item in tokenlist">
                                 <a-col
-                                    style="margin-top: 25px"
+                                    class="card-list-item"
                                     :xs="24"
                                     :lg="11"
                                     v-if="item.show"
@@ -164,6 +200,16 @@
                 </a-row>
             </div>
         </a-modal>
+        <a-modal
+            :mask="false"
+            wrapClassName="cus-modal"
+            :closable="false"
+            :footer="null"
+            v-model="visibleQrD"
+            @cancel="onCancel"
+        >
+            <QRCode :content="checksumAddress" />
+        </a-modal>
     </div>
 </template>
 <script lang="ts">
@@ -184,6 +230,7 @@ export default class WalletDetail extends Vue {
     public isOwn = false
     public visible = false
     public visibleM = false
+    public visibleQrD = false
 
     @Watch('wallet')
     public walletChange(newVal: app.Wallet) {
@@ -243,6 +290,9 @@ export default class WalletDetail extends Vue {
 
     public onHover() {
         this.visible = true
+    }
+    public onCodeClick() {
+        this.visibleQrD = true
     }
     public onCancel() {
         this.visibleM = false
@@ -321,6 +371,7 @@ export default class WalletDetail extends Vue {
     max-width: 1200px;
     margin: auto;
     margin-top: 40px;
+    padding-bottom: 20px;
 }
 
 .token-balance-list {
@@ -404,7 +455,27 @@ export default class WalletDetail extends Vue {
 .wallet-detail .token-balance-card {
     transition: all 0.2s ease;
 }
-.wallet-detail .token-balance-card:not(.not-allowed):hover {
-    transform: scale(1.1);
+.wallet-detail .card-list-item {
+    margin-top: 25px;
+}
+@media (max-width: 576px) {
+    .icon-container,
+    .icon-container .wallet-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0;
+    }
+    .wallet-icon span {
+        width: 66px;
+        top: 23px;
+    }
+    .wallet-detail .card-list-item {
+        margin-top: 10px;
+    }
+}
+@media (min-width: 576.1px) {
+    .wallet-detail .token-balance-card:not(.not-allowed):hover {
+        transform: scale(1.1);
+    }
 }
 </style>

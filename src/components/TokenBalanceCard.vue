@@ -58,7 +58,6 @@ export default class TokenBalanceCard extends Vue {
     font-family: Open Sans, Hiragino Sans GB, monospace, serif;
     color: #9194a4;
 }
-
 .token-balance-card:hover {
     cursor: pointer;
     box-shadow: 0 0.25rem 1rem rgba(48, 55, 66, 0.15);

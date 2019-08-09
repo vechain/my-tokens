@@ -3,8 +3,8 @@
         <div v-if="!loading">
             <template v-if="wallets.length">
                 <div class="wallet-list" style="padding: 0 40px">
-                    <a-row type="flex" align="middle" justify="space-around">
-                        <a-col a-col :md="22" :lg="18" :xl="16" :xxl="14">
+                    <a-row class="hide-small" type="flex" align="middle" justify="space-around">
+                        <a-col :md="22" :lg="18" :xl="16" :xxl="14">
                             <a-row type="flex" align="middle" justify="space-between">
                                 <a-col>
                                     <h2 class="font-g underscore">{{$t('wallets.title')}}</h2>
@@ -18,9 +18,22 @@
                             </a-row>
                         </a-col>
                     </a-row>
+                    <a-row class="hide-gt-small" type="flex" align="middle" justify="space-between">
+                        <a-col>
+                            <h2 class="font-g underscore">{{$t('wallets.title')}}</h2>
+                        </a-col>
+                        <a-col>
+                            <a-button
+                                shape="circle"
+                                style="background-color: #625B6C; border: none; color: #fff;"
+                                @click="observeWallet"
+                                icon="plus-circle"
+                            ></a-button>
+                        </a-col>
+                    </a-row>
                 </div>
                 <div>
-                    <a-row type="flex" justify="start">
+                    <a-row type="flex" :justify="wallets.length >= 4 ? 'start' : 'center'">
                         <a-col
                             :xs="24"
                             v-for="item in wallets"
@@ -42,7 +55,7 @@
             </template>
             <div v-else class="wallet-empty">
                 <div>
-                    <p v-html="$t('wallets.first_time')" style="font-size: 36px; color: #fff;"></p>
+                    <p v-html="$t('wallets.first_time')" style="color: #fff;"></p>
                     <AddWallet />
                 </div>
             </div>
@@ -114,7 +127,29 @@ export default class Wallets extends Vue {
 .wallet .wallet-item {
     transition: all 0.2s ease;
 }
-.wallet .wallet-item:hover {
-    transform: scale(1.1);
+@media (min-width: 576.1px) {
+    .wallet .wallet-item:hover {
+        transform: scale(1.1);
+    }
+}
+.wallet .wallet-empty p {
+    font-size: 36px;
+}
+@media (max-width: 576px) {
+    .add-wallet,
+    .add-wallet .ant-input,
+    .add-wallet .btn {
+        width: 100%;
+    }
+    .wallet {
+        padding: 20px 10px;
+    }
+    .wallet .wallet-empty {
+        margin: 50px auto;
+        width: 80%;
+    }
+    .wallet .wallet-empty p {
+        font-size: 1.7em;
+    }
 }
 </style>
