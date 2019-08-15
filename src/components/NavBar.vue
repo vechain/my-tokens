@@ -96,7 +96,7 @@ export default class NavBar extends Vue {
         this.currentS = this.$route.meta.key
     }
 
-    onRouteChange(v: string) {
+    public onRouteChange(v: string) {
         this.$router.push({ name: v })
     }
 }

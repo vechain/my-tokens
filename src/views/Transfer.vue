@@ -198,6 +198,7 @@ export default class Transfer extends Vue {
     private wallet: app.Wallet | null = null
     private showImport = false
     private doImport = false
+    private walletList: app.Wallet[] = []
 
     public beforeCreate() {
         this.form = this.$form.createForm(this)
@@ -205,12 +206,18 @@ export default class Transfer extends Vue {
 
     public async importWallet() {
         await this.$store.dispatch('importWallet')
+        this.getWalletList()
     }
 
-    get walletList(): app.Wallet[] {
-        return this.$store.getters.wallets.filter((item: app.Wallet) => {
-            return connex.vendor.owned(item.address)
-        }).map((item: app.Wallet) => {
+    public async getWalletList(): Promise<void> {
+        let result: app.Wallet[] = []
+        for (let index = 0; index < this.$store.getters.wallets.length; index++) {
+            let item = this.$store.getters.wallets[index]
+            if (await connex.vendor.owned(item.address) || true) {
+                result.push(item)
+            }
+        }
+        this.walletList = result.map((item: app.Wallet) => {
             return {
                 ...item,
                 balance: this.$store.getters.balanceList
@@ -220,6 +227,8 @@ export default class Transfer extends Vue {
         }).sort((a: app.Wallet & { balance: number }, b: app.Wallet & { balance: number }) => {
             return b.balance - a.balance
         })
+
+        return
     }
 
     get SetAmountStyle() {
@@ -298,7 +307,7 @@ export default class Transfer extends Vue {
         })
     }
 
-    public created() {
+    public async created() {
         this.$ga.page('/tokens/transfer')
         this.initForm()
     }
@@ -315,21 +324,34 @@ export default class Transfer extends Vue {
             let decimals = 18
             if (!err) {
                 let result: any
-                if (isVet) {
-                    result = await this.transferVet(val.from, val.to, val.val, 18)
-                } else {
-                    const temp = this.$store.getters.tokens.find((item: app.Token) => {
-                        return item.symbol.toString().toLowerCase() === symbolUnit.toString().toLowerCase()
+                try {
+                    if (isVet) {
+                        result = await this.transferVet(val.from, val.to, val.val, 18)
+                    } else {
+                        const temp = this.$store.getters.tokens.find((item: app.Token) => {
+                            return item.symbol.toString().toLowerCase() === symbolUnit.toString().toLowerCase()
+                        })
+                        decimals = temp.decimals
+                        result = await this.tokenTransfer(
+                            val.to,
+                            val.from,
+                            temp.address,
+                            val.val,
+                            symbolUnit,
+                            decimals
+                        )
+
+                    }
+                } catch (error) {
+                    this.$error({
+                        class: 'cus-modal',
+                        title: this.$createElement('span', {
+                            style: {
+                                color: '#fff'
+                            }
+                        }, error.message)
                     })
-                    decimals = temp.decimals
-                    result = await this.tokenTransfer(
-                        val.to,
-                        val.from,
-                        temp.address,
-                        val.val,
-                        symbolUnit,
-                        decimals
-                    )
+                    return
                 }
                 this.$store.dispatch('addTransferLog', {
                     txid: result.txid,
@@ -426,13 +448,21 @@ export default class Transfer extends Vue {
         return await svc.comment('').request([{ ...transferClause, comment: `Transfering ${amount} ${symbol}` }])
     }
 
-    public initForm() {
-        const wallet = this.walletList.find((item) => {
-            return item.address.toLowerCase() === (this.$route.query.from || '').toString().toLowerCase()
-        })
+    public async initForm() {
         const token = this.tokenlist.find((item: app.Token) => {
             return item.symbol.toLowerCase() === (this.$route.query.symbol || 'VET').toString().toLowerCase()
         })
+        if (token) {
+            this.unit = token.symbol
+            this.token = token
+        } else {
+            this.token = this.tokenlist[0]
+        }
+        await this.getWalletList()
+        const wallet = this.walletList!.find((item) => {
+            return item.address.toLowerCase() === (this.$route.query.from || '').toString().toLowerCase()
+        })
+
         if (this.$route.query && this.$route.query.from) {
             if (connex.vendor.owned(this.$route.query.from.toString())) {
                 if (wallet) {
@@ -447,12 +477,6 @@ export default class Transfer extends Vue {
                     }
                 }
             }
-        }
-        if (token) {
-            this.unit = token.symbol
-            this.token = token
-        } else {
-            this.token = this.tokenlist[0]
         }
     }
 }
@@ -614,7 +638,7 @@ export default class Transfer extends Vue {
 }
 
 @media (max-width: 576px) {
-    .transfer { 
+    .transfer {
         padding: 20px 40px;
     }
     .transfer-list-container .token-balance-card {

@@ -289,7 +289,7 @@ class Store extends Vuex.Store<Store.State> {
     }
   }
 
-  private async getBalance() {
+  private getBalance() {
     this.state.wallets!.forEach(async (item) => {
       const info = await connex.thor.account(item.address).get()
       this.commit('setBalance', {

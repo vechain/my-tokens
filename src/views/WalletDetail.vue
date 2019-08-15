@@ -227,7 +227,7 @@ export default class WalletDetail extends Vue {
     public name: string = ''
     public isEdit = false
     public showTip = false
-    public isOwn = false
+    public isOwn = true
     public visible = false
     public visibleM = false
     public visibleQrD = false
@@ -251,11 +251,11 @@ export default class WalletDetail extends Vue {
         this.$store.state.hideTokens = !this.hide
     }
 
-    public created() {
+    public async created() {
         this.$ga.page('/tokens/wallet/detail')
         if (this.wallet) {
             this.name = this.wallet.name
-            this.isOwn = connex.vendor.owned(this.wallet.address)
+            this.isOwn = await connex.vendor.owned(this.wallet.address)
         } else {
             this.$router.push({
                 name: 'wallets'

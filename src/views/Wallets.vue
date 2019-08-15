@@ -108,8 +108,7 @@ export default class Wallets extends Vue {
     get wallets() {
         return this.$store.getters.wallets.map((item: app.Wallet) => {
             return {
-                ...item,
-                own: connex.vendor.owned(item.address)
+                ...item
             }
         })
     }
