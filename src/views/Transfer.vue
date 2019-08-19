@@ -210,9 +210,8 @@ export default class Transfer extends Vue {
     }
 
     public async getWalletList(): Promise<void> {
-        let result: app.Wallet[] = []
-        for (let index = 0; index < this.$store.getters.wallets.length; index++) {
-            let item = this.$store.getters.wallets[index]
+        const result: app.Wallet[] = []
+        for (const item of this.$store.getters.wallets) {
             if (await connex.vendor.owned(item.address) || true) {
                 result.push(item)
             }
