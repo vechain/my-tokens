@@ -199,7 +199,7 @@ export default class Transfer extends Vue {
     private wallet: app.Wallet | null = null
     private showImport = false
     private doImport = false
-    private walletList: app.Wallet[] = []
+    private walletListTemp: app.Wallet[] = []
 
     public beforeCreate() {
         this.form = this.$form.createForm(this)
@@ -207,17 +207,22 @@ export default class Transfer extends Vue {
 
     public async importWallet() {
         await this.$store.dispatch('importWallet')
-        this.getWalletList()
+        this.setWalletList()
     }
 
-    public async getWalletList(): Promise<void> {
+    public async setWalletList(): Promise<void> {
         const result: app.Wallet[] = []
         for (const item of this.$store.getters.wallets) {
             if (await connex.vendor.owned(item.address) || true) {
                 result.push(item)
             }
         }
-        this.walletList = result.map((item: app.Wallet) => {
+        this.walletListTemp = result
+        return
+    }
+
+    get walletList() {
+        return this.walletListTemp.map((item: app.Wallet) => {
             return {
                 ...item,
                 balance: this.$store.getters.balanceList
@@ -227,8 +232,6 @@ export default class Transfer extends Vue {
         }).sort((a: app.Wallet & { balance: number }, b: app.Wallet & { balance: number }) => {
             return b.balance - a.balance
         })
-
-        return
     }
 
     get SetAmountStyle() {
@@ -456,7 +459,7 @@ export default class Transfer extends Vue {
         } else {
             this.token = this.tokenlist[0]
         }
-        await this.getWalletList()
+        await this.setWalletList()
         const wallet = this.walletList!.find((item) => {
             return item.address.toLowerCase() === (this.$route.query.from || '').toString().toLowerCase()
         })
@@ -465,7 +468,7 @@ export default class Transfer extends Vue {
             if (await connex.vendor.owned(this.$route.query.from.toString())) {
                 if (wallet) {
                     this.from = wallet.address
-                    this.form.setFieldsValue({from: this.from})
+                    this.form.setFieldsValue({ from: this.from })
                     this.wallet = wallet
                 } else {
                     this.showImport = true
