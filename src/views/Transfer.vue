@@ -182,6 +182,7 @@
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import TokenBalanceCard from '../components/TokenBalanceCard.vue'
 import WalletCard from '../components/WalletCard.vue'
+import BigNumber from 'bignumber.js'
 @Component({
     components: {
         TokenBalanceCard,
@@ -249,8 +250,10 @@ export default class Transfer extends Vue {
             msg = this.$t('msg.amount_invalid').toString()
             callback(new Error(msg))
         }
+        let v = new BigNumber(value)
+        let b = new BigNumber(this.tokenBalance)
 
-        if (value > this.tokenBalance) {
+        if (v.isGreaterThan(b)) {
             msg = this.$t('msg.amount_not_enough').toString()
             callback(new Error(msg))
         }

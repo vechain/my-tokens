@@ -123,9 +123,8 @@ class Store extends Vuex.Store<Store.State> {
           }
           const temp = new BigNumber(payload.balance)
           const balance = temp.isGreaterThan(0)
-            ? temp.div(new BigNumber('1e+' + payload.decimals)).toNumber()
+            ? temp.div(new BigNumber('1e+' + payload.decimals)).toString()
             : 0
-
           Vue.set(state.balances![payload.address], payload.symbol, balance)
         },
         setToList(state, payload) {
