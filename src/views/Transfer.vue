@@ -314,10 +314,6 @@ export default class Transfer extends Vue {
         this.initForm()
     }
 
-    public mounted() {
-        this.form.setFieldsValue({ from: this.from })
-    }
-
     public send(e: Event) {
         e.preventDefault()
         this.form.validateFields(async (err: any, val: any) => {
@@ -466,9 +462,10 @@ export default class Transfer extends Vue {
         })
 
         if (this.$route.query && this.$route.query.from) {
-            if (connex.vendor.owned(this.$route.query.from.toString())) {
+            if (await connex.vendor.owned(this.$route.query.from.toString())) {
                 if (wallet) {
                     this.from = wallet.address
+                    this.form.setFieldsValue({from: this.from})
                     this.wallet = wallet
                 } else {
                     this.showImport = true
