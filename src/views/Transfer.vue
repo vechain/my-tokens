@@ -253,8 +253,8 @@ export default class Transfer extends Vue {
             msg = this.$t('msg.amount_invalid').toString()
             callback(new Error(msg))
         }
-        let v = new BigNumber(value)
-        let b = new BigNumber(this.tokenBalance)
+        const v = new BigNumber(value)
+        const b = new BigNumber(this.tokenBalance)
 
         if (v.isGreaterThan(b)) {
             msg = this.$t('msg.amount_not_enough').toString()
