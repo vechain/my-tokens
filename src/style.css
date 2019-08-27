@@ -8,7 +8,7 @@
 .cc-theme #app .nav.light.full {
   background-color: rgba(0, 0, 0, 0.9);
 }
-.cc-theme #app {
+body {
   background: url(./assets/bg.png);
   background-size: cover;
   background-attachment: fixed;
