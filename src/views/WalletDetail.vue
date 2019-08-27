@@ -2,11 +2,11 @@
     <div class="wallet-detail">
         <a-row type="flex" justify="center">
             <a-col :xs="24">
-                <a-row :gutter="{xs: 8, lg: 24}" type="flex" justify="space-around">
+                <a-row :gutter="{lg: 24}" type="flex" justify="space-around">
                     <a-col :xs="24" :sm="8" :lg="7">
                         <a-row type="flex" justify="center">
                             <a-col :xs="8" :sm="24">
-                                <a-row type="flex" :gutter="8" justify="center" align="middle">
+                                <a-row type="flex"  justify="center" align="middle">
                                     <a-col :sm="24">
                                         <div class="icon-container">
                                             <div
@@ -26,7 +26,7 @@
                                 </a-row>
                             </a-col>
                             <a-col :xs="16" :sm="24">
-                                <a-row type="flex" justify="start" :gutter="8" align="middle">
+                                <a-row type="flex" justify="start" align="middle">
                                     <a-col :sm="16" class="wallet-name">
                                         <a-input
                                             v-show="isEdit"
