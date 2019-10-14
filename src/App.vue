@@ -61,20 +61,12 @@ export default class App extends Vue {
     font-family: "Avenir", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* text-align: center; */
     color: #2c3e50;
-    /* height: 100%;
-    overflow: auto; */
 }
 #app > .ant-layout {
-    /* height: 100%;
-    overflow: hidden; */
     background-color: #fff;
 }
-/* #app > .ant-layout .ant-layout-content {
-    height: calc(100% - 48px);
-    overflow: auto;
-} */
+
 #app .nav {
     height: 48px;
     line-height: 48px;
