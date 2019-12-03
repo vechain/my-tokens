@@ -21,7 +21,7 @@ Vue.use(VueAnalytics, {
 })
 
 async function createApp() {
-  Store.getPrice()
+  // Store.getPrice()
   await Store.initState()
   if (window.connex) {
     Store.monitorBlock()
