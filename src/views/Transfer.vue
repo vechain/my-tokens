@@ -183,6 +183,7 @@ import { Vue, Component, Watch } from 'vue-property-decorator'
 import TokenBalanceCard from '../components/TokenBalanceCard.vue'
 import WalletCard from '../components/WalletCard.vue'
 import BigNumber from 'bignumber.js'
+import Store from '../store'
 @Component({
     components: {
         TokenBalanceCard,
@@ -200,6 +201,7 @@ export default class Transfer extends Vue {
     private showImport = false
     private doImport = false
     private walletListTemp: app.Wallet[] = []
+    private tempFrom?: string
 
     public beforeCreate() {
         this.form = this.$form.createForm(this)
@@ -213,7 +215,7 @@ export default class Transfer extends Vue {
     public async setWalletList(): Promise<void> {
         const result: app.Wallet[] = []
         for (const item of this.$store.getters.wallets) {
-            if (await connex.vendor.owned(item.address) === true) {
+            if ((await connex.vendor.owned(item.address)) === true) {
                 result.push(item)
             }
         }
@@ -222,20 +224,33 @@ export default class Transfer extends Vue {
     }
 
     get walletList() {
-        return this.walletListTemp.map((item: app.Wallet) => {
-            return {
-                ...item,
-                balance: this.$store.getters.balanceList
-                    && this.$store.getters.balanceList[item.address]
-                    && this.$store.getters.balanceList[item.address][this.unit] || 0
-            }
-        }).sort((a: app.Wallet & { balance: number }, b: app.Wallet & { balance: number }) => {
-            return b.balance - a.balance
-        })
+        return this.walletListTemp
+            .map((item: app.Wallet) => {
+                return {
+                    ...item,
+                    balance:
+                        (this.$store.getters.balanceList &&
+                            this.$store.getters.balanceList[item.address] &&
+                            this.$store.getters.balanceList[item.address][
+                                this.unit
+                            ]) ||
+                        0
+                }
+            })
+            .sort(
+                (
+                    a: app.Wallet & { balance: number },
+                    b: app.Wallet & { balance: number }
+                ) => {
+                    return b.balance - a.balance
+                }
+            )
     }
 
     get SetAmountStyle() {
-        return (this.unit && this.unit.toLowerCase() === 'vtho') ? { cursor: 'not-allowed' } : ''
+        return this.unit && this.unit.toLowerCase() === 'vtho'
+            ? { cursor: 'not-allowed' }
+            : ''
     }
 
     get toList() {
@@ -267,6 +282,10 @@ export default class Transfer extends Vue {
         const el = this.$refs.walletList as HTMLElement
         this.wallet = wallet
         this.from = wallet.address
+        if (this.tempFrom) {
+            this.$store.commit('deleteTemp', this.tempFrom)
+            this.tempFrom = ''
+        }
         this.form.setFieldsValue({ from: wallet.address })
         this.showWl = false
         this.showImport = false
@@ -294,13 +313,20 @@ export default class Transfer extends Vue {
     }
 
     get balances() {
-        return this.$store.getters.balanceList && this.$store.getters.balanceList[this.from] || {}
+        return (
+            (this.$store.getters.balanceList &&
+                this.$store.getters.balanceList[this.from]) ||
+            {}
+        )
     }
 
     get tokenBalance() {
-        return this.$store.getters.balanceList
-            && this.$store.getters.balanceList[this.from]
-            && this.$store.getters.balanceList[this.from][this.unit] || 0
+        return (
+            (this.$store.getters.balanceList &&
+                this.$store.getters.balanceList[this.from] &&
+                this.$store.getters.balanceList[this.from][this.unit]) ||
+            0
+        )
     }
 
     get tokenlist() {
@@ -327,11 +353,21 @@ export default class Transfer extends Vue {
                 let result: any
                 try {
                     if (isVet) {
-                        result = await this.transferVet(val.from, val.to, val.val, 18)
+                        result = await this.transferVet(
+                            val.from,
+                            val.to,
+                            val.val,
+                            18
+                        )
                     } else {
-                        const temp = this.$store.getters.tokens.find((item: app.Token) => {
-                            return item.symbol.toString().toLowerCase() === symbolUnit.toString().toLowerCase()
-                        })
+                        const temp = this.$store.getters.tokens.find(
+                            (item: app.Token) => {
+                                return (
+                                    item.symbol.toString().toLowerCase() ===
+                                    symbolUnit.toString().toLowerCase()
+                                )
+                            }
+                        )
                         decimals = temp.decimals
                         result = await this.tokenTransfer(
                             val.to,
@@ -341,16 +377,19 @@ export default class Transfer extends Vue {
                             symbolUnit,
                             decimals
                         )
-
                     }
                 } catch (error) {
                     this.$error({
                         class: 'cus-modal',
-                        title: this.$createElement('span', {
-                            style: {
-                                color: '#fff'
-                            }
-                        }, error.message)
+                        title: this.$createElement(
+                            'span',
+                            {
+                                style: {
+                                    color: '#fff'
+                                }
+                            },
+                            error.message
+                        )
                     })
                     return
                 }
@@ -362,22 +401,25 @@ export default class Transfer extends Vue {
                     coin: symbolUnit
                 })
                 this.$success({
-                    title: this.$createElement('span', {
-                        style: {
-                            color: '#fff'
-                        }
-                    }, this.$t('transfer.tx_success').toString()),
+                    title: this.$createElement(
+                        'span',
+                        {
+                            style: {
+                                color: '#fff'
+                            }
+                        },
+                        this.$t('transfer.tx_success').toString()
+                    ),
                     class: 'cus-modal',
                     content: this.$createElement('div', {
                         style: {
                             color: '#fff'
                         },
                         domProps: {
-                            innerHTML: this.$t('transfer.tx_info',
-                                {
-                                    txid: result.txid,
-                                    path: 'https://insight.vecha.in/#/txs/'
-                                }).toString()
+                            innerHTML: this.$t('transfer.tx_info', {
+                                txid: result.txid,
+                                path: 'https://insight.vecha.in/#/txs/'
+                            }).toString()
                         }
                     }),
                     okType: 'primary',
@@ -401,14 +443,21 @@ export default class Transfer extends Vue {
         this.from = ''
     }
 
-    public async transferVet(from: string, to: string, amount: number, decimals: number) {
+    public async transferVet(
+        from: string,
+        to: string,
+        amount: number,
+        decimals: number
+    ) {
         const svc = connex.vendor.sign('tx')
-        return await svc.signer(from).request([{
-            to,
-            value: Vue.filter('valToHex')(amount, decimals),
-            data: '0x',
-            comment: `Transfering ${amount} VET`
-        }])
+        return await svc.signer(from).request([
+            {
+                to,
+                value: Vue.filter('valToHex')(amount, decimals),
+                data: '0x',
+                comment: `Transfering ${amount} VET`
+            }
+        ])
     }
 
     public async tokenTransfer(
@@ -443,15 +492,34 @@ export default class Transfer extends Vue {
             type: 'function'
         }
         const method = connex.thor.account(address).method(abi)
-        const transferClause = method.asClause(to, Vue.filter('valToHex')(amount, decimals))
+        const transferClause = method.asClause(
+            to,
+            Vue.filter('valToHex')(amount, decimals)
+        )
         const svc = connex.vendor.sign('tx')
         svc.signer(from)
-        return await svc.comment('').request([{ ...transferClause, comment: `Transfering ${amount} ${symbol}` }])
+        return await svc
+            .comment('')
+            .request([
+                {
+                    ...transferClause,
+                    comment: `Transfering ${amount} ${symbol}`
+                }
+            ])
+    }
+
+    beforeDestroy() {
+        if (this.tempFrom) {
+            this.$store.commit('deleteTemp', this.tempFrom)
+        }
     }
 
     public async initForm() {
         const token = this.tokenlist.find((item: app.Token) => {
-            return item.symbol.toLowerCase() === (this.$route.query.symbol || 'VET').toString().toLowerCase()
+            return (
+                item.symbol.toLowerCase() ===
+                (this.$route.query.symbol || 'VET').toString().toLowerCase()
+            )
         })
         if (token) {
             this.unit = token.symbol
@@ -460,8 +528,11 @@ export default class Transfer extends Vue {
             this.token = this.tokenlist[0]
         }
         await this.setWalletList()
-        const wallet = this.walletList!.find((item) => {
-            return item.address.toLowerCase() === (this.$route.query.from || '').toString().toLowerCase()
+        const wallet = this.walletList!.find(item => {
+            return (
+                item.address.toLowerCase() ===
+                (this.$route.query.from || '').toString().toLowerCase()
+            )
         })
 
         if (this.$route.query && this.$route.query.from) {
@@ -472,7 +543,10 @@ export default class Transfer extends Vue {
                     this.wallet = wallet
                 } else {
                     this.showImport = true
+                    this.tempFrom = this.$route.query.from.toString().toLowerCase()
                     this.from = this.$route.query.from.toString().toLowerCase()
+                    Store.setBalanceByAddress(this.tempFrom)
+                    this.$store.commit('addTempAddress', this.tempFrom)
                     this.wallet = {
                         name: this.$t('wallets.select_wallet').toString(),
                         address: this.from
@@ -498,7 +572,7 @@ export default class Transfer extends Vue {
 }
 .transfer .item-address {
     font-size: 14px;
-    font-family: "Courier New", Courier, monospace;
+    font-family: 'Courier New', Courier, monospace;
     font-weight: 500;
 }
 .transfer .item-balance {
@@ -605,13 +679,13 @@ export default class Transfer extends Vue {
     .transfer-wallet
     .ant-col-xs-14
     > div:nth-child(2)::after {
-    content: ")";
+    content: ')';
 }
 .transfer-list-container
     .transfer-wallet
     .ant-col-xs-14
     > div:nth-child(2)::before {
-    content: "(";
+    content: '(';
 }
 .transfer-list-container .transfer-wallet .ant-col-xs-14 > div:nth-child(2) {
     display: inline-block;
