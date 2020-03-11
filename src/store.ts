@@ -12,6 +12,7 @@ declare namespace Store {
     tickedCount: 0
     wallets?: app.Wallet[]
     tokens?: app.Token[]
+    tempList?: string[]
     prices: {
       [symbol: string]: {
         [currencies: string]: number
@@ -69,6 +70,7 @@ class Store extends Vuex.Store<Store.State> {
         hideTokens: true,
         netWork: null,
         wallets: [],
+        tempList: [],
         tokens: [],
         prices: null,
         balances: null,
@@ -93,6 +95,16 @@ class Store extends Vuex.Store<Store.State> {
         },
         addWallet(state, payload) {
           state.wallets!.push(payload)
+        },
+        addTempAddress(state, payload) {
+          state.tempList!.push(payload)
+        },
+        deleteTemp(state, addr) {
+          const index = state.tempList!.findIndex((item) => {
+            return item === addr
+          })
+          state.tempList!.splice(index, 1)
+          delete state.balances![addr]
         },
         updateWalletName(state, payload) {
           const index = state.wallets!.findIndex((item) => {
@@ -237,8 +249,7 @@ class Store extends Vuex.Store<Store.State> {
     const tick = connex.thor.ticker()
     for (; ;) {
       await tick.next()
-      this.getTokenBalance()
-      this.getBalance()
+      this.setBalance()
       this.commit('setTickedTimes')
     }
   }
@@ -288,30 +299,49 @@ class Store extends Vuex.Store<Store.State> {
     }
   }
 
-  private getBalance() {
+  public async getBalance(address: string) {
+    const info = await connex.thor.account(address).get()
+    return {
+      address: address,
+      symbol: 'VET',
+      balance: info.balance,
+      decimals: 18
+    }
+  }
+
+  private async setBalance() {
     this.state.wallets!.forEach(async (item) => {
-      const info = await connex.thor.account(item.address).get()
-      this.commit('setBalance', {
-        address: item.address,
-        symbol: 'VET',
-        balance: info.balance,
-        decimals: 18
+      this.setBalanceByAddress(item.address)
+    })
+
+    if (this.state.tempList!.length) {
+      this.state.tempList!.forEach(async (address) => {
+        this.setBalanceByAddress(address)
       })
+    }
+  }
+
+  public async setBalanceByAddress(address: string) {
+    const vet = await this.getBalance(address)
+    const tokens = await this.getTokenBalance(address)
+    this.commit('setBalance', vet)
+    tokens.forEach((item: any) => {
+      this.commit('setBalance', item)
     })
   }
 
-  private getTokenBalance() {
-    this.tokenMethods!.forEach(async (item) => {
-      this.state.wallets!.forEach(async (wallet) => {
-        const result = await item.balanceOf(wallet.address)
-        this.commit('setBalance', {
-          address: wallet.address,
-          symbol: item.symbol,
-          balance: result.decoded!.balance,
-          decimals: item.decimals
-        })
+  public async getTokenBalance(address: string) {
+    let result: any = []
+    for (const item of this.tokenMethods!) {
+      const temp = await item.balanceOf(address)
+      result.push({
+        address: address,
+        symbol: item.symbol,
+        balance: temp.decoded!.balance,
+        decimals: item.decimals
       })
-    })
+    }
+    return result
   }
 
   private initTokenMethods() {
