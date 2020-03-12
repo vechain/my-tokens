@@ -17,6 +17,7 @@ export default {
     hide_amount: '隱藏小額資產',
     addr_placeholder: '地址為0x開頭',
     token: '幣種',
+    unknown_wallet: '未知錢包',
     select_wallet: '選擇錢包',
     remove_msg: '是否要移除錢包?',
     remove_yes: '是',

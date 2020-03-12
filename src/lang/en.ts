@@ -17,6 +17,7 @@ export default {
     hide_amount: 'Hide small assets',
     addr_placeholder: 'Start with 0x',
     token: 'Tokens',
+    unknown_wallet: 'Unknown wallet',
     select_wallet: 'Select a wallet',
     remove_msg: 'Are you sure to remove this wallet?',
     remove_yes: 'Yes',
