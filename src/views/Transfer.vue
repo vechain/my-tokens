@@ -548,7 +548,7 @@ export default class Transfer extends Vue {
                     Store.setBalanceByAddress(this.tempFrom)
                     this.$store.commit('addTempAddress', this.tempFrom)
                     this.wallet = {
-                        name: this.$t('wallets.select_wallet').toString(),
+                        name: this.$t('wallets.unknown_wallet').toString(),
                         address: this.from
                     }
                 }
