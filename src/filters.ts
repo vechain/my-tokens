@@ -1,6 +1,6 @@
 import { Vue } from 'vue-property-decorator'
 import BigNumber from 'bignumber.js'
-import { toChecksumAddress } from 'thor-devkit/es6/cry/address'
+import { address } from 'thor-devkit/dist/address'
 
 Vue.filter('shortAddress', (v: string) => {
   return v.substring(0, 8) + '...' + v.substring(v.length - 6, v.length)
@@ -21,7 +21,7 @@ Vue.filter('valToHex', (val: string, decimals?: number) => {
 })
 
 Vue.filter('toChecksumAddress', (val: string) => {
-  return toChecksumAddress(val)
+  return address.toChecksumed(val)
 })
 
 Vue.filter('balanceCheck', (val: string) => {
